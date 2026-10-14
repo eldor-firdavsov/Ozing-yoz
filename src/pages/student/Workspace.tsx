@@ -414,8 +414,8 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
         </div>
       )}
 
-      {/* Top VS Code-like Minimalist Header */}
-      <header className="glass-nav px-4 sm:px-6 py-2.5 flex items-center justify-between border-b border-slate-200/80">
+      {/* Top Duolingo-style Lesson Header */}
+      <header className="glass-nav px-4 sm:px-6 py-2.5 flex items-center justify-between border-b-2 border-slate-200">
         <div className="flex items-center gap-3">
           <button
             onClick={() => {
@@ -423,26 +423,40 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               navigate(isLiveRoom ? "/app" : "/app/challenges");
             }}
             title="Ortga qaytish"
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
+            className="w-10 h-10 rounded-2xl border-2 border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-all font-black"
           >
-            <ArrowLeft className="w-5 h-5" />
+            ✕
           </button>
           <BrandLogo size="md" />
-          <div className="h-5 w-[1px] bg-slate-200" />
 
           {/* Breadcrumb path */}
-          <div className="hidden md:flex items-center gap-2 text-sm text-slate-500 font-mono">
+          <div className="hidden lg:flex items-center gap-2 text-sm text-slate-500 font-mono">
             <span>{isLiveRoom ? "musobaqa" : "mashqlar"}</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-semibold text-slate-900">{challenge.title}</span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-lime-100 text-lime-800 font-bold">
+            <span className="font-extrabold text-slate-900">{challenge.title}</span>
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#D7FFB8] text-[#2E6D01] font-black border border-[#58CC02]">
               {challenge.level}-daraja
             </span>
           </div>
         </div>
 
+        {/* Duolingo Lesson Progress Bar */}
+        <div className="flex-1 max-w-xs sm:max-w-md mx-3 sm:mx-6 flex items-center gap-2.5">
+          <div className="flex-1 h-4 bg-slate-200 rounded-full overflow-hidden p-0.5">
+            <div
+              className="h-full bg-[#58CC02] rounded-full transition-all duration-500"
+              style={{
+                width: `${challenge.tests.length > 0 ? (passedTestsCount / challenge.tests.length) * 100 : 0}%`,
+              }}
+            />
+          </div>
+          <span className="font-black text-xs text-slate-500 font-mono shrink-0">
+            {passedTestsCount}/{challenge.tests.length}
+          </span>
+        </div>
+
         {/* Action Controls & Clear Tooltips */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5">
           <SoundToggle />
 
           {/* Help Button Guide */}
@@ -452,15 +466,16 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               setShowButtonsGuide(true);
             }}
             title="Tugmalar vazifasi va qoidalar"
-            className="glass-btn-secondary text-sm py-2 px-3 font-semibold flex items-center gap-1.5 text-slate-700 rounded-xl"
+            className="duo-btn-white text-xs sm:text-sm py-2 px-3 font-extrabold flex items-center gap-1.5 text-slate-700"
           >
-            <HelpCircle className="w-4 h-4 text-lime-700" />
-            <span className="hidden sm:inline">Qo'llanma</span>
+            <HelpCircle className="w-4 h-4 text-[#58CC02]" />
+            <span className="hidden sm:inline">Qoidalar</span>
           </button>
 
           {/* Score Badge */}
-          <div className="glass-card px-3.5 py-1.5 text-sm font-mono font-semibold text-slate-800 shadow-xs rounded-xl">
-            Ball: <span className="text-lime-700 font-bold">+{currentScore} XP</span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF9E6] border-2 border-[#FFC800] border-b-4 border-b-[#E0A800] rounded-2xl font-black text-xs sm:text-sm text-[#B88700] select-none">
+            <span>⚡</span>
+            <span>+{currentScore} XP</span>
           </div>
 
           {/* Run Button (Ctrl+S) */}
@@ -471,19 +486,19 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               showToast("Natija yangilandi (Ctrl+S)");
             }}
             title="Yozgan kodingizni ekranda sinab ko'rish (Ctrl+S)"
-            className="glass-btn-secondary text-sm py-2 px-3.5 font-semibold rounded-xl"
+            className="duo-btn-white text-xs sm:text-sm py-2 px-3.5 font-extrabold"
           >
             <Play className="w-4 h-4 text-slate-600" />
-            <span className="hidden sm:inline">{UZ.cta.run}</span>
+            <span className="hidden md:inline">{UZ.cta.run}</span>
           </button>
 
           {/* Check Button (Ctrl+Enter) */}
           <button
             onClick={triggerCheckTests}
             title="Avtomatik testlar orqali tekshirish va ball olish (Ctrl+Enter)"
-            className="glass-btn-brand text-sm py-2 px-4 shadow-sm font-bold rounded-xl"
+            className="duo-btn-green text-xs sm:text-sm py-2 px-4 sm:px-5 font-black shadow-sm"
           >
-            <CheckCircle className="w-4 h-4" />
+            <CheckCircle className="w-4 h-4 stroke-[2.5]" />
             <span>{UZ.cta.check}</span>
           </button>
 
@@ -491,7 +506,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
             title={isFullscreen ? "Kichraytirish" : "To'liq ekran"}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 hidden lg:block"
+            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 hidden xl:block"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
@@ -785,8 +800,8 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             </div>
 
             {/* Hint Action Bar */}
-            <div className="pt-3 border-t border-slate-200/70 flex items-center justify-between gap-3">
-              <span className="text-sm text-slate-700 font-medium">
+            <div className="pt-3 border-t-2 border-slate-200 flex items-center justify-between gap-3">
+              <span className="text-sm text-slate-700 font-extrabold">
                 Keyingi: <strong className="text-slate-900">{UZ.hintLevels[nextHintLevel as 1 | 2 | 3 | 4]}</strong>
               </span>
 
@@ -796,9 +811,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                   if (nextHintLevel === 4) setShowL4Modal(true);
                   else requestHint(nextHintLevel);
                 }}
-                className="glass-btn-primary text-sm py-2.5 px-4 shadow-sm font-bold rounded-xl"
+                className="duo-btn-blue text-sm py-2.5 px-4 shadow-sm font-extrabold"
               >
-                <Sparkles className="w-4 h-4 text-lime-400" />
+                <Sparkles className="w-4 h-4 text-white" />
                 <span>{loadingHint ? "O'ylanmoqda..." : UZ.cta.askHint}</span>
               </button>
             </div>

@@ -4,30 +4,51 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Plus Jakarta Sans'", "system-ui", "-apple-system", "sans-serif"],
-        display: ["'Outfit'", "'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+        sans: ["'Nunito'", "system-ui", "-apple-system", "sans-serif"],
+        display: ["'Outfit'", "'Nunito'", "system-ui", "sans-serif"],
         mono: ["'JetBrains Mono'", "'Fira Code'", "monospace"],
       },
       colors: {
-        bg: "#F8FAFC",
-        surface: "rgba(255, 255, 255, 0.72)",
-        "surface-2": "rgba(241, 245, 249, 0.85)",
-        border: "rgba(226, 232, 240, 0.9)",
-        text: "#0F172A",
-        muted: "#64748B",
+        bg: "#FFFFFF",
+        surface: "#FFFFFF",
+        "surface-2": "#F7F7F7",
+        border: "#E5E5E5",
+        text: "#3C3C3C",
+        muted: "#777777",
+        duo: {
+          green: "#58CC02",
+          "green-dark": "#46A302",
+          "green-light": "#D7FFB8",
+          blue: "#1CB0F6",
+          "blue-dark": "#1899D6",
+          "blue-light": "#DDF4FF",
+          orange: "#FF9600",
+          "orange-dark": "#E07D00",
+          "orange-light": "#FFEDB3",
+          red: "#FF4B4B",
+          "red-dark": "#EA2B2B",
+          yellow: "#FFC800",
+          "yellow-dark": "#E5B400",
+          purple: "#CE82FF",
+          "purple-dark": "#A55EEA",
+          card: "#FFFFFF",
+          border: "#E5E5E5",
+        },
         brand: {
-          DEFAULT: "#65A30D", // High-contrast lime-green for white bg
-          light: "#ECFCCB",
-          glow: "#A3E635",
+          DEFAULT: "#58CC02", // Duolingo iconic feather green
+          light: "#D7FFB8",
+          glow: "#58CC02",
+          dark: "#46A302",
         },
         hint: {
-          1: "#0284C7", // Sky blue (Savol)
-          2: "#D97706", // Amber (Yo'nalish)
-          3: "#EA580C", // Orange (Tushuntirish)
-          4: "#E11D48", // Rose (Qisman yechim)
+          1: "#1CB0F6", // Sky blue (Savol)
+          2: "#FF9600", // Amber (Yo'nalish)
+          3: "#CE82FF", // Purple (Tushuntirish)
+          4: "#FF4B4B", // Rose (Qisman yechim)
         },
       },
       boxShadow: {
+        xs: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         glass: "0 8px 32px 0 rgba(15, 23, 42, 0.05)",
         "glass-sm": "0 4px 16px 0 rgba(15, 23, 42, 0.04)",
         "glass-lg": "0 16px 48px 0 rgba(15, 23, 42, 0.08)",

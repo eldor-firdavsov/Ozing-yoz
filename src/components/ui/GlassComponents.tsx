@@ -20,19 +20,26 @@ import { sounds } from "../../lib/audio";
 
 export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md" }) => {
   const sizeClasses = {
-    sm: "text-base",
-    md: "text-xl",
-    lg: "text-3xl",
+    sm: "text-lg",
+    md: "text-2xl",
+    lg: "text-3xl sm:text-4xl",
+  };
+  const iconSizes = {
+    sm: "w-7 h-7 text-xs rounded-xl",
+    md: "w-9 h-9 text-sm rounded-2xl",
+    lg: "w-12 h-12 text-base rounded-2xl",
   };
   return (
     <div
       onClick={() => sounds.playClick()}
-      className={`inline-flex items-center gap-1.5 font-display font-extrabold tracking-tight text-slate-900 select-none cursor-pointer ${sizeClasses[size]}`}
+      className="inline-flex items-center gap-2.5 font-display font-black tracking-tight select-none cursor-pointer group"
     >
-      <span className="bg-gradient-to-r from-slate-950 via-slate-800 to-slate-900 bg-clip-text text-transparent">
+      <div className={`${iconSizes[size]} bg-[#58CC02] border-b-4 border-[#46A302] flex items-center justify-center text-white font-black shadow-xs group-hover:scale-105 group-active:translate-y-0.5 transition-all`}>
+        OY
+      </div>
+      <span className={`${sizeClasses[size]} text-[#58CC02] font-black tracking-tight`}>
         O'zing Yoz
       </span>
-      <span className="text-[#65A30D] animate-pulse">▍</span>
     </div>
   );
 };
@@ -115,14 +122,17 @@ export const TypewriterHint: React.FC<{
   };
 
   return (
-    <div className="glass-card p-4 space-y-3 border-l-4 border-l-slate-800 shadow-sm transition-all hover:shadow-glass">
+    <div className="duo-speech-bubble space-y-3 transition-all hover:shadow-sm">
       <div className="flex items-center justify-between text-xs sm:text-sm">
         <div className="flex items-center gap-2">
-          <span className={`px-2.5 py-0.5 rounded-lg border font-semibold ${badgeColors[level] || badgeColors[1]}`}>
+          <span className="w-6 h-6 rounded-full bg-[#1CB0F6] text-white flex items-center justify-center text-xs font-black">
+            💡
+          </span>
+          <span className={`px-2.5 py-0.5 rounded-xl border-2 font-extrabold ${badgeColors[level] || badgeColors[1]}`}>
             {level}-daraja maslahat
           </span>
           {concept && (
-            <span className="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+            <span className="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200 font-bold">
               #{concept}
             </span>
           )}
@@ -132,7 +142,7 @@ export const TypewriterHint: React.FC<{
             <button
               onClick={() => onNavigateLine?.(line)}
               title="Koddagi ushbu qatorga o'tish"
-              className="font-mono text-xs text-amber-800 font-semibold bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 flex items-center gap-1 transition-all"
+              className="font-mono text-xs text-amber-800 font-bold bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-xl border border-amber-200 flex items-center gap-1 transition-all"
             >
               <span>{line}-qator</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -141,16 +151,16 @@ export const TypewriterHint: React.FC<{
           {level === 4 && (
             <button
               onClick={handleCopy}
-              className="text-xs text-slate-600 hover:text-slate-900 inline-flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shadow-xs font-medium"
+              className="text-xs text-slate-700 hover:text-slate-900 inline-flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-xl shadow-xs font-bold"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-lime-600" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? "Nusxalandi" : "Nusxalash"}</span>
             </button>
           )}
-          {fromFallback && <span className="text-slate-400 text-xs">Standart</span>}
+          {fromFallback && <span className="text-slate-400 text-xs font-semibold">Standart</span>}
         </div>
       </div>
-      <p className="text-sm sm:text-base text-slate-800 leading-relaxed whitespace-pre-wrap font-sans font-normal selection:bg-lime-200">
+      <p className="text-sm sm:text-base text-slate-800 leading-relaxed whitespace-pre-wrap font-sans font-medium selection:bg-[#D7FFB8]">
         {displayed}
       </p>
     </div>
@@ -159,20 +169,24 @@ export const TypewriterHint: React.FC<{
 
 export const TestChecklistItem: React.FC<{ label: string; passed?: boolean }> = ({ label, passed }) => (
   <div
-    className={`flex items-center gap-3 p-3 rounded-xl border text-sm transition-all ${
+    className={`duo-choice-card text-sm sm:text-base ${
       passed === true
-        ? "bg-lime-50/90 border-lime-300 text-slate-900 font-medium shadow-xs"
+        ? "duo-choice-passed"
         : passed === false
-        ? "bg-rose-50/80 border-rose-200 text-slate-800"
-        : "bg-white/70 border-slate-200/80 text-slate-600"
+        ? "duo-choice-failed"
+        : "hover:border-slate-300"
     }`}
   >
     {passed === true ? (
-      <CheckCircle2 className="w-4 h-4 text-lime-600 shrink-0" />
+      <div className="w-6 h-6 rounded-full bg-[#58CC02] text-white flex items-center justify-center shrink-0 shadow-xs">
+        <Check className="w-4 h-4 stroke-[3]" />
+      </div>
     ) : passed === false ? (
-      <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+      <div className="w-6 h-6 rounded-full bg-[#FF4B4B] text-white flex items-center justify-center shrink-0 shadow-xs">
+        <XCircle className="w-4 h-4 stroke-[3]" />
+      </div>
     ) : (
-      <div className="w-4 h-4 rounded-full border-2 border-slate-300 shrink-0" />
+      <div className="w-6 h-6 rounded-full border-2 border-slate-300 shrink-0" />
     )}
     <span className="flex-1 leading-snug">{label}</span>
   </div>

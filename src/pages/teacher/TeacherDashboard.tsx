@@ -162,22 +162,22 @@ export const TeacherDashboard: React.FC = () => {
               sounds.playClick();
               setShowCreateRoomModal(true);
             }}
-            className="glass-btn-brand text-sm py-2.5 px-4 font-bold shadow-xs flex items-center gap-2 rounded-xl"
+            className="duo-btn-green text-xs sm:text-sm py-2.5 px-4 font-black shadow-xs flex items-center gap-2"
           >
-            <Play className="w-4 h-4" />
+            <Play className="w-4 h-4 fill-white" />
             <span>Jonli xona ochish</span>
           </button>
           <Link
             onClick={() => sounds.playClick()}
             to="/app"
-            className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold text-slate-700 rounded-xl"
+            className="duo-btn-white text-xs sm:text-sm py-2.5 px-4 font-extrabold text-slate-700"
           >
             Talaba ekrani
           </Link>
           <button
             onClick={handleTeacherLogout}
             title="Ustoz hisobidan chiqish"
-            className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center gap-2 rounded-xl"
+            className="duo-btn-white text-xs sm:text-sm py-2.5 px-4 font-extrabold text-rose-600 hover:text-rose-700 flex items-center gap-2"
           >
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">Chiqish</span>
@@ -273,9 +273,9 @@ export const TeacherDashboard: React.FC = () => {
                 sounds.playClick();
                 setShowAiModal(true);
               }}
-              className="glass-btn-primary text-sm py-2.5 px-4 font-semibold shrink-0 rounded-xl"
+              className="duo-btn-green text-sm py-2.5 px-4 font-black shrink-0"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4 stroke-[3]" />
               <span>Yaratish</span>
             </button>
           </div>
@@ -294,10 +294,10 @@ export const TeacherDashboard: React.FC = () => {
           </div>
 
           {/* Quick Start Live Room Card */}
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
+          <div className="p-6 rounded-2xl bg-[#0F172A] border-2 border-slate-700 border-b-4 border-b-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
             <div className="space-y-1">
-              <h3 className="font-bold text-base sm:text-lg flex items-center gap-2">
-                <QrCode className="w-5 h-5 text-lime-400" />
+              <h3 className="font-extrabold text-base sm:text-lg flex items-center gap-2">
+                <QrCode className="w-5 h-5 text-[#58CC02]" />
                 <span>Jonli Dars Xonasi (Live Room)</span>
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
@@ -307,7 +307,7 @@ export const TeacherDashboard: React.FC = () => {
             <Link
               onClick={() => sounds.playClick()}
               to="/teach/live/FLX742"
-              className="glass-btn-brand text-sm font-bold py-3 px-5 shrink-0 rounded-xl"
+              className="duo-btn-green text-sm font-black py-3 px-6 shrink-0"
             >
               FLX742 xonani ochish →
             </Link>

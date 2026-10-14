@@ -300,9 +300,9 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
             onClick={() => broadcastState("live")}
             disabled={status === "live"}
             title="Musobaqaga start berish. Barcha talabalarda taymer ishga tushadi."
-            className="glass-btn-brand text-sm py-2.5 px-4 font-bold shadow-xs flex items-center gap-2 rounded-xl disabled:opacity-40"
+            className="duo-btn-green text-xs sm:text-sm py-2 px-4 font-black shadow-xs flex items-center gap-2 disabled:opacity-40"
           >
-            <Play className="w-4 h-4" />
+            <Play className="w-4 h-4 fill-white" />
             <span>Boshlash</span>
           </button>
 
@@ -311,7 +311,7 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
             onClick={() => broadcastState("paused")}
             disabled={status === "paused" || status === "lobby"}
             title="Darsni vaqtinchalik to'xtatish (tushuntirish berish uchun)"
-            className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold flex items-center gap-2 rounded-xl disabled:opacity-40"
+            className="duo-btn-white text-xs sm:text-sm py-2 px-3.5 font-extrabold flex items-center gap-2 disabled:opacity-40"
           >
             <Pause className="w-4 h-4" />
             <span>Pauza</span>
@@ -322,7 +322,7 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
             onClick={() => broadcastState("ended")}
             disabled={status === "ended"}
             title="Musobaqani to'xtatish va natijalarni e'lon qilish"
-            className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold text-rose-600 hover:bg-rose-50 hover:border-rose-300 flex items-center gap-2 rounded-xl disabled:opacity-40"
+            className="duo-btn-red text-xs sm:text-sm py-2 px-3.5 font-extrabold flex items-center gap-2 disabled:opacity-40"
           >
             <Square className="w-4 h-4" />
             <span>Tugatish</span>
@@ -330,12 +330,12 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
 
           {/* Projector Screen Button */}
           <Link
-            className="glass-btn-primary text-sm py-2.5 px-4 font-bold shadow-xs flex items-center gap-2 rounded-xl"
+            className="duo-btn-blue text-xs sm:text-sm py-2 px-4 font-black shadow-xs flex items-center gap-2"
             target="_blank"
             to={`/teach/live/${code}/screen`}
             title="Doskadagi katta ekranga uzatish (QR kod + Jonli reyting)"
           >
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="w-4 h-4 stroke-[2.5]" />
             <span>Proyektor ekrani</span>
           </Link>
         </div>

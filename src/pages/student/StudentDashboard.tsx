@@ -15,10 +15,18 @@ import {
   LogOut,
   QrCode,
   Trophy,
-  HelpCircle
+  HelpCircle,
+  GraduationCap,
+  Heart,
+  Zap,
+  Target,
+  ChevronRight,
+  Lock,
+  Star,
+  Check
 } from "lucide-react";
 import { appStore } from "../../lib/store";
-import { COURSE_CHALLENGES } from "../../lib/challenges-data";
+import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
 import { BrandLogo, SoundToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
 import { UZ } from "../../lib/i18n/uz";
@@ -55,6 +63,11 @@ export const StudentDashboard: React.FC = () => {
     return matchesSearch && matchesTopic && matchesLevel;
   });
 
+  // Split into Duolingo-style Units
+  const unit1 = filteredChallenges.filter((c) => c.level === 1 || c.topics.includes("forms"));
+  const unit2 = filteredChallenges.filter((c) => c.level === 2 && !c.topics.includes("forms"));
+  const unit3 = filteredChallenges.filter((c) => c.level === 3 || (!unit1.includes(c) && !unit2.includes(c)));
+
   const handleJoinClass = (e: React.FormEvent) => {
     e.preventDefault();
     if (!classCode.trim()) return;
@@ -70,322 +83,522 @@ export const StudentDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 sm:p-8 lg:p-12 w-full space-y-8">
-      {/* Top Navbar - Full Width */}
-      <header className="glass-panel px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl w-full">
-        <div className="flex items-center gap-4">
-          <BrandLogo size="md" />
-          <div className="flex items-center gap-2.5 px-4 py-1.5 bg-slate-100 rounded-full text-sm font-mono text-slate-800">
-            <span className="w-2.5 h-2.5 rounded-full bg-lime-500 animate-pulse" />
-            <span>Talaba:</span>
-            <strong className="text-slate-950 font-bold">{profile.full_name || "Mehmon talaba"}</strong>
+    <div className="min-h-screen bg-[#FFFFFF] flex flex-col md:flex-row text-[#3C3C3C] selection:bg-[#D7FFB8]">
+      {/* ======================================================== */}
+      {/* 1. DUOLINGO DESKTOP LEFT STICKY SIDEBAR (w-64)            */}
+      {/* ======================================================== */}
+      <aside className="w-64 border-r-2 border-[#E5E5E5] bg-white h-screen sticky top-0 hidden md:flex flex-col justify-between p-4 shrink-0 select-none z-30">
+        <div className="space-y-6">
+          {/* Duolingo Brand Header */}
+          <div className="px-3 pt-2">
+            <BrandLogo size="md" />
           </div>
+
+          {/* Navigation Links with 3D Pill Look */}
+          <nav className="space-y-2">
+            <Link
+              to="/app"
+              onClick={() => sounds.playClick()}
+              className="flex items-center gap-4 px-4 py-3 rounded-2xl bg-[#DDF4FF] text-[#1CB0F6] border-2 border-[#84D8FF] border-b-4 border-b-[#1CB0F6] font-extrabold text-sm uppercase tracking-wider transition-all"
+            >
+              <BookOpen className="w-5 h-5 stroke-[2.5]" />
+              <span>O'rganish</span>
+            </Link>
+
+            <button
+              onClick={() => {
+                sounds.playClick();
+                setShowJoinModal(true);
+              }}
+              className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border-2 border-transparent font-extrabold text-sm uppercase tracking-wider transition-all"
+            >
+              <Trophy className="w-5 h-5 text-[#FFC800] stroke-[2.5]" />
+              <span>Musobaqa</span>
+            </button>
+
+            <button
+              onClick={() => {
+                sounds.playClick();
+                setShowHelpModal(true);
+              }}
+              className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border-2 border-transparent font-extrabold text-sm uppercase tracking-wider transition-all"
+            >
+              <Sparkles className="w-5 h-5 text-[#58CC02] stroke-[2.5]" />
+              <span>Ustoz AI</span>
+            </button>
+
+            <Link
+              to="/teach/login"
+              onClick={() => sounds.playClick()}
+              className="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border-2 border-transparent font-extrabold text-sm uppercase tracking-wider transition-all"
+            >
+              <GraduationCap className="w-5 h-5 text-indigo-500 stroke-[2.5]" />
+              <span>Ustoz Kabineti</span>
+            </Link>
+          </nav>
         </div>
 
-        <div className="flex items-center gap-3">
-          <SoundToggle />
+        {/* Bottom User Profile Section */}
+        <div className="pt-4 border-t-2 border-[#E5E5E5] space-y-3">
+          <div className="flex items-center justify-between px-2">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-[#58CC02] text-white flex items-center justify-center font-black text-lg border-b-2 border-[#46A302]">
+                {profile.full_name ? profile.full_name.charAt(0).toUpperCase() : "T"}
+              </div>
+              <div className="overflow-hidden">
+                <p className="font-extrabold text-sm text-slate-900 truncate">
+                  {profile.full_name || "Mehmon talaba"}
+                </p>
+                <p className="text-xs font-bold text-slate-400">Talaba</p>
+              </div>
+            </div>
+            <SoundToggle />
+          </div>
 
-          {/* Help Modal Trigger */}
-          <button
-            onClick={() => {
-              sounds.playClick();
-              setShowHelpModal(true);
-            }}
-            title="Qanday ishlashini bilish"
-            className="glass-btn-secondary text-sm py-2 px-3.5 font-medium flex items-center gap-2"
-          >
-            <HelpCircle className="w-4 h-4 text-lime-700" />
-            <span className="hidden sm:inline">Qo'llanma</span>
-          </button>
-
-          {/* Join Live Competition Button */}
-          <button
-            onClick={() => {
-              sounds.playClick();
-              setShowJoinModal(true);
-            }}
-            className="glass-btn-brand text-sm py-2 px-4 font-bold shadow-xs flex items-center gap-2"
-          >
-            <QrCode className="w-4 h-4" />
-            <span>Musobaqaga ulanish</span>
-          </button>
-
-          {/* Logout Button */}
           <button
             onClick={handleLogout}
-            title="Tizimdan chiqish"
-            className="glass-btn-secondary text-sm py-2 px-3.5 font-medium text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center gap-1.5"
+            className="w-full duo-btn-white py-2 text-xs font-extrabold text-slate-500 hover:text-rose-600"
           >
-            <LogOut className="w-4 h-4" />
-            <span className="hidden sm:inline">Chiqish</span>
+            <LogOut className="w-4 h-4 mr-1.5" />
+            <span>Chiqish</span>
           </button>
         </div>
-      </header>
+      </aside>
 
-      {/* Hero Stats Banner - Full Width */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
-        {/* XP Card */}
-        <div className="glass-panel p-6 flex items-center gap-5 shadow-glass-sm">
-          <div className="w-14 h-14 rounded-2xl bg-lime-100 border border-lime-300 flex items-center justify-center text-lime-700 shrink-0">
-            <Award className="w-7 h-7" />
+      {/* ======================================================== */}
+      {/* 2. CENTER FEED: DUOLINGO UNITS LEARNING PATH (Expanded)   */}
+      {/* ======================================================== */}
+      <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-4xl w-full mx-auto space-y-8">
+        {/* Mobile Header (Hidden on Desktop) */}
+        <header className="md:hidden flex items-center justify-between p-4 bg-white border-2 border-[#E5E5E5] rounded-2xl">
+          <BrandLogo size="sm" />
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 font-black text-[#FF9600]">
+              <Flame className="w-5 h-5 fill-[#FF9600]" />
+              <span>{profile.streak}</span>
+            </div>
+            <div className="flex items-center gap-1.5 font-black text-[#FFC800]">
+              <Zap className="w-5 h-5 fill-[#FFC800]" />
+              <span>{profile.xp}</span>
+            </div>
+            <SoundToggle />
           </div>
-          <div>
-            <p className="text-sm text-slate-500 font-semibold">To'plangan tajriba</p>
-            <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">{profile.xp} XP</p>
-          </div>
-        </div>
+        </header>
 
-        {/* Completed Challenges */}
-        <div className="glass-panel p-6 flex items-center gap-5 shadow-glass-sm">
-          <div className="w-14 h-14 rounded-2xl bg-sky-100 border border-sky-300 flex items-center justify-center text-sky-700 shrink-0">
-            <BookOpen className="w-7 h-7" />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 font-semibold">Bajarilgan mashqlar</p>
-            <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
-              {completedCount} / {challenges.length} ta
-            </p>
-          </div>
-        </div>
+        {/* Filter and Search Bar (Duolingo Pill Bar) */}
+        <div className="duo-card p-4 space-y-3">
+          <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+            <div className="relative w-full sm:w-1/2">
+              <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-3" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Mashq nomi yoki mavzu bo'yicha qidiruv..."
+                className="w-full bg-[#F7F7F7] border-2 border-slate-200 rounded-xl pl-11 pr-4 py-2 text-sm font-semibold focus:outline-none focus:border-[#58CC02] focus:bg-white transition-all"
+              />
+            </div>
 
-        {/* Streak */}
-        <div className="glass-panel p-6 flex items-center gap-5 shadow-glass-sm">
-          <div className="w-14 h-14 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-600 shrink-0">
-            <Flame className="w-7 h-7" />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 font-semibold">Faollik ketma-ketligi</p>
-            <p className="font-mono text-3xl sm:text-4xl font-extrabold text-amber-700 mt-1">{profile.streak} kun</p>
-          </div>
-        </div>
-
-        {/* Ustoz AI Ladder Status */}
-        <div className="glass-panel p-6 flex items-center gap-5 shadow-glass-sm bg-gradient-to-br from-white/95 to-lime-50/60">
-          <div className="w-14 h-14 rounded-2xl bg-slate-900 text-lime-400 flex items-center justify-center shadow-sm shrink-0">
-            <Sparkles className="w-7 h-7" />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 font-semibold">Ustoz AI Yordamchisi</p>
-            <p className="text-sm font-bold text-slate-900 mt-1">4 bosqichli maslahat faol</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter and Search Bar - Full Width */}
-      <div className="glass-panel p-5 space-y-4 shadow-glass-sm w-full">
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div className="relative w-full sm:w-1/2 lg:w-1/3">
-            <Search className="w-5 h-5 text-slate-400 absolute left-4 top-3.5" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Mashq nomi yoki mavzu bo'yicha qidiruv..."
-              className="glass-input pl-11 text-sm sm:text-base py-3"
-            />
+            <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+              <span className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">
+                Daraja:
+              </span>
+              {(["all", 1, 2, 3] as const).map((lvl) => (
+                <button
+                  key={lvl}
+                  onClick={() => {
+                    sounds.playClick();
+                    setSelectedLevel(lvl);
+                  }}
+                  className={`text-xs px-3.5 py-1.5 rounded-xl font-extrabold uppercase transition-all ${
+                    selectedLevel === lvl
+                      ? "bg-[#58CC02] text-white border-b-2 border-[#46A302]"
+                      : "bg-[#F7F7F7] border border-slate-200 text-slate-600 hover:bg-slate-100"
+                  }`}
+                >
+                  {lvl === "all" ? "Barchasi" : `${lvl}-daraja`}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2.5 self-start sm:self-auto flex-wrap">
-            <span className="text-sm text-slate-600 font-semibold flex items-center gap-1.5">
-              <Filter className="w-4 h-4" /> Daraja:
-            </span>
-            {(["all", 1, 2, 3] as const).map((lvl) => (
+          {/* Topic Pills */}
+          <div className="flex gap-2 overflow-x-auto pb-1 select-none">
+            {topics.map((t) => (
               <button
-                key={lvl}
+                key={t.id}
                 onClick={() => {
                   sounds.playClick();
-                  setSelectedLevel(lvl);
+                  setSelectedTopic(t.id);
                 }}
-                className={`text-sm px-4 py-2 rounded-xl font-semibold transition-all ${
-                  selectedLevel === lvl
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "bg-white/80 border border-slate-200 text-slate-700 hover:bg-slate-100"
+                className={`text-xs font-extrabold px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all uppercase tracking-wider ${
+                  selectedTopic === t.id
+                    ? "bg-[#1CB0F6] text-white border-b-2 border-[#1899D6]"
+                    : "bg-[#F7F7F7] border border-slate-200 text-slate-600 hover:bg-slate-100"
                 }`}
               >
-                {lvl === "all" ? "Barchasi" : `${lvl}-daraja`}
+                {t.label}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Topic Pills */}
-        <div className="flex gap-2.5 overflow-x-auto pb-1.5 pt-1 select-none">
-          {topics.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => {
-                sounds.playClick();
-                setSelectedTopic(t.id);
-              }}
-              className={`text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all ${
-                selectedTopic === t.id
-                  ? "bg-[#84CC16] text-slate-950 shadow-xs"
-                  : "bg-white/80 border border-slate-200/90 text-slate-700 hover:bg-white hover:text-slate-950"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Live Room Quick Banner - Full Width */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-glass w-full">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-lime-400 text-slate-950 flex items-center justify-center font-bold shrink-0">
-            <Trophy className="w-6 h-6" />
-          </div>
-          <div>
-            <h3 className="font-bold text-base sm:text-lg text-white flex items-center gap-2.5">
-              <span>Jonli Musobaqa Xonasi</span>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-lime-400/20 text-lime-300 font-mono font-medium">
-                Real-vaqt sinxron
+        {/* ======================================================== */}
+        {/* UNIT 1: HTML ASOSLARI (Duolingo Green Banner)           */}
+        {/* ======================================================== */}
+        <section className="space-y-4">
+          <div className="bg-[#58CC02] border-b-4 border-[#46A302] text-white p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <div className="space-y-1">
+              <span className="text-xs uppercase font-extrabold tracking-widest text-[#D7FFB8]">
+                1-BO'LIM
               </span>
-            </h3>
-            <p className="text-sm text-slate-300 mt-1">
-              Ustozingiz bergan kodni kiritib darsdagi jonli musobaqaga qo'shiling (masalan: <strong>FLX742</strong>).
-            </p>
+              <h2 className="text-2xl font-black text-white">HTML Asoslari va Matnlar</h2>
+              <p className="text-sm font-semibold text-[#D7FFB8]">
+                Teglar, sarlavhalar, paragraflar va formalar bilan boshlang'ich sahifani yozing
+              </p>
+            </div>
+            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+              <BookOpen className="w-7 h-7 text-white stroke-[2.5]" />
+            </div>
           </div>
-        </div>
-        <button
-          onClick={() => {
-            sounds.playClick();
-            setShowJoinModal(true);
-          }}
-          className="glass-btn-brand text-sm font-bold py-3 px-6 shrink-0 rounded-xl"
-        >
-          Xonaga ulanish →
-        </button>
-      </div>
 
-      {/* Challenges Grid - Full Width Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
-        {filteredChallenges.map((c) => {
-          const isDone = appStore.isChallengeCompleted(c.id);
-          return (
-            <div
-              key={c.id}
-              className={`glass-card p-6 flex flex-col justify-between gap-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-glass ${
-                isDone ? "border-lime-200 bg-lime-50/25" : ""
-              }`}
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`text-xs font-bold px-3 py-1 rounded-full ${
-                      c.level === 1
-                        ? "bg-sky-100 text-sky-800"
-                        : c.level === 2
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-rose-100 text-rose-800"
-                    }`}
-                  >
-                    {c.level}-daraja
-                  </span>
-
-                  {isDone ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-lime-700 bg-lime-100 px-3 py-1 rounded-full">
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span>Bajarildi</span>
-                    </span>
-                  ) : (
-                    <span className="text-xs font-mono font-bold text-slate-400">+100 XP</span>
-                  )}
-                </div>
-
-                <h3 className="font-bold text-lg text-slate-900 leading-snug">{c.title}</h3>
-
-                <p className="text-sm text-slate-600 line-clamp-3 leading-relaxed font-sans">
-                  {c.description_md.replace(/[`*]/g, "")}
-                </p>
-
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {c.topics.map((t) => (
-                    <span
-                      key={t}
-                      className="text-xs font-mono px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 border border-slate-200/80"
-                    >
-                      #{t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-200/70 flex items-center justify-between">
-                <span className="text-sm text-slate-500 font-mono font-medium">
-                  {c.tests.length} ta tekshiruv
-                </span>
-                <Link
-                  onClick={() => sounds.playClick()}
-                  to={`/app/challenge/${c.id}`}
-                  className={`text-sm py-2 px-5 rounded-xl font-bold inline-flex items-center gap-1.5 transition-all ${
-                    isDone
-                      ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                      : "bg-[#84CC16] text-slate-950 hover:bg-[#65A30D] hover:text-white shadow-xs"
+          <div className="space-y-3">
+            {unit1.map((c) => {
+              const isDone = appStore.isChallengeCompleted(c.id);
+              return (
+                <div
+                  key={c.id}
+                  className={`duo-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-slate-300 ${
+                    isDone ? "bg-[#F7FEE7] border-lime-300 border-b-lime-400" : ""
                   }`}
                 >
-                  <span>{isDone ? "Qayta ko'rish" : "Boshlash"}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black text-xl border-b-4 ${
+                        isDone
+                          ? "bg-[#58CC02] border-[#46A302] text-white"
+                          : "bg-[#F7F7F7] border-slate-300 text-slate-700"
+                      }`}
+                    >
+                      {isDone ? <Check className="w-7 h-7 stroke-[3]" /> : <Star className="w-6 h-6 fill-[#FFC800] text-[#FFC800]" />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 uppercase">
+                          {c.level}-daraja
+                        </span>
+                        <span className="text-xs font-mono font-bold text-[#FF9600]">
+                          +100 XP
+                        </span>
+                      </div>
+                      <h3 className="font-extrabold text-lg text-slate-900 mt-0.5">{c.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-medium">
+                        {c.description_md.replace(/[`*]/g, "")}
+                      </p>
+                    </div>
+                  </div>
 
-      {/* Join Class / Room Modal */}
-      <GlassModal open={showJoinModal} onClose={() => setShowJoinModal(false)} title="Sinfga yoki Jonli xonaga ulanish">
+                  <Link
+                    onClick={() => sounds.playClick()}
+                    to={`/app/challenge/${c.id}`}
+                    className={`${isDone ? "duo-btn-white" : "duo-btn-green"} px-6 py-2.5 text-xs shrink-0 self-end sm:self-auto`}
+                  >
+                    <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ======================================================== */}
+        {/* UNIT 2: CSS FLEXBOX TARTIBI (Duolingo Blue Banner)       */}
+        {/* ======================================================== */}
+        <section className="space-y-4 pt-4">
+          <div className="bg-[#1CB0F6] border-b-4 border-[#1899D6] text-white p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <div className="space-y-1">
+              <span className="text-xs uppercase font-extrabold tracking-widest text-[#DDF4FF]">
+                2-BO'LIM
+              </span>
+              <h2 className="text-2xl font-black text-white">Flexbox va Zamonaviy Joylashuv</h2>
+              <p className="text-sm font-semibold text-[#DDF4FF]">
+                Elementlarni markazlash, navbar yasash va interaktiv tugmalar
+              </p>
+            </div>
+            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+              <Sparkles className="w-7 h-7 text-white stroke-[2.5]" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {unit2.map((c) => {
+              const isDone = appStore.isChallengeCompleted(c.id);
+              return (
+                <div
+                  key={c.id}
+                  className={`duo-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-slate-300 ${
+                    isDone ? "bg-[#F7FEE7] border-lime-300 border-b-lime-400" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black text-xl border-b-4 ${
+                        isDone
+                          ? "bg-[#58CC02] border-[#46A302] text-white"
+                          : "bg-[#F7F7F7] border-slate-300 text-slate-700"
+                      }`}
+                    >
+                      {isDone ? <Check className="w-7 h-7 stroke-[3]" /> : <Star className="w-6 h-6 fill-[#FFC800] text-[#FFC800]" />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 uppercase">
+                          {c.level}-daraja
+                        </span>
+                        <span className="text-xs font-mono font-bold text-[#FF9600]">
+                          +100 XP
+                        </span>
+                      </div>
+                      <h3 className="font-extrabold text-lg text-slate-900 mt-0.5">{c.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-medium">
+                        {c.description_md.replace(/[`*]/g, "")}
+                      </p>
+                    </div>
+                  </div>
+
+                  <Link
+                    onClick={() => sounds.playClick()}
+                    to={`/app/challenge/${c.id}`}
+                    className={`${isDone ? "duo-btn-white" : "duo-btn-blue"} px-6 py-2.5 text-xs shrink-0 self-end sm:self-auto`}
+                  >
+                    <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ======================================================== */}
+        {/* UNIT 3: CSS GRID & RESPONSIVE (Duolingo Purple Banner)   */}
+        {/* ======================================================== */}
+        <section className="space-y-4 pt-4">
+          <div className="bg-[#CE82FF] border-b-4 border-[#A55EEA] text-white p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <div className="space-y-1">
+              <span className="text-xs uppercase font-extrabold tracking-widest text-[#F3E8FF]">
+                3-BO'LIM
+              </span>
+              <h2 className="text-2xl font-black text-white">CSS Grid va Responsive Dizayn</h2>
+              <p className="text-sm font-semibold text-[#F3E8FF]">
+                Murakkab to'rlar, moslashuvchan media so'rovlari va professional tartib
+              </p>
+            </div>
+            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+              <Trophy className="w-7 h-7 text-white stroke-[2.5]" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {unit3.map((c) => {
+              const isDone = appStore.isChallengeCompleted(c.id);
+              return (
+                <div
+                  key={c.id}
+                  className={`duo-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-slate-300 ${
+                    isDone ? "bg-[#F7FEE7] border-lime-300 border-b-lime-400" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black text-xl border-b-4 ${
+                        isDone
+                          ? "bg-[#58CC02] border-[#46A302] text-white"
+                          : "bg-[#F7F7F7] border-slate-300 text-slate-700"
+                      }`}
+                    >
+                      {isDone ? <Check className="w-7 h-7 stroke-[3]" /> : <Star className="w-6 h-6 fill-[#FFC800] text-[#FFC800]" />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 uppercase">
+                          {c.level}-daraja
+                        </span>
+                        <span className="text-xs font-mono font-bold text-[#FF9600]">
+                          +100 XP
+                        </span>
+                      </div>
+                      <h3 className="font-extrabold text-lg text-slate-900 mt-0.5">{c.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-medium">
+                        {c.description_md.replace(/[`*]/g, "")}
+                      </p>
+                    </div>
+                  </div>
+
+                  <Link
+                    onClick={() => sounds.playClick()}
+                    to={`/app/challenge/${c.id}`}
+                    className={`${isDone ? "duo-btn-white" : "duo-btn-green"} px-6 py-2.5 text-xs shrink-0 self-end sm:self-auto`}
+                  >
+                    <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </main>
+
+      {/* ======================================================== */}
+      {/* 3. DUOLINGO DESKTOP RIGHT SIDEBAR (w-80)                  */}
+      {/* ======================================================== */}
+      <aside className="w-80 p-6 space-y-6 hidden lg:block shrink-0 sticky top-0 h-screen overflow-y-auto select-none border-l-2 border-[#E5E5E5] bg-white">
+        {/* Top Floating Stat Pills */}
+        <div className="flex items-center justify-between gap-2 p-2 bg-[#F7F7F7] rounded-2xl border-2 border-[#E5E5E5]">
+          {/* Streak Flame */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 font-extrabold text-sm text-[#FF9600]">
+            <Flame className="w-5 h-5 fill-[#FF9600]" />
+            <span>{profile.streak}</span>
+          </div>
+
+          {/* XP Lightning */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 font-extrabold text-sm text-[#FFC800]">
+            <Zap className="w-5 h-5 fill-[#FFC800]" />
+            <span>{profile.xp}</span>
+          </div>
+
+          {/* Hearts / Hints */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 font-extrabold text-sm text-[#FF4B4B]">
+            <Heart className="w-5 h-5 fill-[#FF4B4B]" />
+            <span>4/4</span>
+          </div>
+        </div>
+
+        {/* Daily Quests Card (Duolingo Style) */}
+        <div className="duo-card p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <h4 className="font-black text-sm uppercase tracking-wider text-slate-800 flex items-center gap-2">
+              <Target className="w-4 h-4 text-[#58CC02]" />
+              <span>Kunlik Maqsad</span>
+            </h4>
+            <span className="text-xs font-extrabold text-slate-400">
+              {Math.min(completedCount, 3)}/3
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-600 font-semibold">
+            Bugun kamida 3 ta amaliy mashqni mustaqil yakunlang.
+          </p>
+
+          <div className="w-full bg-[#E5E5E5] h-3.5 rounded-full overflow-hidden p-0.5">
+            <div
+              className="h-full bg-[#58CC02] rounded-full transition-all duration-500"
+              style={{ width: `${Math.min(100, (completedCount / 3) * 100)}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Live Classroom Tournament Widget */}
+        <div className="duo-card p-5 space-y-3.5 bg-gradient-to-br from-white to-amber-50/40 border-amber-200">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#FFC800] border-b-2 border-[#E5B400] flex items-center justify-center text-white shrink-0">
+              <Trophy className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <h4 className="font-black text-sm uppercase tracking-wider text-slate-900">
+                Jonli Musobaqa
+              </h4>
+              <p className="text-xs text-slate-500 font-semibold">Sinf xonasiga ulanish</p>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-600 leading-relaxed font-semibold">
+            Ustoz taqdim etgan 6 xonali xona kodini kiriting (masalan: <strong>FLX742</strong>).
+          </p>
+
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setShowJoinModal(true);
+            }}
+            className="w-full duo-btn-orange py-2.5 text-xs font-black shadow-xs"
+          >
+            Xonaga ulanish →
+          </button>
+        </div>
+
+        {/* Ustoz AI Mascot Bubble Card */}
+        <div className="duo-card p-5 space-y-3 bg-[#F7FEE7] border-lime-300">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#58CC02] border-b-2 border-[#46A302] flex items-center justify-center text-white shrink-0">
+              <Sparkles className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <h4 className="font-black text-sm uppercase tracking-wider text-[#58CC02]">
+                Ustoz AI Maslahati
+              </h4>
+              <p className="text-xs text-lime-800 font-bold">Zinapoya tizimi</p>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+            "Kodni tayyor ko'chirmang. 1-darajali maslahat orqali fikrlab o'zingiz yozing — natija ancha mustahkam bo'ladi!"
+          </p>
+        </div>
+      </aside>
+
+      {/* ======================================================== */}
+      {/* 4. MODALS (Join Class & Help)                            */}
+      {/* ======================================================== */}
+      <GlassModal open={showJoinModal} onClose={() => setShowJoinModal(false)} title="Jonli Xonaga Ulanish">
         <form onSubmit={handleJoinClass} className="space-y-4">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm font-semibold text-slate-600">
             Ustozingiz bergan 6 xonali xona kodini (masalan: <strong>FLX742</strong>) kiriting:
           </p>
           <input
             required
             autoFocus
             maxLength={8}
-            placeholder="Kodni kiriting (masalan: FLX742)"
+            placeholder="FLX742"
             value={classCode}
             onChange={(e) => setClassCode(e.target.value.toUpperCase())}
-            className="glass-input text-center font-mono text-xl tracking-widest uppercase font-bold py-3"
+            className="glass-input text-center font-mono text-2xl tracking-widest uppercase font-black py-3 border-2 focus:border-[#58CC02]"
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => setShowJoinModal(false)}
-              className="glass-btn-secondary text-xs"
+              className="duo-btn-white text-xs py-2 px-4"
             >
               Bekor qilish
             </button>
-            <button type="submit" className="glass-btn-brand text-xs font-semibold">
+            <button type="submit" className="duo-btn-green text-xs py-2 px-5 font-black">
               Xonaga kirish →
             </button>
           </div>
         </form>
       </GlassModal>
 
-      {/* Help Modal */}
       <GlassModal open={showHelpModal} onClose={() => setShowHelpModal(false)} title="Talaba Qo'llanmasi — O'zing Yoz">
         <div className="space-y-4 text-xs text-slate-700">
-          <p className="text-sm font-semibold text-slate-900">Platformadan qanday foydalaniladi?</p>
+          <p className="text-sm font-extrabold text-slate-900">Platforma qanday ishlaydi?</p>
           <div className="space-y-2.5">
-            <div className="p-3 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
-              <strong className="text-lime-900">1. Mashqni tanlang</strong>
-              <p className="text-slate-600">Qidiruv yoki mavzular bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
+            <div className="p-3.5 bg-lime-50 rounded-2xl border-2 border-lime-200 space-y-1">
+              <strong className="text-lime-900 text-sm">1. Mashg'ulotni tanlang</strong>
+              <p className="text-slate-600 font-semibold">Bo'limlar bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
             </div>
-            <div className="p-3 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
-              <strong className="text-sky-900">2. Mustaqil kod yozing</strong>
-              <p className="text-slate-600">VS Code muhiti, sintaksis yoritgich va avtomatik yakunlash yordam beradi. "Tekshirish" (Ctrl+Enter) orqali kodingizni sinang.</p>
+            <div className="p-3.5 bg-sky-50 rounded-2xl border-2 border-sky-200 space-y-1">
+              <strong className="text-sky-900 text-sm">2. Mustaqil kod yozing</strong>
+              <p className="text-slate-600 font-semibold">VS Code muhiti va tezkor sinov (Ctrl+Enter) yordamida o'z kodingizni sinang.</p>
             </div>
-            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 space-y-1">
-              <strong className="text-amber-900">3. Ustoz AI dan maslahat oling</strong>
-              <p className="text-slate-600">Agar qiynalsangiz, 4 bosqichli maslahat zinapoyasidan foydalaning: Savol → Yo'nalish → Tushuntirish → Qisman yechim.</p>
-            </div>
-            <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 space-y-1">
-              <strong className="text-purple-900">4. Jonli musobaqa</strong>
-              <p className="text-slate-600">Ustoz dars davomida 6 xonali kod bersa, "Musobaqaga ulanish" tugmasini bosib xonaga kiring va reytingda yuqoriga chiqing!</p>
+            <div className="p-3.5 bg-amber-50 rounded-2xl border-2 border-amber-200 space-y-1">
+              <strong className="text-amber-900 text-sm">3. Ustoz AI dan maslahat oling</strong>
+              <p className="text-slate-600 font-semibold">Agar qiynalsangiz, 4 bosqichli maslahat zinapoyasidan foydalaning: Savol → Yo'nalish → Tushuntirish → Qisman yechim.</p>
             </div>
           </div>
           <div className="flex justify-end pt-2">
-            <button onClick={() => setShowHelpModal(false)} className="glass-btn-primary text-xs py-2 px-4">
+            <button onClick={() => setShowHelpModal(false)} className="duo-btn-green text-xs py-2 px-5 font-black">
               Tushundim
             </button>
           </div>

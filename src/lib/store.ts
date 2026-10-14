@@ -126,7 +126,7 @@ class AppStore {
       email: "",
       username: "mehmon",
       xp: 0,
-      streak: 1,
+      streak: 0,
       is_guest: true,
     };
     this.saveLocalData(data);

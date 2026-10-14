@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700;1,800&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,49 +13,101 @@
   }
 
   body {
-    @apply bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-lime-200 selection:text-slate-900;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-image: 
-      radial-gradient(at 12% 10%, rgba(163, 230, 53, 0.10) 0px, transparent 45%),
-      radial-gradient(at 88% 15%, rgba(56, 189, 248, 0.10) 0px, transparent 45%),
-      radial-gradient(at 50% 90%, rgba(241, 245, 249, 0.9) 0px, transparent 50%);
-    background-attachment: fixed;
+    @apply bg-white text-[#3C3C3C] font-sans antialiased selection:bg-[#D7FFB8] selection:text-[#46A302];
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
   }
 
   h1, h2, h3, h4, .font-heading {
-    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Outfit', 'Nunito', system-ui, sans-serif;
+    letter-spacing: -0.015em;
   }
 }
 
 @layer components {
-  /* Core Minimalist White Glassmorphism Primitives */
+  /* Duolingo Signature 3D Tactile Buttons */
+  .duo-btn-green {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#58CC02] hover:bg-[#46A302] border-b-4 border-[#46A302] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .duo-btn-blue {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#1CB0F6] hover:bg-[#1899D6] border-b-4 border-[#1899D6] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .duo-btn-orange {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FF9600] hover:bg-[#E07D00] border-b-4 border-[#E07D00] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .duo-btn-red {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FF4B4B] hover:bg-[#EA2B2B] border-b-4 border-[#EA2B2B] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .duo-btn-white {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 border-b-4 border-b-slate-300 active:border-b-2 active:translate-y-0.5 text-slate-700 font-extrabold uppercase tracking-wider transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  /* Duolingo Chunky Cards & Panels */
+  .duo-card {
+    @apply bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl transition-all;
+  }
+
+  .duo-card-active {
+    @apply bg-[#F7FEE7] border-2 border-[#84CC16] border-b-4 border-b-[#65A30D] rounded-2xl transition-all;
+  }
+
+  /* Duolingo Quiz Choice Cards (for test items and interactive choices) */
+  .duo-choice-card {
+    @apply flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-200 border-b-4 border-b-slate-300 bg-white font-bold text-slate-700 transition-all;
+  }
+
+  .duo-choice-passed {
+    @apply bg-[#D7FFB8] border-2 border-[#58CC02] border-b-4 border-b-[#46A302] text-[#2e6d01];
+  }
+
+  .duo-choice-failed {
+    @apply bg-[#FFDFE0] border-2 border-[#FF4B4B] border-b-4 border-b-[#EA2B2B] text-[#EA2B2B];
+  }
+
+  /* Duolingo Mascot Speech Bubble */
+  .duo-speech-bubble {
+    @apply relative bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl p-4 shadow-sm;
+  }
+
+  .duo-speech-bubble::before {
+    content: "";
+    @apply absolute -left-2 top-4 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-slate-200;
+  }
+
+  .duo-speech-bubble::after {
+    content: "";
+    @apply absolute -left-1.5 top-4 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-white;
+  }
+
   .glass-panel {
-    @apply bg-white/75 backdrop-blur-xl border border-white/80 shadow-glass rounded-xl;
+    @apply bg-white border-2 border-slate-200/90 border-b-4 border-b-slate-300/80 rounded-2xl shadow-sm;
   }
 
   .glass-card {
-    @apply bg-white/70 backdrop-blur-lg border border-slate-200/70 shadow-glass-sm rounded-xl transition-all duration-200 hover:bg-white/90 hover:shadow-glass;
+    @apply bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl transition-all hover:bg-slate-50/80;
   }
 
   .glass-nav {
-    @apply bg-white/80 backdrop-blur-2xl border-b border-slate-200/70 sticky top-0 z-40;
+    @apply bg-white/95 backdrop-blur-md border-b-2 border-slate-200 sticky top-0 z-40;
   }
 
   .glass-input {
-    @apply w-full bg-white/80 backdrop-blur-md border border-slate-200/90 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-brand focus:shadow-focus transition-all;
+    @apply w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#58CC02] focus:bg-white transition-all font-semibold;
   }
 
   .glass-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 active:scale-[0.99] transition-all disabled:opacity-50;
+    @apply duo-btn-green;
   }
 
   .glass-btn-brand {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[#84CC16] px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm hover:bg-[#65A30D] hover:text-white active:scale-[0.99] transition-all disabled:opacity-50;
+    @apply duo-btn-green;
   }
 
   .glass-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-white/80 backdrop-blur-md border border-slate-200/90 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100/80 active:scale-[0.99] transition-all disabled:opacity-50;
+    @apply duo-btn-white;
   }
 }
 

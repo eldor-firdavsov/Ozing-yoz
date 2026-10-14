@@ -150,10 +150,10 @@ export const TeacherLoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="glass-btn-primary w-full py-3.5 text-sm font-bold shadow-xs inline-flex items-center justify-center gap-2 rounded-xl"
+            className="duo-btn-green w-full py-4 text-base font-black shadow-xs inline-flex items-center justify-center gap-2"
           >
             <span>{loading ? "Tekshirilmoqda..." : "Ustoz kabinetiga kirish"}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5" />
           </button>
         </form>
       </main>

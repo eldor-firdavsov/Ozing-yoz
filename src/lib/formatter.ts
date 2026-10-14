@@ -56,7 +56,14 @@ export function formatCss(css: string): string {
 
   const lines = cleaned.split("\n").map((l) => l.trim()).filter(Boolean);
 
-  for (const line of lines) {
+  for (const rawLine of lines) {
+    let line = rawLine;
+    if (line.includes(":") && !line.includes("{") && !line.includes("url(")) {
+      const colonIdx = line.indexOf(":");
+      const prop = line.substring(0, colonIdx).trim();
+      const val = line.substring(colonIdx + 1).trim();
+      line = `${prop}: ${val}`;
+    }
     if (line.includes("}")) {
       indent = Math.max(0, indent - 1);
     }

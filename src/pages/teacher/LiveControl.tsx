@@ -11,7 +11,13 @@ import {
   Award,
   Crown,
   Eye,
-  ArrowLeft
+  ArrowLeft,
+  Copy,
+  Check,
+  Lightbulb,
+  HelpCircle,
+  Info,
+  Sparkles
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import { appStore, LiveRoomState } from "../../lib/store";
@@ -28,6 +34,8 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
   const [leaderboard, setLeaderboard] = useState(roomData.leaderboard);
   const [conceptCounts, setConceptCounts] = useState<Record<string, number>>(roomData.concept_counts);
   const [viewingStudentCode, setViewingStudentCode] = useState<{ nickname: string; snippet: string } | null>(null);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [showGuide, setShowGuide] = useState(true);
 
   // Sync with store & Supabase Realtime channel
   useEffect(() => {
@@ -104,6 +112,14 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
     setNudgeText("");
   };
 
+  const handleCopyLink = () => {
+    sounds.playClick();
+    const url = `${window.location.origin}/join/${code}`;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
   const stuckStudents = leaderboard.filter((s) => s.hintLevel >= 3 && !s.passed);
   const passedCount = leaderboard.filter((s) => s.passed).length;
 
@@ -112,16 +128,24 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
   // ==========================================
   if (isProjector) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] p-8 md:p-12 flex flex-col justify-between">
-        <header className="glass-panel p-6 flex items-center justify-between shadow-glass rounded-2xl">
+      <div className="min-h-screen bg-[#F8FAFC] p-6 md:p-10 flex flex-col justify-between">
+        <header className="glass-panel p-6 flex flex-wrap items-center justify-between gap-4 shadow-glass rounded-2xl">
           <BrandLogo size="lg" />
-          <div className="flex items-center gap-6">
-            <span className="font-mono text-3xl font-extrabold px-6 py-2 rounded-2xl bg-white border border-slate-200/90 shadow-sm text-slate-900">
-              KOD: {code}
-            </span>
+          <div className="flex items-center gap-4">
+            <div className="px-5 py-2 rounded-2xl bg-slate-900 text-white font-mono text-xl font-bold flex items-center gap-2 shadow-sm">
+              <span className="text-slate-400 text-sm">XONA:</span>
+              <span className="text-lime-400">{code}</span>
+            </div>
             <SyncedTimer durationSec={roomData.duration_sec} startedAt={startedAt} status={status} />
           </div>
         </header>
+
+        {/* Live Instruction Banner for Students */}
+        <div className="my-4 px-6 py-3 rounded-2xl bg-gradient-to-r from-lime-500/10 via-white to-sky-500/10 border border-lime-300 text-center shadow-glass-sm">
+          <p className="text-sm font-semibold text-slate-800">
+            📱 Ulanish uchun: Kamerangizni chapdagi QR kodga qarating yoki saytga kirib <strong>{code}</strong> kodini tering
+          </p>
+        </div>
 
         <div className="grid grid-cols-12 gap-8 my-auto items-center">
           {/* Left 4 Cols: Big QR Card */}
@@ -226,62 +250,119 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
     <div className="min-h-screen bg-[#F8FAFC] p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
       {/* Top Header */}
       <header className="glass-panel p-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link
             to="/teach"
             onClick={() => sounds.playClick()}
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+            title="Ustoz kabinetiga qaytish"
+            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <BrandLogo size="md" />
-          <span className="font-mono text-lg font-bold px-3 py-1 rounded-lg bg-slate-100 text-slate-900">{code}</span>
+
+          {/* Room Code Badge with Copy Button */}
+          <div className="flex items-center gap-1.5 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+            <span className="font-mono text-sm font-bold text-slate-900">{code}</span>
+            <button
+              onClick={handleCopyLink}
+              title="Talabalarga yuborish uchun havolani nusxalash"
+              className="p-1 text-slate-500 hover:text-slate-900 rounded transition-all"
+            >
+              {copiedLink ? <Check className="w-3.5 h-3.5 text-lime-600" /> : <Copy className="w-3.5 h-3.5" />}
+            </button>
+          </div>
+
+          {/* Status Badge */}
           <span
             className={`text-xs uppercase font-bold px-3 py-1 rounded-full ${
               status === "live"
-                ? "bg-lime-100 text-lime-800 animate-pulse"
+                ? "bg-lime-100 text-lime-800 animate-pulse border border-lime-300"
                 : status === "paused"
-                ? "bg-amber-100 text-amber-800"
-                : "bg-slate-100 text-slate-700"
+                ? "bg-amber-100 text-amber-800 border border-amber-300"
+                : status === "ended"
+                ? "bg-rose-100 text-rose-800 border border-rose-300"
+                : "bg-slate-100 text-slate-700 border border-slate-300"
             }`}
           >
-            {status}
+            {status === "live" ? "● Jonli musobaqa" : status === "paused" ? "⏸ Pauza" : status === "ended" ? "🏁 Yakunlandi" : "⏳ Kutilmoqda"}
           </span>
+
           <SyncedTimer durationSec={roomData.duration_sec} startedAt={startedAt} status={status} />
         </div>
 
+        {/* Action Buttons with clear explanation labels */}
         <div className="flex items-center gap-2">
           <SoundToggle />
+
+          {/* Start Button */}
           <button
             onClick={() => broadcastState("live")}
             disabled={status === "live"}
-            className="glass-btn-brand text-xs py-2 px-3 font-semibold"
+            title="Musobaqaga start berish. Barcha talabalarda taymer ishga tushadi."
+            className="glass-btn-brand text-xs py-2 px-3.5 font-bold shadow-xs flex items-center gap-1.5 disabled:opacity-40"
           >
-            <Play className="w-3.5 h-3.5" /> Boshlash
+            <Play className="w-3.5 h-3.5" />
+            <span>Boshlash</span>
           </button>
+
+          {/* Pause Button */}
           <button
             onClick={() => broadcastState("paused")}
             disabled={status === "paused" || status === "lobby"}
-            className="glass-btn-secondary text-xs py-2 px-3"
+            title="Darsni vaqtinchalik to'xtatish (tushuntirish berish uchun)"
+            className="glass-btn-secondary text-xs py-2 px-3 font-semibold flex items-center gap-1.5 disabled:opacity-40"
           >
-            <Pause className="w-3.5 h-3.5" /> Pauza
+            <Pause className="w-3.5 h-3.5" />
+            <span>Pauza</span>
           </button>
+
+          {/* End Button */}
           <button
             onClick={() => broadcastState("ended")}
             disabled={status === "ended"}
-            className="glass-btn-secondary text-xs py-2 px-3 text-rose-600 hover:bg-rose-50"
+            title="Musobaqani to'xtatish va natijalarni e'lon qilish"
+            className="glass-btn-secondary text-xs py-2 px-3 font-semibold text-rose-600 hover:bg-rose-50 hover:border-rose-300 flex items-center gap-1.5 disabled:opacity-40"
           >
-            <Square className="w-3.5 h-3.5" /> Tugatish
+            <Square className="w-3.5 h-3.5" />
+            <span>Tugatish</span>
           </button>
+
+          {/* Projector Screen Button */}
           <Link
-            className="glass-btn-primary text-xs py-2 px-3.5"
+            className="glass-btn-primary text-xs py-2 px-3.5 font-bold shadow-xs flex items-center gap-1.5"
             target="_blank"
             to={`/teach/live/${code}/screen`}
+            title="Doskadagi katta ekranga uzatish (QR kod + Jonli reyting)"
           >
-            <ExternalLink className="w-3.5 h-3.5" /> Proyektor ekrani
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Proyektor ekrani</span>
           </Link>
         </div>
       </header>
+
+      {/* Teacher Guide Card */}
+      {showGuide && (
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-lime-50 via-white to-sky-50 border border-lime-200/90 shadow-glass-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+              <Lightbulb className="w-4 h-4 text-lime-700" />
+              <span>Ustoz uchun yo'riqnoma: Musobaqa qanday o'tkaziladi?</span>
+            </h3>
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              <strong>1.</strong> "Proyektor ekrani"ni doskaga oching (talabalar QR kod bilan ulanadi) →{" "}
+              <strong>2.</strong> "Boshlash" tugmasini bosing (taymer yuradi) →{" "}
+              <strong>3.</strong> Chap tomonda 3-darajaga tushgan o'quvchilar kodi ustiga bosing va "Nudge" yuboring.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowGuide(false)}
+            className="text-[11px] text-slate-400 hover:text-slate-700 font-medium px-2 py-1 rounded shrink-0"
+          >
+            Yopish ✕
+          </button>
+        </div>
+      )}
 
       {/* 3 Columns Control Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

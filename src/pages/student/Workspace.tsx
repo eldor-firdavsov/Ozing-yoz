@@ -23,12 +23,15 @@ import {
   Layers,
   ChevronRight,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Bell,
+  Trophy,
+  Info
 } from "lucide-react";
 
 import { UZ } from "../../lib/i18n/uz";
 import { supabase } from "../../lib/supabase";
-import { appStore } from "../../lib/store";
+import { appStore, LiveRoomState } from "../../lib/store";
 import { buildSandboxedSrcDoc, AssertionResult } from "../../lib/tests-runner";
 import { calculateScore } from "../../lib/scoring";
 import { formatHtml, formatCss } from "../../lib/formatter";
@@ -42,7 +45,8 @@ import {
   GlassModal,
   VsCodeTabs,
   VsCodeStatusBar,
-  SoundToggle
+  SoundToggle,
+  SyncedTimer
 } from "../../components/ui/GlassComponents";
 
 // Line Highlight Extension for Level 2 Hints
@@ -70,15 +74,25 @@ const highlightLineField = StateField.define({
   provide: (f) => EditorView.decorations.from(f),
 });
 
-export const Workspace: React.FC = () => {
-  const { id = "22222222-2222-2222-2222-222222222222" } = useParams();
+export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) => {
+  const { id, code } = useParams();
   const navigate = useNavigate();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const editorViewRef = useRef<EditorView | null>(null);
 
-  // Challenge State from Store
-  const initialChallenge = useMemo(() => appStore.getChallengeById(id), [id]);
+  const isLiveRoom = Boolean(code) || isRoom;
+  const roomCode = code || "FLX742";
+
+  // Challenge selection
+  const challengeId = id || (isLiveRoom ? appStore.getRoom(roomCode).challenge_id : "22222222-2222-2222-2222-222222222222");
+  const initialChallenge = useMemo(() => appStore.getChallengeById(challengeId), [challengeId]);
   const [challenge, setChallenge] = useState(initialChallenge);
+
+  // Live Room state if in room mode
+  const [roomState, setRoomState] = useState<LiveRoomState | null>(() =>
+    isLiveRoom ? appStore.getRoom(roomCode) : null
+  );
+  const [activeNudge, setActiveNudge] = useState<string | null>(null);
 
   // Saved code draft or starter
   const savedDraft = appStore.getDraft(challenge.id);
@@ -98,6 +112,7 @@ export const Workspace: React.FC = () => {
   const [hints, setHints] = useState<
     Array<{ level: number; hint: string; line?: number | null; concept?: string; from_fallback?: boolean }>
   >([]);
+  const currentScore = useMemo(() => calculateScore(hints.map((h) => h.level)), [hints]);
   const [maxHintLevel, setMaxHintLevel] = useState(0);
   const [failedChecksSinceL3, setFailedChecksSinceL3] = useState(0);
   const [loadingHint, setLoadingHint] = useState(false);
@@ -106,6 +121,7 @@ export const Workspace: React.FC = () => {
   const [showResetModal, setShowResetModal] = useState(false);
   const [showL4Modal, setShowL4Modal] = useState(false);
   const [showPassModal, setShowPassModal] = useState(false);
+  const [showButtonsGuide, setShowButtonsGuide] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const isDirtyHtml = codeHtml !== challenge.starter_html;
@@ -115,6 +131,36 @@ export const Workspace: React.FC = () => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 2500);
   };
+
+  // Sync Room Updates
+  useEffect(() => {
+    if (!isLiveRoom) return;
+
+    const unsub = appStore.subscribe(() => {
+      const updated = appStore.getRoom(roomCode);
+      setRoomState(updated);
+      if (updated.latest_nudge && updated.latest_nudge !== activeNudge) {
+        setActiveNudge(updated.latest_nudge);
+        sounds.playHint();
+      }
+    });
+
+    const channel = supabase.channel(`room:${roomCode}`);
+    channel
+      .on("broadcast", { event: "state" }, ({ payload }) => {
+        appStore.updateRoom(roomCode, { status: payload.status, started_at: payload.started_at });
+      })
+      .on("broadcast", { event: "nudge" }, ({ payload }) => {
+        setActiveNudge(payload.message);
+        sounds.playHint();
+      })
+      .subscribe();
+
+    return () => {
+      unsub();
+      supabase.removeChannel(channel);
+    };
+  }, [isLiveRoom, roomCode, activeNudge]);
 
   // 600ms Debounced Live Preview + Draft Save
   useEffect(() => {
@@ -134,9 +180,23 @@ export const Workspace: React.FC = () => {
         const allPassed = results.length > 0 && results.every((r) => r.passed);
         if (allPassed) {
           sounds.playSuccess();
-          confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
           appStore.markChallengeCompleted(challenge.id);
           appStore.addXp(currentScore);
+
+          // If in live room, submit result to room leaderboard
+          if (isLiveRoom) {
+            const profile = appStore.getProfile();
+            appStore.submitStudentSolution(
+              roomCode,
+              profile.id,
+              profile.full_name,
+              currentScore,
+              maxHintLevel,
+              codeCss
+            );
+          }
+
           setShowPassModal(true);
         } else {
           sounds.playError();
@@ -148,7 +208,7 @@ export const Workspace: React.FC = () => {
     };
     window.addEventListener("message", handler);
     return () => window.removeEventListener("message", handler);
-  }, [challenge.id, maxHintLevel]);
+  }, [challenge.id, maxHintLevel, isLiveRoom, roomCode, currentScore, codeCss]);
 
   const triggerCheckTests = useCallback(() => {
     sounds.playClick();
@@ -166,7 +226,7 @@ export const Workspace: React.FC = () => {
     showToast("Kod formatlandi (Shift+Alt+F)");
   }, [activeCodeTab, codeHtml, codeCss]);
 
-  // Keyboard Shortcuts (VS Code parity: Ctrl+Enter check, Ctrl+S run, Shift+Alt+F format)
+  // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
@@ -228,7 +288,6 @@ export const Workspace: React.FC = () => {
       setMaxHintLevel((prev) => Math.max(prev, targetLevel));
       if (data.line) highlightEditorLine(data.line);
     } catch {
-      // Smart Context-Aware Local Fallback
       sounds.playHint();
       const fallbackMap: Record<number, { hint: string; line: number | null; concept: string }> = {
         1: {
@@ -272,7 +331,6 @@ export const Workspace: React.FC = () => {
   };
 
   const nextHintLevel = Math.min(4, maxHintLevel + 1);
-  const currentScore = useMemo(() => calculateScore(hints.map((h) => h.level)), [hints]);
   const passedTestsCount = testResults.filter((r) => r.passed).length;
 
   return (
@@ -285,15 +343,86 @@ export const Workspace: React.FC = () => {
         </div>
       )}
 
+      {/* Live Competition Banner (if in Room mode) */}
+      {isLiveRoom && (
+        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm border-b border-slate-800">
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1.5 font-bold text-lime-400">
+              <span className="h-2.5 w-2.5 rounded-full bg-lime-400 animate-ping" />
+              <span>🏆 JONLI MUSOBAQA: {roomCode}</span>
+            </span>
+            <span className="text-slate-600">|</span>
+            <span className="text-slate-300 flex items-center gap-1.5">
+              <span>Holat:</span>
+              <span
+                className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] ${
+                  roomState?.status === "live"
+                    ? "bg-lime-900/80 text-lime-300 border border-lime-700"
+                    : roomState?.status === "paused"
+                    ? "bg-amber-900/80 text-amber-300 border border-amber-700"
+                    : roomState?.status === "ended"
+                    ? "bg-rose-900/80 text-rose-300 border border-rose-700"
+                    : "bg-slate-800 text-slate-300 border border-slate-700"
+                }`}
+              >
+                {roomState?.status === "live"
+                  ? "⚡ Musobaqa ketmoqda"
+                  : roomState?.status === "paused"
+                  ? "⏸ Pauza"
+                  : roomState?.status === "ended"
+                  ? "🏁 Yakunlandi"
+                  : "⏳ Ustoz boshlashini kuting"}
+              </span>
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <SyncedTimer
+              durationSec={roomState?.duration_sec || 900}
+              startedAt={roomState?.started_at}
+              status={roomState?.status || "live"}
+            />
+            <button
+              onClick={() => {
+                sounds.playClick();
+                navigate("/app");
+              }}
+              title="Musobaqadan chiqish"
+              className="text-slate-400 hover:text-white underline text-[11px]"
+            >
+              Chiqish
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Live Teacher Nudge Alert */}
+      {activeNudge && (
+        <div className="bg-amber-500 text-slate-950 font-semibold px-4 py-2 flex items-center justify-between text-xs animate-in slide-in-from-top-1 shadow-sm">
+          <div className="flex items-center gap-2 max-w-4xl mx-auto">
+            <Bell className="w-4 h-4 text-slate-950 shrink-0 animate-bounce" />
+            <span>
+              <strong>Ustozdan ko'rsatma:</strong> {activeNudge}
+            </span>
+          </div>
+          <button
+            onClick={() => setActiveNudge(null)}
+            className="text-slate-950/70 hover:text-slate-950 font-bold px-2"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Top VS Code-like Minimalist Header */}
       <header className="glass-nav px-4 py-2 flex items-center justify-between border-b border-slate-200/80">
         <div className="flex items-center gap-3">
           <button
             onClick={() => {
               sounds.playClick();
-              navigate("/app");
+              navigate(isLiveRoom ? "/app" : "/app/challenges");
             }}
-            title="Mashqlar ro'yxatiga qaytish"
+            title="Ortga qaytish"
             className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -303,7 +432,7 @@ export const Workspace: React.FC = () => {
 
           {/* Breadcrumb path */}
           <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-500 font-mono">
-            <span>mashqlar</span>
+            <span>{isLiveRoom ? "musobaqa" : "mashqlar"}</span>
             <ChevronRight className="w-3 h-3 text-slate-400" />
             <span className="font-semibold text-slate-900">{challenge.title}</span>
             <span className="text-[11px] px-2 py-0.5 rounded-full bg-lime-100 text-lime-800 font-medium">
@@ -312,35 +441,53 @@ export const Workspace: React.FC = () => {
           </div>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls & Clear Tooltips */}
         <div className="flex items-center gap-2">
           <SoundToggle />
+
+          {/* Help Button Guide */}
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setShowButtonsGuide(true);
+            }}
+            title="Tugmalar vazifasi va qoidalar"
+            className="glass-btn-secondary text-xs py-1.5 px-2.5 flex items-center gap-1 text-slate-600"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-lime-700" />
+            <span className="hidden sm:inline">Qo'llanma</span>
+          </button>
+
+          {/* Score Badge */}
           <div className="glass-card px-3 py-1 text-xs font-mono font-semibold text-slate-700 shadow-xs">
-            Ball: <span className="text-lime-700">+{currentScore} XP</span>
+            Ball: <span className="text-lime-700 font-bold">+{currentScore} XP</span>
           </div>
 
+          {/* Run Button (Ctrl+S) */}
           <button
             onClick={() => {
               sounds.playClick();
               setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests));
               showToast("Natija yangilandi (Ctrl+S)");
             }}
-            title="Kodni ishga tushirish (Ctrl+S)"
+            title="Yozgan kodingizni ekranda sinab ko'rish (Ctrl+S)"
             className="glass-btn-secondary text-xs py-1.5 px-3"
           >
             <Play className="w-3.5 h-3.5 text-slate-600" />
             <span className="hidden sm:inline">{UZ.cta.run}</span>
           </button>
 
+          {/* Check Button (Ctrl+Enter) */}
           <button
             onClick={triggerCheckTests}
-            title="Avtomatik testlarni tekshirish (Ctrl+Enter)"
-            className="glass-btn-brand text-xs py-1.5 px-3.5 shadow-sm"
+            title="Avtomatik testlar orqali tekshirish va ball olish (Ctrl+Enter)"
+            className="glass-btn-brand text-xs py-1.5 px-3.5 shadow-sm font-semibold"
           >
             <CheckCircle className="w-3.5 h-3.5" />
             <span>{UZ.cta.check}</span>
           </button>
 
+          {/* Fullscreen Button */}
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
             title={isFullscreen ? "Kichraytirish" : "To'liq ekran"}
@@ -418,18 +565,38 @@ export const Workspace: React.FC = () => {
                 </div>
               </div>
 
-              {/* Keyboard Shortcuts Hint */}
-              <div className="pt-3 border-t border-slate-200/70 text-[11px] text-slate-400 font-mono space-y-1">
-                <p>• <kbd className="px-1 py-0.5 bg-white rounded border border-slate-200 text-slate-600">Ctrl+Enter</kbd> Tekshirish</p>
-                <p>• <kbd className="px-1 py-0.5 bg-white rounded border border-slate-200 text-slate-600">Shift+Alt+F</kbd> Formatlash</p>
+              {/* Live Room Guidance Banner */}
+              {isLiveRoom && (
+                <div className="p-3 bg-gradient-to-r from-amber-50 to-lime-50 rounded-xl border border-amber-300/80 text-xs text-slate-800 space-y-1 shadow-xs">
+                  <p className="font-bold text-amber-950 flex items-center gap-1.5">
+                    <span>🏆 Jonli musobaqa: {roomCode}</span>
+                  </p>
+                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                    Testlarni to'liq topshiring ("Tekshirish" yoki Ctrl+Enter). Har bir to'g'ri test balingizni oshiradi va natijangiz doskadagi proyektor reytingiga avtomatik uzatiladi!
+                  </p>
+                </div>
+              )}
+
+              {/* Step by step simple instruction for students */}
+              <div className="p-3 bg-lime-50/70 rounded-xl border border-lime-200/80 text-xs text-slate-700 space-y-1.5">
+                <p className="font-bold text-lime-900 flex items-center gap-1">
+                  <Info className="w-3.5 h-3.5 text-lime-700" />
+                  <span>Nima qilish kerak?</span>
+                </p>
+                <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-600">
+                  <li>O'rtada ochilgan <strong>style.css</strong> faylida kod yozing.</li>
+                  <li><strong>"Ishga tushirish"</strong> (yoki Ctrl+S) orqali natijani ko'ring.</li>
+                  <li><strong>"Tekshirish"</strong> (yoki Ctrl+Enter) orqali ball to'plang.</li>
+                  <li>Qiynalsangiz, pastdagi <strong>"Maslahat so'rash"</strong> tugmasidan foydalaning.</li>
+                </ol>
               </div>
             </div>
           ) : (
             /* Target Expected View */
             <div className="flex-1 flex flex-col glass-card p-4 text-center justify-between overflow-hidden">
               <div>
-                <p className="text-xs font-semibold text-slate-700 mb-2">Kutilayotgan dizayn (Maqsad):</p>
-                <p className="text-[11px] text-slate-500 mb-3">Siz yozgan kod xuddi shu ko'rinishga mos kelishi kerak.</p>
+                <p className="text-xs font-semibold text-slate-700 mb-1">Kutilayotgan dizayn (Maqsad):</p>
+                <p className="text-[11px] text-slate-500 mb-2">Siz yozgan kod aynan shu ko'rinishni hosil qilishi kerak.</p>
               </div>
 
               <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 rounded-xl bg-white/90 shadow-inner overflow-auto max-h-56">
@@ -439,7 +606,7 @@ export const Workspace: React.FC = () => {
               </div>
 
               <div className="text-[11px] text-slate-400 mt-2">
-                O'ng tomondagi "Natija" bo'limi bilan taqqoslang.
+                O'ng tomondagi "Natija" ekrani bilan solishtiring.
               </div>
             </div>
           )}
@@ -657,6 +824,53 @@ export const Workspace: React.FC = () => {
         ))}
       </nav>
 
+      {/* Modal: Buttons Guide & Rules */}
+      <GlassModal open={showButtonsGuide} onClose={() => setShowButtonsGuide(false)} title="Platforma Tugmalari va Qoidalari">
+        <div className="space-y-4 text-xs">
+          <div className="space-y-3">
+            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+              <p className="font-bold text-slate-900 flex items-center gap-1.5">
+                <Play className="w-3.5 h-3.5 text-slate-700" />
+                <span>Ishga tushirish (Run) — [Ctrl+S]</span>
+              </p>
+              <p className="text-slate-600">Yozgan kodingizni tekshirishdan oldin o'ng tomondagi ekranda ko'rish imkonini beradi.</p>
+            </div>
+
+            <div className="p-2.5 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
+              <p className="font-bold text-lime-900 flex items-center gap-1.5">
+                <CheckCircle className="w-3.5 h-3.5 text-lime-700" />
+                <span>Tekshirish (Check) — [Ctrl+Enter]</span>
+              </p>
+              <p className="text-slate-600">Kodingizni avtomatik testlar orqali tekshiradi va barcha shartlar bajarilganda ball qo'shadi.</p>
+            </div>
+
+            <div className="p-2.5 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
+              <p className="font-bold text-sky-900 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-sky-700" />
+                <span>Maslahat so'rash (Ustoz AI)</span>
+              </p>
+              <p className="text-slate-600">
+                4 bosqichli maslahat zinapoyasi. 1-2 darajalar ozgina jarima bilan yo'naltiradi, 4-daraja qisman yechimni ko'rsatadi (-40 ball).
+              </p>
+            </div>
+
+            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+              <p className="font-bold text-slate-900 flex items-center gap-1.5">
+                <AlignLeft className="w-3.5 h-3.5 text-slate-700" />
+                <span>Formatlash — [Shift+Alt+F]</span>
+              </p>
+              <p className="text-slate-600">Koddagi bo'shliqlar va xatoliklarni chiroyli tartiblab beradi (VS Code Prettier kabi).</p>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-2">
+            <button onClick={() => setShowButtonsGuide(false)} className="glass-btn-primary text-xs py-2 px-4">
+              Tushundim
+            </button>
+          </div>
+        </div>
+      </GlassModal>
+
       {/* Modal: Reset Code Confirmation */}
       <GlassModal open={showResetModal} onClose={() => setShowResetModal(false)} title={UZ.cta.reset}>
         <div className="space-y-4">
@@ -710,8 +924,14 @@ export const Workspace: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="text-lg font-bold text-slate-900">Ajoyib natija!</h4>
-            <p className="text-xs text-slate-500 mt-1">Siz topshiriqni muvaffaqiyatli bajardingiz.</p>
+            <h4 className="text-lg font-bold text-slate-900">
+              {isLiveRoom ? "Musobaqa topshirig'i bajarildi!" : "Ajoyib natija!"}
+            </h4>
+            <p className="text-xs text-slate-500 mt-1">
+              {isLiveRoom
+                ? "Natijangiz doskadagi proyektor reytingiga muvaffaqiyatli uzatildi."
+                : "Siz topshiriqni muvaffaqiyatli bajardingiz."}
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-center">
@@ -736,7 +956,7 @@ export const Workspace: React.FC = () => {
               }}
               className="glass-btn-brand text-xs font-semibold"
             >
-              Keyingi mashqqa o'tish →
+              {isLiveRoom ? "Darslarga qaytish" : "Keyingi mashqqa o'tish →"}
             </button>
           </div>
         </div>

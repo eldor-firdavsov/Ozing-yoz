@@ -5,6 +5,7 @@ export interface UserProfile {
   id: string;
   role: "student" | "teacher";
   full_name: string;
+  email: string;
   username: string;
   xp: number;
   streak: number;
@@ -34,6 +35,7 @@ class AppStore {
   private localKey = "ozing_yoz_data";
   private channel: BroadcastChannel | null = null;
   private listeners: Set<() => void> = new Set();
+  private memoryCache: any = null;
 
   constructor() {
     if (typeof window !== "undefined" && "BroadcastChannel" in window) {
@@ -56,15 +58,21 @@ class AppStore {
   }
 
   private getLocalData() {
-    try {
-      const raw = localStorage.getItem(this.localKey);
-      if (raw) return JSON.parse(raw);
-    } catch (_) {}
-    return {
+    if (typeof localStorage !== "undefined") {
+      try {
+        const raw = localStorage.getItem(this.localKey);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+    } else if (this.memoryCache) {
+      return this.memoryCache;
+    }
+
+    const defaultData = {
       profile: {
         id: "student-demo-id",
         role: "student",
         full_name: "Azizbek Rahimov",
+        email: "azizbek@gmail.com",
         username: "azizbek",
         xp: 285,
         streak: 3,
@@ -75,14 +83,23 @@ class AppStore {
       codeDrafts: {} as Record<string, { html: string; css: string }>,
       rooms: {} as Record<string, LiveRoomState>,
     };
+
+    if (typeof localStorage === "undefined") {
+      this.memoryCache = defaultData;
+    }
+    return defaultData;
   }
 
   private saveLocalData(data: any) {
-    try {
-      localStorage.setItem(this.localKey, JSON.stringify(data));
-      this.channel?.postMessage({ type: "STORE_UPDATE" });
-      this.notify();
-    } catch (_) {}
+    if (typeof localStorage !== "undefined") {
+      try {
+        localStorage.setItem(this.localKey, JSON.stringify(data));
+        this.channel?.postMessage({ type: "STORE_UPDATE" });
+      } catch (_) {}
+    } else {
+      this.memoryCache = data;
+    }
+    this.notify();
   }
 
   // --- Profile Management ---
@@ -94,6 +111,28 @@ class AppStore {
     const data = this.getLocalData();
     data.profile = { ...data.profile, ...profile };
     this.saveLocalData(data);
+  }
+
+  isTeacher(): boolean {
+    return this.getProfile().role === "teacher";
+  }
+
+  logout() {
+    const data = this.getLocalData();
+    data.profile = {
+      id: "guest-id",
+      role: "student",
+      full_name: "Mehmon",
+      email: "",
+      username: "mehmon",
+      xp: 0,
+      streak: 1,
+      is_guest: true,
+    };
+    this.saveLocalData(data);
+    try {
+      supabase.auth.signOut();
+    } catch (_) {}
   }
 
   addXp(points: number) {
@@ -176,6 +215,38 @@ class AppStore {
     const current = this.getRoom(code);
     data.rooms[code] = { ...current, ...updates };
     this.saveLocalData(data);
+  }
+
+  submitStudentSolution(code: string, userId: string, nickname: string, score: number, hintLevel: number, codeSnippet: string) {
+    const current = this.getRoom(code);
+    const existingIdx = current.leaderboard.findIndex((e) => e.user_id === userId || e.nickname === nickname);
+
+    let updatedBoard = [...current.leaderboard];
+    if (existingIdx >= 0) {
+      updatedBoard[existingIdx] = {
+        ...updatedBoard[existingIdx],
+        score,
+        passed: true,
+        hintLevel,
+        code_snippet: codeSnippet,
+      };
+    } else {
+      updatedBoard.push({
+        user_id: userId,
+        nickname,
+        score,
+        passed: true,
+        hintLevel,
+        code_snippet: codeSnippet,
+      });
+    }
+
+    // Sort descending by score
+    updatedBoard.sort((a, b) => b.score - a.score);
+
+    this.updateRoom(code, {
+      leaderboard: updatedBoard,
+    });
   }
 }
 

@@ -14,7 +14,11 @@ import {
   Clock,
   Layers,
   Copy,
-  Check
+  Check,
+  LogOut,
+  HelpCircle,
+  Trophy,
+  Lightbulb
 } from "lucide-react";
 import { appStore } from "../../lib/store";
 import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
@@ -28,6 +32,12 @@ export const TeacherDashboard: React.FC = () => {
   const [showAiModal, setShowAiModal] = useState(false);
   const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
   const [showCreateClassModal, setShowCreateClassModal] = useState(false);
+
+  const handleTeacherLogout = () => {
+    sounds.playClick();
+    appStore.logout();
+    navigate("/teach/login");
+  };
 
   // AI Builder Form State
   const [aiTopic, setAiTopic] = useState("");
@@ -136,33 +146,42 @@ export const TeacherDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
       {/* Top Navbar */}
-      <header className="glass-panel px-6 py-4 flex items-center justify-between shadow-glass-sm rounded-2xl">
-        <div className="flex items-center gap-4">
+      <header className="glass-panel px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl">
+        <div className="flex items-center gap-3">
           <BrandLogo size="md" />
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-900 text-white font-mono">
-            Ustoz Kabineti
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-900 text-white font-mono flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-lime-400" />
+            <span>Ustoz: teacher@ilmla.uz</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <SoundToggle />
           <button
             onClick={() => {
               sounds.playClick();
               setShowCreateRoomModal(true);
             }}
-            className="glass-btn-brand text-xs py-2 px-3.5 font-semibold"
+            className="glass-btn-brand text-xs py-2 px-3.5 font-bold shadow-xs flex items-center gap-1.5"
           >
             <Play className="w-3.5 h-3.5" />
-            <span>Jonli xona boshlash</span>
+            <span>Jonli xona ochish</span>
           </button>
           <Link
             onClick={() => sounds.playClick()}
             to="/app"
-            className="glass-btn-secondary text-xs py-2 px-3"
+            className="glass-btn-secondary text-xs py-2 px-3 font-medium text-slate-700"
           >
             Talaba ekrani
           </Link>
+          <button
+            onClick={handleTeacherLogout}
+            title="Ustoz hisobidan chiqish"
+            className="glass-btn-secondary text-xs py-2 px-3 font-medium text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center gap-1.5"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Chiqish</span>
+          </button>
         </div>
       </header>
 
@@ -185,6 +204,51 @@ export const TeacherDashboard: React.FC = () => {
           <p className="text-xs text-slate-500 font-medium">Ustoz AI xavfsizligi</p>
           <p className="text-xs font-bold text-lime-800 mt-1">Leak-Guard Faol</p>
           <p className="text-[11px] text-slate-400 mt-0.5">Tayyor yechim yashirilgan</p>
+        </div>
+      </div>
+
+      {/* Teacher Competition Workflow Guide */}
+      <div className="p-5 rounded-2xl bg-gradient-to-r from-lime-500/10 via-white to-slate-50 border border-lime-200/80 shadow-glass-sm space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+            <Lightbulb className="w-4 h-4 text-lime-700" />
+            <span>Ustoz uchun yo'riqnoma: Darsda jonli musobaqa o'tkazish</span>
+          </h3>
+          <span className="text-xs font-semibold text-lime-800 bg-lime-100 px-2.5 py-0.5 rounded-full">
+            3 oddiy qadam
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div className="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1">
+            <span className="font-bold text-slate-900 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">1</span>
+              <span>Xonani oching</span>
+            </span>
+            <p className="text-slate-600">
+              Yuqoridagi <strong>"Jonli xona ochish"</strong> tugmasini bosing yoki tayyor <strong>FLX742</strong> xonasiga kiring.
+            </p>
+          </div>
+
+          <div className="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1">
+            <span className="font-bold text-slate-900 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">2</span>
+              <span>Proyektorga uzating</span>
+            </span>
+            <p className="text-slate-600">
+              <strong>"Proyektor ekrani"</strong> tugmasini bosing va doskaga oching. O'quvchilar QR kod orqali 5 soniyada ulanishadi.
+            </p>
+          </div>
+
+          <div className="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1">
+            <span className="font-bold text-slate-900 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">3</span>
+              <span>Darsni boshqaring</span>
+            </span>
+            <p className="text-slate-600">
+              <strong>"Boshlash"</strong> tugmasini bosing, qiynalgan talabalar kodini ko'ring va umumiy ko'rsatma (Nudge) yuboring.
+            </p>
+          </div>
         </div>
       </div>
 

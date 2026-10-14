@@ -11,7 +11,11 @@ import {
   Filter,
   Users,
   Compass,
-  Code2
+  Code2,
+  LogOut,
+  QrCode,
+  Trophy,
+  HelpCircle
 } from "lucide-react";
 import { appStore } from "../../lib/store";
 import { COURSE_CHALLENGES } from "../../lib/challenges-data";
@@ -26,6 +30,7 @@ export const StudentDashboard: React.FC = () => {
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
   const [selectedLevel, setSelectedLevel] = useState<number | "all">("all");
   const [showJoinModal, setShowJoinModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
   const [classCode, setClassCode] = useState("");
 
   const challenges = appStore.getChallenges();
@@ -58,37 +63,62 @@ export const StudentDashboard: React.FC = () => {
     navigate(`/room/${classCode.trim().toUpperCase()}`);
   };
 
+  const handleLogout = () => {
+    sounds.playClick();
+    appStore.logout();
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
       {/* Top Navbar */}
-      <header className="glass-panel px-6 py-4 flex items-center justify-between shadow-glass-sm rounded-2xl">
+      <header className="glass-panel px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl">
         <div className="flex items-center gap-4">
           <BrandLogo size="md" />
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-xs font-mono text-slate-700">
+          <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-xs font-mono text-slate-700">
+            <span className="w-2 h-2 rounded-full bg-lime-500" />
             <span>Talaba:</span>
-            <strong className="text-slate-900">{profile.full_name}</strong>
+            <strong className="text-slate-900">{profile.full_name || "Mehmon talaba"}</strong>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <SoundToggle />
+
+          {/* Help Modal Trigger */}
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setShowHelpModal(true);
+            }}
+            title="Qanday ishlashini bilish"
+            className="glass-btn-secondary text-xs py-2 px-3 font-medium flex items-center gap-1.5"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-lime-700" />
+            <span className="hidden sm:inline">Qo'llanma</span>
+          </button>
+
+          {/* Join Live Competition Button */}
           <button
             onClick={() => {
               sounds.playClick();
               setShowJoinModal(true);
             }}
-            className="glass-btn-secondary text-xs py-2 px-3 font-medium"
+            className="glass-btn-brand text-xs py-2 px-3.5 font-bold shadow-xs flex items-center gap-1.5"
           >
-            <Users className="w-3.5 h-3.5 text-lime-700" />
-            <span>Sinfga qo'shilish</span>
+            <QrCode className="w-3.5 h-3.5" />
+            <span>Musobaqaga ulanish</span>
           </button>
-          <Link
-            onClick={() => sounds.playClick()}
-            to="/teach"
-            className="glass-btn-primary text-xs py-2 px-3.5"
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            title="Tizimdan chiqish"
+            className="glass-btn-secondary text-xs py-2 px-3 font-medium text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center gap-1.5"
           >
-            Ustoz paneli
-          </Link>
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Chiqish</span>
+          </button>
         </div>
       </header>
 
@@ -198,6 +228,35 @@ export const StudentDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Live Room Quick Banner */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-glass">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-lime-400 text-slate-950 flex items-center justify-center font-bold shrink-0">
+            <Trophy className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="font-bold text-sm text-white flex items-center gap-2">
+              <span>Jonli Musobaqa Xonasi</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-lime-400/20 text-lime-300 font-mono font-normal">
+                Real-vaqt sinxron
+              </span>
+            </h3>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Ustozingiz bergan kodni kiritib darsdagi jonli musobaqaga qo'shiling (masalan: <strong>FLX742</strong>).
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            sounds.playClick();
+            setShowJoinModal(true);
+          }}
+          className="glass-btn-brand text-xs font-bold py-2.5 px-5 shrink-0"
+        >
+          Xonaga ulanish →
+        </button>
+      </div>
+
       {/* Challenges Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredChallenges.map((c) => {
@@ -301,6 +360,36 @@ export const StudentDashboard: React.FC = () => {
             </button>
           </div>
         </form>
+      </GlassModal>
+
+      {/* Help Modal */}
+      <GlassModal open={showHelpModal} onClose={() => setShowHelpModal(false)} title="Talaba Qo'llanmasi — O'zing Yoz">
+        <div className="space-y-4 text-xs text-slate-700">
+          <p className="text-sm font-semibold text-slate-900">Platformadan qanday foydalaniladi?</p>
+          <div className="space-y-2.5">
+            <div className="p-3 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
+              <strong className="text-lime-900">1. Mashqni tanlang</strong>
+              <p className="text-slate-600">Qidiruv yoki mavzular bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
+            </div>
+            <div className="p-3 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
+              <strong className="text-sky-900">2. Mustaqil kod yozing</strong>
+              <p className="text-slate-600">VS Code muhiti, sintaksis yoritgich va avtomatik yakunlash yordam beradi. "Tekshirish" (Ctrl+Enter) orqali kodingizni sinang.</p>
+            </div>
+            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 space-y-1">
+              <strong className="text-amber-900">3. Ustoz AI dan maslahat oling</strong>
+              <p className="text-slate-600">Agar qiynalsangiz, 4 bosqichli maslahat zinapoyasidan foydalaning: Savol → Yo'nalish → Tushuntirish → Qisman yechim.</p>
+            </div>
+            <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 space-y-1">
+              <strong className="text-purple-900">4. Jonli musobaqa</strong>
+              <p className="text-slate-600">Ustoz dars davomida 6 xonali kod bersa, "Musobaqaga ulanish" tugmasini bosib xonaga kiring va reytingda yuqoriga chiqing!</p>
+            </div>
+          </div>
+          <div className="flex justify-end pt-2">
+            <button onClick={() => setShowHelpModal(false)} className="glass-btn-primary text-xs py-2 px-4">
+              Tushundim
+            </button>
+          </div>
+        </div>
       </GlassModal>
     </div>
   );

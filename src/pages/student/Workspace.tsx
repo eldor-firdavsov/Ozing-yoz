@@ -415,7 +415,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       )}
 
       {/* Top VS Code-like Minimalist Header */}
-      <header className="glass-nav px-4 py-2 flex items-center justify-between border-b border-slate-200/80">
+      <header className="glass-nav px-4 sm:px-6 py-2.5 flex items-center justify-between border-b border-slate-200/80">
         <div className="flex items-center gap-3">
           <button
             onClick={() => {
@@ -423,26 +423,26 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               navigate(isLiveRoom ? "/app" : "/app/challenges");
             }}
             title="Ortga qaytish"
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
+            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" />
           </button>
-          <BrandLogo size="sm" />
-          <div className="h-4 w-[1px] bg-slate-200" />
+          <BrandLogo size="md" />
+          <div className="h-5 w-[1px] bg-slate-200" />
 
           {/* Breadcrumb path */}
-          <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-500 font-mono">
+          <div className="hidden md:flex items-center gap-2 text-sm text-slate-500 font-mono">
             <span>{isLiveRoom ? "musobaqa" : "mashqlar"}</span>
-            <ChevronRight className="w-3 h-3 text-slate-400" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
             <span className="font-semibold text-slate-900">{challenge.title}</span>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-lime-100 text-lime-800 font-medium">
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-lime-100 text-lime-800 font-bold">
               {challenge.level}-daraja
             </span>
           </div>
         </div>
 
         {/* Action Controls & Clear Tooltips */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <SoundToggle />
 
           {/* Help Button Guide */}
@@ -452,14 +452,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               setShowButtonsGuide(true);
             }}
             title="Tugmalar vazifasi va qoidalar"
-            className="glass-btn-secondary text-xs py-1.5 px-2.5 flex items-center gap-1 text-slate-600"
+            className="glass-btn-secondary text-sm py-2 px-3 font-semibold flex items-center gap-1.5 text-slate-700 rounded-xl"
           >
-            <HelpCircle className="w-3.5 h-3.5 text-lime-700" />
+            <HelpCircle className="w-4 h-4 text-lime-700" />
             <span className="hidden sm:inline">Qo'llanma</span>
           </button>
 
           {/* Score Badge */}
-          <div className="glass-card px-3 py-1 text-xs font-mono font-semibold text-slate-700 shadow-xs">
+          <div className="glass-card px-3.5 py-1.5 text-sm font-mono font-semibold text-slate-800 shadow-xs rounded-xl">
             Ball: <span className="text-lime-700 font-bold">+{currentScore} XP</span>
           </div>
 
@@ -471,9 +471,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               showToast("Natija yangilandi (Ctrl+S)");
             }}
             title="Yozgan kodingizni ekranda sinab ko'rish (Ctrl+S)"
-            className="glass-btn-secondary text-xs py-1.5 px-3"
+            className="glass-btn-secondary text-sm py-2 px-3.5 font-semibold rounded-xl"
           >
-            <Play className="w-3.5 h-3.5 text-slate-600" />
+            <Play className="w-4 h-4 text-slate-600" />
             <span className="hidden sm:inline">{UZ.cta.run}</span>
           </button>
 
@@ -481,9 +481,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           <button
             onClick={triggerCheckTests}
             title="Avtomatik testlar orqali tekshirish va ball olish (Ctrl+Enter)"
-            className="glass-btn-brand text-xs py-1.5 px-3.5 shadow-sm font-semibold"
+            className="glass-btn-brand text-sm py-2 px-4 shadow-sm font-bold rounded-xl"
           >
-            <CheckCircle className="w-3.5 h-3.5" />
+            <CheckCircle className="w-4 h-4" />
             <span>{UZ.cta.check}</span>
           </button>
 
@@ -491,33 +491,33 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
             title={isFullscreen ? "Kichraytirish" : "To'liq ekran"}
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 hidden lg:block"
+            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 hidden lg:block"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
         </div>
       </header>
 
-      {/* Main 3-Pane Desktop Workspace */}
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 max-w-[1720px] w-full mx-auto">
+      {/* Main 3-Pane Desktop Workspace - 100% Full Width */}
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 px-3 sm:px-6 py-3 w-full">
         {/* LEFT PANE: Task, Requirements & Target Preview (3 Cols) */}
         <section
-          className={`lg:col-span-3 glass-panel p-4 flex flex-col gap-4 overflow-hidden ${
+          className={`lg:col-span-3 glass-panel p-5 flex flex-col gap-4 overflow-hidden ${
             mobileTab !== "vazifa" ? "hidden lg:flex" : "flex"
           }`}
         >
           {/* Sub-tabs: Vazifa vs Kutilayotgan Natija (Target) */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl">
+          <div className="flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-xl">
             <button
               onClick={() => {
                 sounds.playClick();
                 setLeftTab("task");
               }}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                 leftTab === "task" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"
               }`}
             >
-              <Layers className="w-3.5 h-3.5" />
+              <Layers className="w-4 h-4" />
               <span>{UZ.workspace.taskTab}</span>
             </button>
             <button
@@ -525,31 +525,31 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 sounds.playClick();
                 setLeftTab("target");
               }}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                 leftTab === "target" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"
               }`}
             >
-              <Eye className="w-3.5 h-3.5 text-lime-600" />
+              <Eye className="w-4 h-4 text-lime-600" />
               <span>{UZ.workspace.targetTab}</span>
             </button>
           </div>
 
           {leftTab === "task" ? (
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+            <div className="flex-1 overflow-y-auto space-y-5 pr-1">
               <div>
-                <h2 className="font-bold text-base text-slate-900 leading-snug">{challenge.title}</h2>
-                <p className="text-sm text-slate-600 mt-2 leading-relaxed whitespace-pre-line font-sans">
+                <h2 className="font-bold text-lg sm:text-xl text-slate-900 leading-snug">{challenge.title}</h2>
+                <p className="text-sm sm:text-base text-slate-600 mt-2.5 leading-relaxed whitespace-pre-line font-sans">
                   {challenge.description_md}
                 </p>
               </div>
 
               {/* Checklist Requirements */}
-              <div className="space-y-2 pt-2 border-t border-slate-200/70">
+              <div className="space-y-2.5 pt-3 border-t border-slate-200/70">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
                     Talablar va Testlar
                   </h3>
-                  <span className="text-xs font-mono font-semibold text-slate-700">
+                  <span className="text-sm font-mono font-bold text-slate-800">
                     {passedTestsCount}/{challenge.tests.length}
                   </span>
                 </div>
@@ -567,45 +567,45 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
               {/* Live Room Guidance Banner */}
               {isLiveRoom && (
-                <div className="p-3 bg-gradient-to-r from-amber-50 to-lime-50 rounded-xl border border-amber-300/80 text-xs text-slate-800 space-y-1 shadow-xs">
+                <div className="p-3.5 bg-gradient-to-r from-amber-50 to-lime-50 rounded-xl border border-amber-300/80 text-sm text-slate-800 space-y-1 shadow-xs">
                   <p className="font-bold text-amber-950 flex items-center gap-1.5">
                     <span>🏆 Jonli musobaqa: {roomCode}</span>
                   </p>
-                  <p className="text-[11px] text-slate-600 leading-relaxed">
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     Testlarni to'liq topshiring ("Tekshirish" yoki Ctrl+Enter). Har bir to'g'ri test balingizni oshiradi va natijangiz doskadagi proyektor reytingiga avtomatik uzatiladi!
                   </p>
                 </div>
               )}
 
               {/* Step by step simple instruction for students */}
-              <div className="p-3 bg-lime-50/70 rounded-xl border border-lime-200/80 text-xs text-slate-700 space-y-1.5">
-                <p className="font-bold text-lime-900 flex items-center gap-1">
-                  <Info className="w-3.5 h-3.5 text-lime-700" />
+              <div className="p-4 bg-lime-50/70 rounded-xl border border-lime-200/80 text-sm text-slate-700 space-y-2">
+                <p className="font-bold text-lime-900 flex items-center gap-1.5">
+                  <Info className="w-4 h-4 text-lime-700" />
                   <span>Nima qilish kerak?</span>
                 </p>
-                <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-600">
+                <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
                   <li>O'rtada ochilgan <strong>style.css</strong> faylida kod yozing.</li>
                   <li><strong>"Ishga tushirish"</strong> (yoki Ctrl+S) orqali natijani ko'ring.</li>
                   <li><strong>"Tekshirish"</strong> (yoki Ctrl+Enter) orqali ball to'plang.</li>
-                  <li>Qiynalsangiz, pastdagi <strong>"Maslahat so'rash"</strong> tugmasidan foydalaning.</li>
+                  <li>Qiynalsangiz, o'ng pastdagi <strong>"Maslahat so'rash"</strong> tugmasidan foydalaning.</li>
                 </ol>
               </div>
             </div>
           ) : (
             /* Target Expected View */
-            <div className="flex-1 flex flex-col glass-card p-4 text-center justify-between overflow-hidden">
+            <div className="flex-1 flex flex-col glass-card p-5 text-center justify-between overflow-hidden">
               <div>
-                <p className="text-xs font-semibold text-slate-700 mb-1">Kutilayotgan dizayn (Maqsad):</p>
-                <p className="text-[11px] text-slate-500 mb-2">Siz yozgan kod aynan shu ko'rinishni hosil qilishi kerak.</p>
+                <p className="text-sm font-semibold text-slate-800 mb-1">Kutilayotgan dizayn (Maqsad):</p>
+                <p className="text-xs text-slate-500 mb-3">Siz yozgan kod aynan shu ko'rinishni hosil qilishi kerak.</p>
               </div>
 
-              <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 rounded-xl bg-white/90 shadow-inner overflow-auto max-h-56">
+              <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 rounded-xl bg-white/90 shadow-inner overflow-auto max-h-60">
                 <div
                   dangerouslySetInnerHTML={{ __html: challenge.target_html }}
                 />
               </div>
 
-              <div className="text-[11px] text-slate-400 mt-2">
+              <div className="text-xs text-slate-400 mt-2">
                 O'ng tomondagi "Natija" ekrani bilan solishtiring.
               </div>
             </div>
@@ -674,16 +674,16 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
         {/* RIGHT PANE: Sandboxed Live Preview & Ustoz AI Assistant (4 Cols) */}
         <section
-          className={`lg:col-span-4 flex flex-col gap-3 ${
+          className={`lg:col-span-4 flex flex-col gap-4 ${
             mobileTab !== "natija" && mobileTab !== "ustoz" ? "hidden lg:flex" : "flex"
           }`}
         >
           {/* Top Half: Sandboxed Preview */}
-          <div className="glass-panel flex flex-col h-72 overflow-hidden shadow-glass-sm">
-            <div className="px-3.5 py-2 border-b border-slate-200/80 flex items-center justify-between bg-white/80 select-none">
+          <div className="glass-panel flex flex-col h-76 overflow-hidden shadow-glass-sm">
+            <div className="px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between bg-white/80 select-none">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-800">{UZ.workspace.resultTitle}</span>
-                <span className="text-[11px] text-slate-400 font-mono">({viewportWidth})</span>
+                <span className="text-sm font-bold text-slate-900">{UZ.workspace.resultTitle}</span>
+                <span className="text-xs text-slate-500 font-mono">({viewportWidth})</span>
               </div>
 
               {/* Viewport Width Toggles */}
@@ -694,9 +694,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("100%");
                   }}
                   title="Monitor / Desktop (100%)"
-                  className={`p-1 rounded ${viewportWidth === "100%" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "100%" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
                 >
-                  <Monitor className="w-3.5 h-3.5" />
+                  <Monitor className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => {
@@ -704,9 +704,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("768px");
                   }}
                   title="Planshet (768px)"
-                  className={`p-1 rounded ${viewportWidth === "768px" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "768px" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
                 >
-                  <Tablet className="w-3.5 h-3.5" />
+                  <Tablet className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => {
@@ -714,9 +714,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("375px");
                   }}
                   title="Telefon (375px)"
-                  className={`p-1 rounded ${viewportWidth === "375px" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "375px" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
                 >
-                  <Smartphone className="w-3.5 h-3.5" />
+                  <Smartphone className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -743,30 +743,30 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           </div>
 
           {/* Bottom Half: Ustoz AI Hint Ladder */}
-          <div className="glass-panel flex-1 p-4 flex flex-col justify-between gap-3 shadow-glass">
-            <div className="flex items-center justify-between border-b border-slate-200/70 pb-2.5">
+          <div className="glass-panel flex-1 p-5 flex flex-col justify-between gap-3 shadow-glass">
+            <div className="flex items-center justify-between border-b border-slate-200/70 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-lime-100 border border-lime-300 flex items-center justify-center shadow-xs">
-                  <Sparkles className="w-4 h-4 text-lime-700" />
+                <div className="w-9 h-9 rounded-xl bg-lime-100 border border-lime-300 flex items-center justify-center shadow-xs">
+                  <Sparkles className="w-5 h-5 text-lime-700" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">{UZ.workspace.tutorTitle}</h3>
-                  <p className="text-[11px] text-slate-500">{UZ.tagline}</p>
+                  <h3 className="text-base font-bold text-slate-900">{UZ.workspace.tutorTitle}</h3>
+                  <p className="text-xs text-slate-500">{UZ.tagline}</p>
                 </div>
               </div>
               <LevelDots currentLevel={maxHintLevel} />
             </div>
 
             {/* Hint Conversation History */}
-            <div className="flex-1 overflow-y-auto space-y-3 max-h-56 pr-1">
+            <div className="flex-1 overflow-y-auto space-y-3.5 max-h-56 pr-1">
               {hints.length === 0 ? (
-                <div className="text-center py-6 px-3 text-xs text-slate-500 space-y-2">
-                  <p>Ustoz AI tayyor javobni berib qo'ymaydi — 4 bosqichli maslahat zinapoyasi orqali fikrlashga undaydi.</p>
-                  <div className="flex flex-wrap justify-center gap-1.5 pt-1">
-                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] text-slate-600">1. Savol</span>
-                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] text-slate-600">2. Yo'nalish</span>
-                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] text-slate-600">3. Tushuntirish</span>
-                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] text-slate-600">4. Qisman yechim</span>
+                <div className="text-center py-6 px-3 text-sm text-slate-600 space-y-2.5">
+                  <p className="leading-relaxed">Ustoz AI tayyor javobni berib qo'ymaydi — 4 bosqichli maslahat zinapoyasi orqali fikrlashga undaydi.</p>
+                  <div className="flex flex-wrap justify-center gap-2 pt-1">
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">1. Savol</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">2. Yo'nalish</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">3. Tushuntirish</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">4. Qisman yechim</span>
                   </div>
                 </div>
               ) : (
@@ -785,8 +785,8 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             </div>
 
             {/* Hint Action Bar */}
-            <div className="pt-2.5 border-t border-slate-200/70 flex items-center justify-between gap-2">
-              <span className="text-xs text-slate-600 font-medium">
+            <div className="pt-3 border-t border-slate-200/70 flex items-center justify-between gap-3">
+              <span className="text-sm text-slate-700 font-medium">
                 Keyingi: <strong className="text-slate-900">{UZ.hintLevels[nextHintLevel as 1 | 2 | 3 | 4]}</strong>
               </span>
 
@@ -796,9 +796,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                   if (nextHintLevel === 4) setShowL4Modal(true);
                   else requestHint(nextHintLevel);
                 }}
-                className="glass-btn-primary text-xs py-2 px-3.5 shadow-sm"
+                className="glass-btn-primary text-sm py-2.5 px-4 shadow-sm font-bold rounded-xl"
               >
-                <Sparkles className="w-3.5 h-3.5 text-lime-400" />
+                <Sparkles className="w-4 h-4 text-lime-400" />
                 <span>{loadingHint ? "O'ylanmoqda..." : UZ.cta.askHint}</span>
               </button>
             </div>
@@ -807,7 +807,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="lg:hidden glass-nav border-t border-slate-200 grid grid-cols-4 py-2 text-center text-xs font-semibold select-none">
+      <nav className="lg:hidden glass-nav border-t border-slate-200 grid grid-cols-4 py-2.5 text-center text-sm font-semibold select-none">
         {(["vazifa", "kod", "natija", "ustoz"] as const).map((tab) => (
           <button
             key={tab}
@@ -815,7 +815,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               sounds.playClick();
               setMobileTab(tab);
             }}
-            className={`py-1.5 capitalize transition-all ${
+            className={`py-2 capitalize transition-all ${
               mobileTab === tab ? "text-lime-700 font-bold border-b-2 border-b-lime-600" : "text-slate-500"
             }`}
           >
@@ -826,45 +826,51 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
       {/* Modal: Buttons Guide & Rules */}
       <GlassModal open={showButtonsGuide} onClose={() => setShowButtonsGuide(false)} title="Platforma Tugmalari va Qoidalari">
-        <div className="space-y-4 text-xs">
+        <div className="space-y-4 text-sm">
           <div className="space-y-3">
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-              <p className="font-bold text-slate-900 flex items-center gap-1.5">
-                <Play className="w-3.5 h-3.5 text-slate-700" />
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+              <p className="font-bold text-slate-900 flex items-center gap-2">
+                <Play className="w-4 h-4 text-slate-700" />
                 <span>Ishga tushirish (Run) — [Ctrl+S]</span>
               </p>
-              <p className="text-slate-600">Yozgan kodingizni tekshirishdan oldin o'ng tomondagi ekranda ko'rish imkonini beradi.</p>
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                Yozgan kodingizni tekshirishdan oldin o'ng tomondagi ekranda ko'rish imkonini beradi.
+              </p>
             </div>
 
-            <div className="p-2.5 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
-              <p className="font-bold text-lime-900 flex items-center gap-1.5">
-                <CheckCircle className="w-3.5 h-3.5 text-lime-700" />
+            <div className="p-3.5 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
+              <p className="font-bold text-lime-900 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-lime-700" />
                 <span>Tekshirish (Check) — [Ctrl+Enter]</span>
               </p>
-              <p className="text-slate-600">Kodingizni avtomatik testlar orqali tekshiradi va barcha shartlar bajarilganda ball qo'shadi.</p>
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                Kodingizni avtomatik testlar orqali tekshiradi va barcha shartlar bajarilganda ball qo'shadi.
+              </p>
             </div>
 
-            <div className="p-2.5 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
-              <p className="font-bold text-sky-900 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-sky-700" />
+            <div className="p-3.5 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
+              <p className="font-bold text-sky-900 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-sky-700" />
                 <span>Maslahat so'rash (Ustoz AI)</span>
               </p>
-              <p className="text-slate-600">
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                 4 bosqichli maslahat zinapoyasi. 1-2 darajalar ozgina jarima bilan yo'naltiradi, 4-daraja qisman yechimni ko'rsatadi (-40 ball).
               </p>
             </div>
 
-            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-              <p className="font-bold text-slate-900 flex items-center gap-1.5">
-                <AlignLeft className="w-3.5 h-3.5 text-slate-700" />
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+              <p className="font-bold text-slate-900 flex items-center gap-2">
+                <AlignLeft className="w-4 h-4 text-slate-700" />
                 <span>Formatlash — [Shift+Alt+F]</span>
               </p>
-              <p className="text-slate-600">Koddagi bo'shliqlar va xatoliklarni chiroyli tartiblab beradi (VS Code Prettier kabi).</p>
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                Koddagi bo'shliqlar va xatoliklarni chiroyli tartiblab beradi (VS Code Prettier kabi).
+              </p>
             </div>
           </div>
 
           <div className="flex justify-end pt-2">
-            <button onClick={() => setShowButtonsGuide(false)} className="glass-btn-primary text-xs py-2 px-4">
+            <button onClick={() => setShowButtonsGuide(false)} className="glass-btn-primary text-sm py-2.5 px-5 rounded-xl font-bold">
               Tushundim
             </button>
           </div>
@@ -873,10 +879,10 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
       {/* Modal: Reset Code Confirmation */}
       <GlassModal open={showResetModal} onClose={() => setShowResetModal(false)} title={UZ.cta.reset}>
-        <div className="space-y-4">
-          <p className="text-sm text-slate-600 leading-relaxed">{UZ.workspace.resetWarning}</p>
-          <div className="flex justify-end gap-2">
-            <button onClick={() => setShowResetModal(false)} className="glass-btn-secondary text-xs">
+        <div className="space-y-5">
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">{UZ.workspace.resetWarning}</p>
+          <div className="flex justify-end gap-3">
+            <button onClick={() => setShowResetModal(false)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
               Bekor qilish
             </button>
             <button
@@ -887,7 +893,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 setShowResetModal(false);
                 showToast("Boshlang'ich holatga qaytarildi");
               }}
-              className="glass-btn-primary text-xs bg-rose-600 hover:bg-rose-700 text-white"
+              className="glass-btn-primary text-sm py-2.5 px-4 font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl"
             >
               Tiklash
             </button>
@@ -897,10 +903,10 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
       {/* Modal: Level 4 Penalty Confirmation */}
       <GlassModal open={showL4Modal} onClose={() => setShowL4Modal(false)} title="4-daraja: Qisman yechim (-40 ball)">
-        <div className="space-y-4">
-          <p className="text-sm text-slate-600 leading-relaxed">{UZ.workspace.level4Warning}</p>
-          <div className="flex justify-end gap-2">
-            <button onClick={() => setShowL4Modal(false)} className="glass-btn-secondary text-xs">
+        <div className="space-y-5">
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">{UZ.workspace.level4Warning}</p>
+          <div className="flex justify-end gap-3">
+            <button onClick={() => setShowL4Modal(false)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
               Yo'q, o'zim yozaman
             </button>
             <button
@@ -908,7 +914,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 setShowL4Modal(false);
                 requestHint(4);
               }}
-              className="glass-btn-primary text-xs bg-rose-600 hover:bg-rose-700 text-white"
+              className="glass-btn-primary text-sm py-2.5 px-4 font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl"
             >
               Ha, ko'rsatilsin
             </button>
@@ -918,35 +924,35 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
       {/* Modal: Challenge Passed Celebration */}
       <GlassModal open={showPassModal} onClose={() => setShowPassModal(false)} title={UZ.workspace.passMessage}>
-        <div className="space-y-5 text-center">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-lime-100 border border-lime-300 flex items-center justify-center shadow-glass">
-            <Check className="w-8 h-8 text-lime-700 stroke-[3]" />
+        <div className="space-y-6 text-center">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-lime-100 border border-lime-300 flex items-center justify-center shadow-glass">
+            <Check className="w-9 h-9 text-lime-700 stroke-[3]" />
           </div>
 
           <div>
-            <h4 className="text-lg font-bold text-slate-900">
+            <h4 className="text-xl font-bold text-slate-900">
               {isLiveRoom ? "Musobaqa topshirig'i bajarildi!" : "Ajoyib natija!"}
             </h4>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 mt-1.5 leading-relaxed">
               {isLiveRoom
                 ? "Natijangiz doskadagi proyektor reytingiga muvaffaqiyatli uzatildi."
                 : "Siz topshiriqni muvaffaqiyatli bajardingiz."}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-center">
-            <div className="glass-card p-3.5">
-              <p className="text-xs text-slate-500 font-medium">To'plangan ball</p>
-              <p className="font-mono text-2xl font-bold text-lime-700 mt-0.5">+{currentScore} XP</p>
+          <div className="grid grid-cols-2 gap-4 text-center">
+            <div className="glass-card p-4">
+              <p className="text-xs sm:text-sm text-slate-500 font-semibold">To'plangan ball</p>
+              <p className="font-mono text-3xl font-extrabold text-lime-700 mt-1">+{currentScore} XP</p>
             </div>
-            <div className="glass-card p-3.5">
-              <p className="text-xs text-slate-500 font-medium">Maslahatlar</p>
-              <p className="font-mono text-2xl font-bold text-slate-900 mt-0.5">{hints.length} ta</p>
+            <div className="glass-card p-4">
+              <p className="text-xs sm:text-sm text-slate-500 font-semibold">Maslahatlar</p>
+              <p className="font-mono text-3xl font-extrabold text-slate-900 mt-1">{hints.length} ta</p>
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2">
-            <button onClick={() => setShowPassModal(false)} className="glass-btn-secondary text-xs">
+          <div className="flex justify-end gap-3 pt-2">
+            <button onClick={() => setShowPassModal(false)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
               Yopish
             </button>
             <button
@@ -954,7 +960,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 sounds.playClick();
                 navigate("/app");
               }}
-              className="glass-btn-brand text-xs font-semibold"
+              className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl"
             >
               {isLiveRoom ? "Darslarga qaytish" : "Keyingi mashqqa o'tish →"}
             </button>

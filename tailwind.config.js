@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: ["'Plus Jakarta Sans'", "system-ui", "-apple-system", "sans-serif"],
+        display: ["'Outfit'", "'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+        mono: ["'JetBrains Mono'", "'Fira Code'", "monospace"],
       },
       colors: {
         bg: "#F8FAFC",

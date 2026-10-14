@@ -34,14 +34,16 @@ export const vsCodeTheme = EditorView.theme(
     "&": {
       color: "#1e293b",
       backgroundColor: "transparent",
-      fontFamily: "'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace",
-      fontSize: "13.5px",
+      fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Source Code Pro', monospace",
+      fontSize: "15px",
       letterSpacing: "0.2px",
+      fontVariantLigatures: "contextual",
+      fontFeatureSettings: "'liga' 1, 'calt' 1",
     },
     ".cm-content": {
       padding: "12px 0",
       caretColor: "#0f172a",
-      lineHeight: "1.6",
+      lineHeight: "1.75",
     },
     "&.cm-focused .cm-cursor": {
       borderLeftColor: "#0f172a",

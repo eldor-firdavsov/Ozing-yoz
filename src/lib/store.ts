@@ -32,7 +32,7 @@ export interface LiveRoomState {
 }
 
 class AppStore {
-  private localKey = "ozing_yoz_data";
+  private localKey = "ozing_yoz_data_v3";
   private channel: BroadcastChannel | null = null;
   private listeners: Set<() => void> = new Set();
   private memoryCache: any = null;
@@ -69,17 +69,17 @@ class AppStore {
 
     const defaultData = {
       profile: {
-        id: "student-demo-id",
+        id: "",
         role: "student",
-        full_name: "Azizbek Rahimov",
-        email: "azizbek@gmail.com",
-        username: "azizbek",
-        xp: 285,
-        streak: 3,
-        is_guest: false,
+        full_name: "",
+        email: "",
+        username: "",
+        xp: 0,
+        streak: 0,
+        is_guest: true,
       } as UserProfile,
       customChallenges: [] as ChallengeItem[],
-      completedIds: ["11111111-1111-1111-1111-111111111111"],
+      completedIds: [] as string[],
       codeDrafts: {} as Record<string, { html: string; css: string }>,
       rooms: {} as Record<string, LiveRoomState>,
     };
@@ -193,21 +193,31 @@ class AppStore {
       duration_sec: 900,
       challenge_id: "22222222-2222-2222-2222-222222222222",
       teacher_id: "teacher-1",
-      leaderboard: [
-        { user_id: "1", nickname: "Javohir", score: 95, passed: true, hintLevel: 1, code_snippet: ".container { display: flex; justify-content: center; align-items: center; }" },
-        { user_id: "2", nickname: "Madina", score: 90, passed: true, hintLevel: 2, code_snippet: ".container { display: flex; justify-content: center; }" },
-        { user_id: "3", nickname: "Sardor", score: 70, passed: false, hintLevel: 3, code_snippet: ".container { display: block; margin: auto; }" },
-        { user_id: "4", nickname: "Jasmina", score: 85, passed: false, hintLevel: 2, code_snippet: ".container { align-items: center; }" },
-      ],
-      concept_counts: {
-        flexbox: 14,
-        "box-model": 8,
-        selectors: 4,
-        grid: 2,
-      },
+      leaderboard: [],
+      concept_counts: {},
       latest_nudge: null,
     };
     return defaultRoom;
+  }
+
+  resetAll() {
+    const clean = {
+      profile: {
+        id: "",
+        role: "student" as const,
+        full_name: "",
+        email: "",
+        username: "",
+        xp: 0,
+        streak: 0,
+        is_guest: true,
+      },
+      customChallenges: [],
+      completedIds: [],
+      codeDrafts: {},
+      rooms: {},
+    };
+    this.saveLocalData(clean);
   }
 
   updateRoom(code: string, updates: Partial<LiveRoomState>) {

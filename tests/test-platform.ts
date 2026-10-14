@@ -104,7 +104,7 @@ assert(p.email === "" && p.is_guest === true, "Logout resets session cleanly to 
 console.log("\n5. Testing Live Competition Room Sync & Leaderboard...");
 const room = appStore.getRoom("FLX742");
 assert(room.code === "FLX742", "Default room FLX742 is available");
-assert(room.leaderboard.length > 0, `Room FLX742 has ${room.leaderboard.length} initial students`);
+assert(room.leaderboard.length === 0, "Default room FLX742 starts with clean 0 participants");
 
 // State transition
 appStore.updateRoom("FLX742", { status: "live", started_at: new Date().toISOString() });

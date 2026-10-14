@@ -144,108 +144,110 @@ export const TeacherDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#F8FAFC] px-4 sm:px-8 lg:px-12 py-6 w-full space-y-8">
       {/* Top Navbar */}
       <header className="glass-panel px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl">
         <div className="flex items-center gap-3">
           <BrandLogo size="md" />
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-900 text-white font-mono flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-lime-400" />
+          <span className="text-sm font-semibold px-3 py-1.5 rounded-lg bg-slate-900 text-white font-mono flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-lime-400" />
             <span>Ustoz: teacher@ilmla.uz</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <SoundToggle />
           <button
             onClick={() => {
               sounds.playClick();
               setShowCreateRoomModal(true);
             }}
-            className="glass-btn-brand text-xs py-2 px-3.5 font-bold shadow-xs flex items-center gap-1.5"
+            className="glass-btn-brand text-sm py-2.5 px-4 font-bold shadow-xs flex items-center gap-2 rounded-xl"
           >
-            <Play className="w-3.5 h-3.5" />
+            <Play className="w-4 h-4" />
             <span>Jonli xona ochish</span>
           </button>
           <Link
             onClick={() => sounds.playClick()}
             to="/app"
-            className="glass-btn-secondary text-xs py-2 px-3 font-medium text-slate-700"
+            className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold text-slate-700 rounded-xl"
           >
             Talaba ekrani
           </Link>
           <button
             onClick={handleTeacherLogout}
             title="Ustoz hisobidan chiqish"
-            className="glass-btn-secondary text-xs py-2 px-3 font-medium text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center gap-1.5"
+            className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold text-slate-600 hover:text-rose-600 hover:border-rose-200 flex items-center gap-2 rounded-xl"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">Chiqish</span>
           </button>
         </div>
       </header>
 
       {/* Quick Overview Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-panel p-5 shadow-glass-sm">
-          <p className="text-xs text-slate-500 font-medium">Jami o'quvchilar</p>
-          <p className="font-mono text-3xl font-bold text-slate-900 mt-1">38 nafar</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="glass-panel p-6 shadow-glass-sm">
+          <p className="text-sm text-slate-500 font-semibold">Jami o'quvchilar</p>
+          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">38 nafar</p>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">Ro'yxatdan o'tgan faol talabalar</p>
         </div>
-        <div className="glass-panel p-5 shadow-glass-sm">
-          <p className="text-xs text-slate-500 font-medium">Bugun topshirganlar</p>
-          <p className="font-mono text-3xl font-bold text-lime-700 mt-1">29 ta</p>
+        <div className="glass-panel p-6 shadow-glass-sm">
+          <p className="text-sm text-slate-500 font-semibold">Bugun topshirganlar</p>
+          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-lime-700 mt-2">29 ta</p>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">Mustaqil tekshiruvdan o'tgan</p>
         </div>
-        <div className="glass-panel p-5 shadow-glass-sm">
-          <p className="text-xs text-slate-500 font-medium">O'rtacha maslahat darajasi</p>
-          <p className="font-mono text-3xl font-bold text-slate-900 mt-1">L 1.6</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">O'quvchilar mustaqil yozmoqda</p>
+        <div className="glass-panel p-6 shadow-glass-sm">
+          <p className="text-sm text-slate-500 font-semibold">O'rtacha maslahat darajasi</p>
+          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">L 1.6</p>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">O'quvchilar mustaqil yozmoqda</p>
         </div>
-        <div className="glass-panel p-5 shadow-glass-sm bg-gradient-to-br from-white to-lime-50/40">
-          <p className="text-xs text-slate-500 font-medium">Ustoz AI xavfsizligi</p>
-          <p className="text-xs font-bold text-lime-800 mt-1">Leak-Guard Faol</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Tayyor yechim yashirilgan</p>
+        <div className="glass-panel p-6 shadow-glass-sm bg-gradient-to-br from-white to-lime-50/40">
+          <p className="text-sm text-slate-500 font-semibold">Ustoz AI xavfsizligi</p>
+          <p className="text-xl sm:text-2xl font-bold text-lime-800 mt-2">Leak-Guard Faol</p>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">Tayyor yechim talabaga berilmaydi</p>
         </div>
       </div>
 
       {/* Teacher Competition Workflow Guide */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-lime-500/10 via-white to-slate-50 border border-lime-200/80 shadow-glass-sm space-y-3">
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-lime-500/10 via-white to-slate-50 border border-lime-200/90 shadow-glass-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-            <Lightbulb className="w-4 h-4 text-lime-700" />
+          <h3 className="font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
+            <Lightbulb className="w-5 h-5 text-lime-700" />
             <span>Ustoz uchun yo'riqnoma: Darsda jonli musobaqa o'tkazish</span>
           </h3>
-          <span className="text-xs font-semibold text-lime-800 bg-lime-100 px-2.5 py-0.5 rounded-full">
+          <span className="text-xs sm:text-sm font-semibold text-lime-800 bg-lime-100 px-3 py-1 rounded-full">
             3 oddiy qadam
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-          <div className="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1">
-            <span className="font-bold text-slate-900 flex items-center gap-1.5">
-              <span className="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">1</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className="p-4 bg-white/95 rounded-xl border border-slate-200/80 space-y-2">
+            <span className="font-bold text-slate-900 flex items-center gap-2 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">1</span>
               <span>Xonani oching</span>
             </span>
-            <p className="text-slate-600">
+            <p className="text-slate-600 leading-relaxed text-sm">
               Yuqoridagi <strong>"Jonli xona ochish"</strong> tugmasini bosing yoki tayyor <strong>FLX742</strong> xonasiga kiring.
             </p>
           </div>
 
-          <div className="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1">
-            <span className="font-bold text-slate-900 flex items-center gap-1.5">
-              <span className="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">2</span>
+          <div className="p-4 bg-white/95 rounded-xl border border-slate-200/80 space-y-2">
+            <span className="font-bold text-slate-900 flex items-center gap-2 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">2</span>
               <span>Proyektorga uzating</span>
             </span>
-            <p className="text-slate-600">
+            <p className="text-slate-600 leading-relaxed text-sm">
               <strong>"Proyektor ekrani"</strong> tugmasini bosing va doskaga oching. O'quvchilar QR kod orqali 5 soniyada ulanishadi.
             </p>
           </div>
 
-          <div className="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1">
-            <span className="font-bold text-slate-900 flex items-center gap-1.5">
-              <span className="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]">3</span>
+          <div className="p-4 bg-white/95 rounded-xl border border-slate-200/80 space-y-2">
+            <span className="font-bold text-slate-900 flex items-center gap-2 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">3</span>
               <span>Darsni boshqaring</span>
             </span>
-            <p className="text-slate-600">
+            <p className="text-slate-600 leading-relaxed text-sm">
               <strong>"Boshlash"</strong> tugmasini bosing, qiynalgan talabalar kodini ko'ring va umumiy ko'rsatma (Nudge) yuboring.
             </p>
           </div>
@@ -255,14 +257,14 @@ export const TeacherDashboard: React.FC = () => {
       {/* Main Actions Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: AI Challenge Builder Card (2 Cols) */}
-        <div className="lg:col-span-2 glass-panel p-6 space-y-5 shadow-glass">
+        <div className="lg:col-span-2 glass-panel p-6 sm:p-7 space-y-6 shadow-glass">
           <div className="flex items-center justify-between border-b border-slate-200/70 pb-4">
             <div>
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-lime-600" />
                 <span>Ustoz AI bilan Yangi Challenge yaratish</span>
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-sm text-slate-600 mt-1 leading-relaxed">
                 Gemini AI o'quv markazingiz talabalari uchun kod, yechim, 4 bosqichli maslahat va avtomatik testlarni shakllantiradi.
               </p>
             </div>
@@ -271,41 +273,41 @@ export const TeacherDashboard: React.FC = () => {
                 sounds.playClick();
                 setShowAiModal(true);
               }}
-              className="glass-btn-primary text-xs py-2 px-3.5 shrink-0"
+              className="glass-btn-primary text-sm py-2.5 px-4 font-semibold shrink-0 rounded-xl"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>Yaratish</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="glass-card p-4 space-y-2 border-l-4 border-l-sky-500">
-              <span className="text-xs font-semibold text-sky-800">1-daraja: Boshlang'ich</span>
-              <h4 className="font-bold text-sm text-slate-900">HTML teglari va matnlar</h4>
-              <p className="text-xs text-slate-500">Semantik HTML, sarlavhalar, paragraflar, rasmlar va havolalar.</p>
+            <div className="glass-card p-5 space-y-2.5 border-l-4 border-l-sky-500">
+              <span className="text-xs font-bold text-sky-800 uppercase tracking-wider">1-daraja: Boshlang'ich</span>
+              <h4 className="font-bold text-base text-slate-900">HTML teglari va matnlar</h4>
+              <p className="text-sm text-slate-600 leading-relaxed">Semantik HTML, sarlavhalar, paragraflar, rasmlar va havolalar.</p>
             </div>
-            <div className="glass-card p-4 space-y-2 border-l-4 border-l-amber-500">
-              <span className="text-xs font-semibold text-amber-800">2-daraja: O'rta</span>
-              <h4 className="font-bold text-sm text-slate-900">Flexbox & Grid tartiblash</h4>
-              <p className="text-xs text-slate-500">Markazlash, kartalar galereyasi va navigatsiya panellari.</p>
+            <div className="glass-card p-5 space-y-2.5 border-l-4 border-l-amber-500">
+              <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">2-daraja: O'rta</span>
+              <h4 className="font-bold text-base text-slate-900">Flexbox & Grid tartiblash</h4>
+              <p className="text-sm text-slate-600 leading-relaxed">Markazlash, kartalar galereyasi va navigatsiya panellari.</p>
             </div>
           </div>
 
           {/* Quick Start Live Room Card */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
             <div className="space-y-1">
-              <h3 className="font-bold text-sm flex items-center gap-2">
-                <QrCode className="w-4 h-4 text-lime-400" />
+              <h3 className="font-bold text-base sm:text-lg flex items-center gap-2">
+                <QrCode className="w-5 h-5 text-lime-400" />
                 <span>Jonli Dars Xonasi (Live Room)</span>
               </h3>
-              <p className="text-xs text-slate-300">
+              <p className="text-sm text-slate-300 leading-relaxed">
                 O'quvchilar doskadagi QR kod orqali ulanadi. Proyektorda reyting va Heatmap ko'rinadi.
               </p>
             </div>
             <Link
               onClick={() => sounds.playClick()}
               to="/teach/live/FLX742"
-              className="glass-btn-brand text-xs font-semibold py-2 px-4 shrink-0"
+              className="glass-btn-brand text-sm font-bold py-3 px-5 shrink-0 rounded-xl"
             >
               FLX742 xonani ochish →
             </Link>
@@ -313,10 +315,10 @@ export const TeacherDashboard: React.FC = () => {
         </div>
 
         {/* Right Column: Class Management (1 Col) */}
-        <div className="glass-panel p-6 space-y-4 shadow-glass">
-          <div className="flex items-center justify-between border-b border-slate-200/70 pb-3">
-            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-              <Users className="w-4 h-4 text-slate-700" />
+        <div className="glass-panel p-6 sm:p-7 space-y-5 shadow-glass">
+          <div className="flex items-center justify-between border-b border-slate-200/70 pb-3.5">
+            <h3 className="font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
+              <Users className="w-5 h-5 text-slate-700" />
               <span>Guruhlarim ({classesList.length})</span>
             </h3>
             <button
@@ -324,22 +326,22 @@ export const TeacherDashboard: React.FC = () => {
                 sounds.playClick();
                 setShowCreateClassModal(true);
               }}
-              className="text-xs text-slate-600 hover:text-slate-900 font-semibold inline-flex items-center gap-1"
+              className="text-sm text-slate-700 hover:text-slate-900 font-bold inline-flex items-center gap-1.5"
             >
-              <Plus className="w-3.5 h-3.5" /> Yangi
+              <Plus className="w-4 h-4" /> Yangi
             </button>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             {classesList.map((cls) => (
-              <div key={cls.id} className="glass-card p-3.5 space-y-2">
+              <div key={cls.id} className="glass-card p-4 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-sm text-slate-900">{cls.name}</h4>
-                  <span className="font-mono text-xs font-bold text-lime-800 bg-lime-100 px-2 py-0.5 rounded">
+                  <h4 className="font-bold text-base text-slate-900">{cls.name}</h4>
+                  <span className="font-mono text-xs font-bold text-lime-800 bg-lime-100 px-2.5 py-1 rounded-md">
                     {cls.joinCode}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-xs text-slate-500">
+                <div className="flex items-center justify-between text-sm text-slate-500">
                   <span>{cls.studentsCount} nafar talaba</span>
                   <button
                     onClick={() => {
@@ -347,7 +349,7 @@ export const TeacherDashboard: React.FC = () => {
                       sounds.playClick();
                       alert(`Havola nusxalandi: /join/${cls.joinCode}`);
                     }}
-                    className="text-slate-600 hover:text-slate-900 underline"
+                    className="text-slate-700 hover:text-slate-900 underline font-medium"
                   >
                     Ulanish havolasi
                   </button>
@@ -361,30 +363,30 @@ export const TeacherDashboard: React.FC = () => {
       {/* AI Challenge Builder Modal */}
       <GlassModal open={showAiModal} onClose={() => setShowAiModal(false)} title="AI bilan yangi topshiriq yaratish">
         {!draftResult ? (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label className="text-xs font-semibold text-slate-700">Mavzu yoki Konsept</label>
+              <label className="text-sm font-semibold text-slate-700">Mavzu yoki Konsept</label>
               <input
                 required
                 placeholder="Masalan: Flexbox bilan ikki tomonlama navbar"
                 value={aiTopic}
                 onChange={(e) => setAiTopic(e.target.value)}
-                className="glass-input text-xs mt-1"
+                className="glass-input text-sm py-2.5 mt-1.5"
               />
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700">Qiyinlik darajasi</label>
-              <div className="flex gap-2 mt-1">
+              <label className="text-sm font-semibold text-slate-700">Qiyinlik darajasi</label>
+              <div className="flex gap-2.5 mt-1.5">
                 {([1, 2, 3] as const).map((lvl) => (
                   <button
                     key={lvl}
                     type="button"
                     onClick={() => setAiLevel(lvl)}
-                    className={`flex-1 py-1.5 rounded-lg text-xs font-semibold border ${
+                    className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition-all ${
                       aiLevel === lvl
-                        ? "bg-slate-900 text-white border-slate-900"
-                        : "bg-white text-slate-700 border-slate-200"
+                        ? "bg-slate-900 text-white border-slate-900 shadow-xs"
+                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                     }`}
                   >
                     {lvl}-daraja
@@ -394,47 +396,47 @@ export const TeacherDashboard: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700">Qo'shimcha talablar (ixtiyoriy)</label>
+              <label className="text-sm font-semibold text-slate-700">Qo'shimcha talablar (ixtiyoriy)</label>
               <textarea
-                rows={2}
+                rows={3}
                 placeholder="Masalan: .container balandligi 60px bo'lsin..."
                 value={aiNotes}
                 onChange={(e) => setAiNotes(e.target.value)}
-                className="glass-input text-xs mt-1"
+                className="glass-input text-sm py-2.5 mt-1.5"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setShowAiModal(false)} className="glass-btn-secondary text-xs">
+            <div className="flex justify-end gap-3 pt-2">
+              <button onClick={() => setShowAiModal(false)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
                 Bekor qilish
               </button>
               <button
                 disabled={drafting || !aiTopic.trim()}
                 onClick={handleGenerateAi}
-                className="glass-btn-brand text-xs font-semibold"
+                className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl"
               >
-                <Sparkles className="w-3.5 h-3.5" />
+                <Sparkles className="w-4 h-4" />
                 <span>{drafting ? "AI yaratmoqda..." : "Yaratish"}</span>
               </button>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="p-3 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
-              <h4 className="font-bold text-sm text-slate-900">{draftResult.title}</h4>
-              <p className="text-xs text-slate-600">{draftResult.description_md}</p>
+          <div className="space-y-5">
+            <div className="p-4 bg-lime-50 rounded-xl border border-lime-200 space-y-1.5">
+              <h4 className="font-bold text-base text-slate-900">{draftResult.title}</h4>
+              <p className="text-sm text-slate-600 leading-relaxed">{draftResult.description_md}</p>
             </div>
 
-            <div className="text-xs text-slate-500 space-y-1">
-              <p>• Testlar soni: {draftResult.tests.length} ta</p>
-              <p>• Boshlang'ich kod va yechim tayyorlandi</p>
+            <div className="text-sm text-slate-600 space-y-1.5">
+              <p>• Testlar soni: <strong>{draftResult.tests.length} ta</strong></p>
+              <p>• Boshlang'ich kod va to'liq yechim tayyorlandi</p>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setDraftResult(null)} className="glass-btn-secondary text-xs">
+            <div className="flex justify-end gap-3 pt-2">
+              <button onClick={() => setDraftResult(null)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
                 Qayta generatsiya
               </button>
-              <button onClick={handleSaveChallenge} className="glass-btn-brand text-xs font-semibold">
+              <button onClick={handleSaveChallenge} className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl">
                 Katalogga saqlash
               </button>
             </div>
@@ -444,13 +446,13 @@ export const TeacherDashboard: React.FC = () => {
 
       {/* Create Live Room Modal */}
       <GlassModal open={showCreateRoomModal} onClose={() => setShowCreateRoomModal(false)} title="Yangi Jonli Xona Boshlash">
-        <form onSubmit={handleCreateRoom} className="space-y-4">
+        <form onSubmit={handleCreateRoom} className="space-y-5">
           <div>
-            <label className="text-xs font-semibold text-slate-700">Topshiriqni tanlang</label>
+            <label className="text-sm font-semibold text-slate-700">Topshiriqni tanlang</label>
             <select
               value={selectedChallengeId}
               onChange={(e) => setSelectedChallengeId(e.target.value)}
-              className="glass-input text-xs mt-1"
+              className="glass-input text-sm py-2.5 mt-1.5"
             >
               {COURSE_CHALLENGES.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -461,11 +463,11 @@ export const TeacherDashboard: React.FC = () => {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-700">Dars vaqti (taymer)</label>
+            <label className="text-sm font-semibold text-slate-700">Dars vaqti (taymer)</label>
             <select
               value={roomDuration}
               onChange={(e) => setRoomDuration(Number(e.target.value))}
-              className="glass-input text-xs mt-1"
+              className="glass-input text-sm py-2.5 mt-1.5"
             >
               <option value={300}>5 daqiqa (Tezkor mashq)</option>
               <option value={600}>10 daqiqa</option>
@@ -474,15 +476,15 @@ export const TeacherDashboard: React.FC = () => {
             </select>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => setShowCreateRoomModal(false)}
-              className="glass-btn-secondary text-xs"
+              className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl"
             >
               Bekor qilish
             </button>
-            <button type="submit" className="glass-btn-brand text-xs font-semibold">
+            <button type="submit" className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl">
               Xonani ochish →
             </button>
           </div>
@@ -491,26 +493,26 @@ export const TeacherDashboard: React.FC = () => {
 
       {/* Create Class Modal */}
       <GlassModal open={showCreateClassModal} onClose={() => setShowCreateClassModal(false)} title="Yangi Sinf Yaratish">
-        <form onSubmit={handleAddClass} className="space-y-4">
+        <form onSubmit={handleAddClass} className="space-y-5">
           <div>
-            <label className="text-xs font-semibold text-slate-700">Sinf / Guruh nomi</label>
+            <label className="text-sm font-semibold text-slate-700">Sinf / Guruh nomi</label>
             <input
               required
               placeholder="Masalan: Frontend 15-guruh"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-              className="glass-input text-xs mt-1"
+              className="glass-input text-sm py-2.5 mt-1.5"
             />
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => setShowCreateClassModal(false)}
-              className="glass-btn-secondary text-xs"
+              className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl"
             >
               Bekor qilish
             </button>
-            <button type="submit" className="glass-btn-primary text-xs font-semibold">
+            <button type="submit" className="glass-btn-primary text-sm py-2.5 px-5 font-bold rounded-xl">
               Sinfni saqlash
             </button>
           </div>

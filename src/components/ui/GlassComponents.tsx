@@ -21,15 +21,15 @@ import { sounds } from "../../lib/audio";
 export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md" }) => {
   const sizeClasses = {
     sm: "text-base",
-    md: "text-lg",
-    lg: "text-2xl",
+    md: "text-xl",
+    lg: "text-3xl",
   };
   return (
     <div
       onClick={() => sounds.playClick()}
-      className={`inline-flex items-center gap-1.5 font-mono font-semibold tracking-tight text-slate-900 select-none cursor-pointer ${sizeClasses[size]}`}
+      className={`inline-flex items-center gap-1.5 font-display font-extrabold tracking-tight text-slate-900 select-none cursor-pointer ${sizeClasses[size]}`}
     >
-      <span className="bg-gradient-to-r from-slate-950 to-slate-700 bg-clip-text text-transparent">
+      <span className="bg-gradient-to-r from-slate-950 via-slate-800 to-slate-900 bg-clip-text text-transparent">
         O'zing Yoz
       </span>
       <span className="text-[#65A30D] animate-pulse">▍</span>
@@ -115,14 +115,14 @@ export const TypewriterHint: React.FC<{
   };
 
   return (
-    <div className="glass-card p-4 space-y-2.5 border-l-4 border-l-slate-800 shadow-sm transition-all hover:shadow-glass">
-      <div className="flex items-center justify-between text-xs">
+    <div className="glass-card p-4 space-y-3 border-l-4 border-l-slate-800 shadow-sm transition-all hover:shadow-glass">
+      <div className="flex items-center justify-between text-xs sm:text-sm">
         <div className="flex items-center gap-2">
-          <span className={`px-2 py-0.5 rounded-md border font-medium ${badgeColors[level] || badgeColors[1]}`}>
-            {level}-daraja
+          <span className={`px-2.5 py-0.5 rounded-lg border font-semibold ${badgeColors[level] || badgeColors[1]}`}>
+            {level}-daraja maslahat
           </span>
           {concept && (
-            <span className="font-mono text-[11px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded-md border border-slate-200/60">
+            <span className="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
               #{concept}
             </span>
           )}
@@ -132,25 +132,25 @@ export const TypewriterHint: React.FC<{
             <button
               onClick={() => onNavigateLine?.(line)}
               title="Koddagi ushbu qatorga o'tish"
-              className="font-mono text-amber-700 bg-amber-50 hover:bg-amber-100 px-2 py-0.5 rounded border border-amber-200 flex items-center gap-1 transition-all"
+              className="font-mono text-xs text-amber-800 font-semibold bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 flex items-center gap-1 transition-all"
             >
               <span>{line}-qator</span>
-              <ChevronRight className="w-3 h-3" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           )}
           {level === 4 && (
             <button
               onClick={handleCopy}
-              className="text-[11px] text-slate-500 hover:text-slate-900 inline-flex items-center gap-1 bg-white border border-slate-200 px-2 py-0.5 rounded shadow-xs"
+              className="text-xs text-slate-600 hover:text-slate-900 inline-flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shadow-xs font-medium"
             >
-              {copied ? <Check className="w-3 h-3 text-lime-600" /> : <Copy className="w-3 h-3" />}
-              <span>{copied ? "Nusxalandi" : "Nusxa"}</span>
+              {copied ? <Check className="w-3.5 h-3.5 text-lime-600" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copied ? "Nusxalandi" : "Nusxalash"}</span>
             </button>
           )}
-          {fromFallback && <span className="text-slate-400 text-[10px]">Standart maslahat</span>}
+          {fromFallback && <span className="text-slate-400 text-xs">Standart</span>}
         </div>
       </div>
-      <p className="text-sm text-slate-800 leading-relaxed whitespace-pre-wrap font-sans font-normal selection:bg-lime-200">
+      <p className="text-sm sm:text-base text-slate-800 leading-relaxed whitespace-pre-wrap font-sans font-normal selection:bg-lime-200">
         {displayed}
       </p>
     </div>
@@ -194,16 +194,16 @@ export const GlassModal: React.FC<{
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="glass-panel max-w-md w-full p-6 space-y-4 shadow-glass-lg border border-white/90 animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between border-b border-slate-200/70 pb-3">
-          <h3 className="font-semibold text-slate-900 text-base">{title}</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-200">
+      <div className="glass-panel max-w-xl w-full p-7 space-y-5 shadow-glass-lg border border-white/90 rounded-2xl animate-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between border-b border-slate-200/70 pb-3.5">
+          <h3 className="font-bold text-slate-900 text-lg">{title}</h3>
           <button
             onClick={() => {
               sounds.playClick();
               onClose();
             }}
-            className="text-slate-400 hover:text-slate-700 h-7 w-7 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-all"
+            className="text-slate-400 hover:text-slate-700 h-8 w-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-lg transition-all"
           >
             ✕
           </button>
@@ -226,18 +226,18 @@ export const QRCard: React.FC<{ code: string }> = ({ code }) => {
   };
 
   return (
-    <div className="glass-panel p-6 flex flex-col items-center gap-4 text-center shadow-glass">
-      <div className="p-3.5 bg-white rounded-2xl border border-slate-200/80 shadow-sm">
-        <QRCodeSVG size={180} value={joinUrl} />
+    <div className="glass-panel p-7 flex flex-col items-center gap-5 text-center shadow-glass">
+      <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm">
+        <QRCodeSVG size={200} value={joinUrl} />
       </div>
       <div className="w-full">
-        <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Xona kodi</p>
-        <p className="font-mono text-3xl font-bold tracking-widest text-slate-900 mt-0.5">{code}</p>
+        <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Xona kodi</p>
+        <p className="font-mono text-4xl sm:text-5xl font-black tracking-widest text-slate-900 mt-1">{code}</p>
         <button
           onClick={copyLink}
-          className="mt-3 inline-flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-900 bg-white/80 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs hover:bg-white transition-all"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-slate-700 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-xs hover:shadow transition-all font-medium"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-lime-600" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? <Check className="w-4 h-4 text-lime-600" /> : <Copy className="w-4 h-4" />}
           <span>{copied ? "Havola nusxalandi!" : "Havolani nusxalash"}</span>
         </button>
       </div>
@@ -296,23 +296,23 @@ export const VsCodeTabs: React.FC<{
   onReset?: () => void;
 }> = ({ activeTab, onChangeTab, isDirtyHtml, isDirtyCss, onFormat, onReset }) => {
   return (
-    <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-100/60 px-2 pt-1.5 select-none">
-      <div className="flex items-center gap-1">
+    <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-100/60 px-3 pt-2 select-none">
+      <div className="flex items-center gap-1.5">
         {/* index.html Tab */}
         <button
           onClick={() => {
             sounds.playClick();
             onChangeTab("html");
           }}
-          className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-t-lg transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all ${
             activeTab === "html"
-              ? "bg-white text-slate-900 font-semibold border-t-2 border-t-[#e44d26] border-x border-slate-200 shadow-xs"
-              : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-800"
+              ? "bg-white text-slate-900 font-bold border-t-2 border-t-[#e44d26] border-x border-slate-200 shadow-xs"
+              : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900"
           }`}
         >
-          <span className="text-[#e44d26] font-bold text-xs">‹›</span>
+          <span className="text-[#e44d26] font-bold text-sm">‹›</span>
           <span>index.html</span>
-          {isDirtyHtml && <span className="h-1.5 w-1.5 rounded-full bg-slate-400 ml-1" title="O'zgartirilgan" />}
+          {isDirtyHtml && <span className="h-2 w-2 rounded-full bg-amber-500 ml-1" title="O'zgartirilgan" />}
         </button>
 
         {/* style.css Tab */}
@@ -321,19 +321,19 @@ export const VsCodeTabs: React.FC<{
             sounds.playClick();
             onChangeTab("css");
           }}
-          className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-t-lg transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all ${
             activeTab === "css"
-              ? "bg-white text-slate-900 font-semibold border-t-2 border-t-[#264de4] border-x border-slate-200 shadow-xs"
-              : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-800"
+              ? "bg-white text-slate-900 font-bold border-t-2 border-t-[#264de4] border-x border-slate-200 shadow-xs"
+              : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900"
           }`}
         >
-          <span className="text-[#264de4] font-bold text-xs">#</span>
+          <span className="text-[#264de4] font-bold text-sm">#</span>
           <span>style.css</span>
-          {isDirtyCss && <span className="h-1.5 w-1.5 rounded-full bg-slate-400 ml-1" title="O'zgartirilgan" />}
+          {isDirtyCss && <span className="h-2 w-2 rounded-full bg-amber-500 ml-1" title="O'zgartirilgan" />}
         </button>
       </div>
 
-      <div className="flex items-center gap-2 pb-1">
+      <div className="flex items-center gap-2 pb-1.5">
         {onFormat && (
           <button
             onClick={() => {
@@ -341,9 +341,9 @@ export const VsCodeTabs: React.FC<{
               onFormat();
             }}
             title="Kodni formatlash (Shift+Alt+F)"
-            className="text-[11px] font-mono text-slate-500 hover:text-slate-900 hover:bg-white px-2 py-1 rounded border border-transparent hover:border-slate-200 transition-all inline-flex items-center gap-1"
+            className="text-xs font-mono font-medium text-slate-600 hover:text-slate-900 hover:bg-white px-2.5 py-1.5 rounded-lg border border-transparent hover:border-slate-200 shadow-xs transition-all inline-flex items-center gap-1.5"
           >
-            <AlignLeft className="w-3.5 h-3.5 text-slate-500" />
+            <AlignLeft className="w-4 h-4 text-slate-500" />
             <span>Formatlash</span>
           </button>
         )}
@@ -354,7 +354,7 @@ export const VsCodeTabs: React.FC<{
               onReset();
             }}
             title="Kodni boshlang'ich holatga qaytarish"
-            className="text-[11px] text-slate-500 hover:text-rose-600 px-2 py-1 rounded transition-all"
+            className="text-xs font-medium text-slate-500 hover:text-rose-600 px-2.5 py-1.5 rounded-lg transition-all"
           >
             Qaytarish
           </button>
@@ -372,19 +372,19 @@ export const VsCodeStatusBar: React.FC<{
   passedCount?: number;
 }> = ({ cursorPos = { line: 1, col: 1 }, activeTab, testCount = 0, passedCount = 0 }) => {
   return (
-    <div className="flex items-center justify-between px-3 py-1 bg-slate-100/80 border-t border-slate-200/80 text-[11px] text-slate-600 font-mono select-none">
+    <div className="flex items-center justify-between px-4 py-1.5 bg-slate-100/90 border-t border-slate-200/80 text-xs text-slate-600 font-mono select-none">
       <div className="flex items-center gap-3">
-        <span className="flex items-center gap-1 text-slate-700">
-          <Terminal className="w-3 h-3 text-lime-700" />
+        <span className="flex items-center gap-1.5 text-slate-800 font-medium">
+          <Terminal className="w-3.5 h-3.5 text-lime-700" />
           <span>O'zing Yoz v2.6</span>
         </span>
         <span className="text-slate-300">|</span>
-        <span className={passedCount === testCount && testCount > 0 ? "text-lime-700 font-semibold" : ""}>
+        <span className={passedCount === testCount && testCount > 0 ? "text-lime-700 font-bold" : "font-medium"}>
           Testlar: {passedCount}/{testCount} o'tdi
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 font-medium">
         <span>
           Qat {cursorPos.line}, Ust {cursorPos.col}
         </span>
@@ -393,7 +393,7 @@ export const VsCodeStatusBar: React.FC<{
         <span className="text-slate-300">|</span>
         <span>UTF-8</span>
         <span className="text-slate-300">|</span>
-        <span className="font-semibold uppercase text-slate-800">{activeTab}</span>
+        <span className="font-bold uppercase text-slate-900">{activeTab}</span>
       </div>
     </div>
   );

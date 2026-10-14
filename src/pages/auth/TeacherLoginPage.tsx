@@ -65,68 +65,68 @@ export const TeacherLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-4 bg-[#F8FAFC]">
-      <header className="max-w-md w-full mx-auto pt-6 flex items-center justify-between">
+    <div className="min-h-screen flex flex-col justify-between p-4 sm:p-6 bg-[#F8FAFC]">
+      <header className="max-w-xl w-full mx-auto pt-6 flex items-center justify-between">
         <Link
           to="/login"
           onClick={() => sounds.playClick()}
-          className="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1 font-medium transition-all"
+          className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1.5 font-medium transition-all"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-4 h-4" />
           <span>Talaba kirishiga qaytish</span>
         </Link>
         <SoundToggle />
       </header>
 
-      <main className="max-w-md w-full mx-auto my-auto py-6">
+      <main className="max-w-xl w-full mx-auto my-auto py-8">
         <form
           onSubmit={handleTeacherLogin}
-          className="glass-panel p-8 space-y-5 shadow-glass-lg rounded-2xl border border-slate-200/80"
+          className="glass-panel p-8 sm:p-10 space-y-6 shadow-glass-lg rounded-2xl border border-slate-200/80"
         >
           {/* Header */}
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 mx-auto rounded-2xl bg-slate-900 text-lime-400 flex items-center justify-center shadow-glass">
-              <ShieldCheck className="w-6 h-6 text-lime-400" />
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-900 text-lime-400 flex items-center justify-center shadow-glass">
+              <ShieldCheck className="w-7 h-7 text-lime-400" />
             </div>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Ustozlar Tizimi</h2>
-            <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Ustozlar Tizimi</h2>
+            <p className="text-sm text-slate-500 leading-relaxed max-w-sm mx-auto">
               Faqat IT o'quv markazi ustozlari va ma'murlar uchun. Yangi hisob ochish talab qilinmaydi.
             </p>
           </div>
 
           {error && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-medium leading-relaxed">
+            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-700 font-medium leading-relaxed">
               {error}
             </div>
           )}
 
-          <div className="space-y-3.5">
+          <div className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-slate-700 mb-1 block">Ustoz Elektron Pochtasi</label>
+              <label className="text-sm font-semibold text-slate-700 mb-1.5 block">Ustoz Elektron Pochtasi</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
                   required
                   type="email"
                   placeholder="teacher@ilmla.uz"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="glass-input pl-9.5 text-xs font-mono"
+                  className="glass-input pl-10 text-sm font-mono py-2.5"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 mb-1 block">Ustoz Paroli</label>
+              <label className="text-sm font-semibold text-slate-700 mb-1.5 block">Ustoz Paroli</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
                   required
                   type="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="glass-input pl-9.5 text-xs"
+                  className="glass-input pl-10 text-sm py-2.5"
                 />
               </div>
             </div>
@@ -135,22 +135,22 @@ export const TeacherLoginPage: React.FC = () => {
           {/* Quick Credential Badge */}
           <div
             onClick={handleFillDemo}
-            className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-[11px] text-slate-600 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition-all select-none"
+            className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 text-sm text-slate-700 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition-all select-none"
             title="Bosing va avtomatik to'ldiring"
           >
-            <div className="flex items-center gap-2">
-              <KeyRound className="w-3.5 h-3.5 text-lime-700" />
+            <div className="flex items-center gap-2.5">
+              <KeyRound className="w-4 h-4 text-lime-700" />
               <span>
                 Kirish: <strong>teacher@ilmla.uz</strong> / <strong>teacher</strong>
               </span>
             </div>
-            <span className="text-[10px] text-lime-700 font-bold underline">To'ldirish</span>
+            <span className="text-xs text-lime-700 font-bold underline">To'ldirish</span>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="glass-btn-primary w-full py-2.5 text-xs font-bold shadow-xs inline-flex items-center justify-center gap-2"
+            className="glass-btn-primary w-full py-3.5 text-sm font-bold shadow-xs inline-flex items-center justify-center gap-2 rounded-xl"
           >
             <span>{loading ? "Tekshirilmoqda..." : "Ustoz kabinetiga kirish"}</span>
             <ArrowRight className="w-4 h-4" />
@@ -158,7 +158,7 @@ export const TeacherLoginPage: React.FC = () => {
         </form>
       </main>
 
-      <footer className="text-center py-4 text-xs text-slate-400">
+      <footer className="text-center py-4 text-sm text-slate-400">
         O'zing Yoz Ustoz Portali — Faqat tasdiqlangan instruktorlar uchun
       </footer>
     </div>

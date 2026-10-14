@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-lime-200 selection:text-slate-900;
+    background-image: 
+      radial-gradient(at 12% 10%, rgba(163, 230, 53, 0.10) 0px, transparent 45%),
+      radial-gradient(at 88% 15%, rgba(56, 189, 248, 0.10) 0px, transparent 45%),
+      radial-gradient(at 50% 90%, rgba(241, 245, 249, 0.9) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  /* Core Minimalist White Glassmorphism Primitives */
+  .glass-panel {
+    @apply bg-white/75 backdrop-blur-xl border border-white/80 shadow-glass rounded-xl;
+  }
+
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-lg border border-slate-200/70 shadow-glass-sm rounded-xl transition-all duration-200 hover:bg-white/90 hover:shadow-glass;
+  }
+
+  .glass-nav {
+    @apply bg-white/80 backdrop-blur-2xl border-b border-slate-200/70 sticky top-0 z-40;
+  }
+
+  .glass-input {
+    @apply w-full bg-white/80 backdrop-blur-md border border-slate-200/90 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-brand focus:shadow-focus transition-all;
+  }
+
+  .glass-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 active:scale-[0.99] transition-all disabled:opacity-50;
+  }
+
+  .glass-btn-brand {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[#84CC16] px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm hover:bg-[#65A30D] hover:text-white active:scale-[0.99] transition-all disabled:opacity-50;
+  }
+
+  .glass-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-white/80 backdrop-blur-md border border-slate-200/90 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100/80 active:scale-[0.99] transition-all disabled:opacity-50;
+  }
+}
+
+/* Pulse highlight for Level 2 line pointers in CodeMirror */
+@keyframes linePulse {
+  0%, 100% { background-color: rgba(251, 191, 36, 0.18); }
+  50% { background-color: rgba(251, 191, 36, 0.42); }
+}
+
+.cm-hint-line-highlight {
+  animation: linePulse 1s ease-in-out 2;
+  background-color: rgba(251, 191, 36, 0.20) !important;
+  border-left: 3px solid #D97706 !important;
+}

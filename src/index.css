@@ -24,52 +24,80 @@
 }
 
 @layer components {
-  /* Duolingo Signature 3D Tactile Buttons */
+  /* Mondly-inspired Modern Educational UI Primitives */
+  .mondly-card {
+    @apply bg-white border border-slate-200/80 shadow-sm rounded-2xl transition-all hover:shadow-md hover:border-slate-300;
+  }
+
+  .mondly-card-interactive {
+    @apply bg-white border border-slate-200/90 shadow-sm rounded-2xl p-5 transition-all duration-200 hover:shadow-md hover:border-emerald-300 hover:-translate-y-0.5 cursor-pointer;
+  }
+
+  .mondly-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .mondly-btn-sky {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .mondly-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold shadow-sm active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+  }
+
+  .mondly-nav-item {
+    @apply flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100/70;
+  }
+
+  .mondly-nav-item-active {
+    @apply flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs;
+  }
+
+  /* Duolingo & Hybrid Tactile Buttons */
   .duo-btn-green {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#58CC02] hover:bg-[#46A302] border-b-4 border-[#46A302] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply mondly-btn-primary;
   }
 
   .duo-btn-blue {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#1CB0F6] hover:bg-[#1899D6] border-b-4 border-[#1899D6] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply mondly-btn-sky;
   }
 
   .duo-btn-orange {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FF9600] hover:bg-[#E07D00] border-b-4 border-[#E07D00] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
   }
 
   .duo-btn-red {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FF4B4B] hover:bg-[#EA2B2B] border-b-4 border-[#EA2B2B] active:border-b-0 active:translate-y-1 text-white font-extrabold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
   }
 
   .duo-btn-white {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 border-b-4 border-b-slate-300 active:border-b-2 active:translate-y-0.5 text-slate-700 font-extrabold uppercase tracking-wider transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply mondly-btn-secondary;
   }
 
-  /* Duolingo Chunky Cards & Panels */
   .duo-card {
-    @apply bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl transition-all;
+    @apply mondly-card;
   }
 
   .duo-card-active {
-    @apply bg-[#F7FEE7] border-2 border-[#84CC16] border-b-4 border-b-[#65A30D] rounded-2xl transition-all;
+    @apply bg-emerald-50/60 border border-emerald-300 shadow-sm rounded-2xl transition-all;
   }
 
-  /* Duolingo Quiz Choice Cards (for test items and interactive choices) */
+  /* Interactive Choice Cards */
   .duo-choice-card {
-    @apply flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-200 border-b-4 border-b-slate-300 bg-white font-bold text-slate-700 transition-all;
+    @apply flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-white font-bold text-slate-700 shadow-xs transition-all;
   }
 
   .duo-choice-passed {
-    @apply bg-[#D7FFB8] border-2 border-[#58CC02] border-b-4 border-b-[#46A302] text-[#2e6d01];
+    @apply bg-emerald-50 border border-emerald-300 text-emerald-900 shadow-xs;
   }
 
   .duo-choice-failed {
-    @apply bg-[#FFDFE0] border-2 border-[#FF4B4B] border-b-4 border-b-[#EA2B2B] text-[#EA2B2B];
+    @apply bg-rose-50 border border-rose-300 text-rose-900 shadow-xs;
   }
 
-  /* Duolingo Mascot Speech Bubble */
+  /* Mascot Speech Bubble */
   .duo-speech-bubble {
-    @apply relative bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl p-4 shadow-sm;
+    @apply relative bg-white border border-slate-200 shadow-sm rounded-2xl p-4;
   }
 
   .duo-speech-bubble::before {
@@ -83,15 +111,15 @@
   }
 
   .glass-panel {
-    @apply bg-white border-2 border-slate-200/90 border-b-4 border-b-slate-300/80 rounded-2xl shadow-sm;
+    @apply bg-white border border-slate-200/80 shadow-sm rounded-2xl;
   }
 
   .glass-card {
-    @apply bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl transition-all hover:bg-slate-50/80;
+    @apply bg-white border border-slate-200/90 shadow-xs rounded-2xl transition-all hover:bg-slate-50/80 hover:shadow-sm;
   }
 
   .glass-nav {
-    @apply bg-white/95 backdrop-blur-md border-b-2 border-slate-200 sticky top-0 z-40;
+    @apply bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 shadow-xs;
   }
 
   .glass-input {

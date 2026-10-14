@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useNavigate, useParams, Navigate } from "react-router-dom";
 import {
   Sparkles,
   QrCode,
@@ -12,7 +12,9 @@ import {
   Lock,
   Mail,
   User,
-  GraduationCap
+  GraduationCap,
+  BookOpen,
+  Trophy
 } from "lucide-react";
 import { UZ } from "./lib/i18n/uz";
 import { supabase } from "./lib/supabase";
@@ -25,119 +27,122 @@ import { TeacherDashboard } from "./pages/teacher/TeacherDashboard";
 import { LiveControl } from "./pages/teacher/LiveControl";
 import { TeacherLoginPage } from "./pages/auth/TeacherLoginPage";
 
-// 1. LANDING PAGE (/)
+// 1. LANDING PAGE (/) - Mondly Modern Aesthetic
 const LandingPage: React.FC = () => {
   const profile = appStore.getProfile();
+  const isAuthenticated = Boolean(profile.id && !profile.is_guest && profile.email);
   const isTeacher = profile.role === "teacher";
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-white text-[#3C3C3C]">
-      {/* Navigation - Duolingo Desktop Style */}
-      <nav className="border-b-2 border-[#E5E5E5] px-6 sm:px-12 py-4 flex items-center justify-between w-full bg-white sticky top-0 z-40">
+    <div className="min-h-screen flex flex-col justify-between bg-white text-slate-800">
+      {/* Navigation - Mondly Sleek Header */}
+      <nav className="border-b border-slate-200/90 px-6 sm:px-12 py-4 flex items-center justify-between w-full bg-white/95 backdrop-blur-md sticky top-0 z-40">
         <BrandLogo size="lg" />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <SoundToggle />
-          {profile.email ? (
+          {isAuthenticated ? (
             <Link
               onClick={() => sounds.playClick()}
-              className="duo-btn-green text-xs sm:text-sm py-2.5 px-6 font-black inline-flex items-center gap-2"
+              className="mondly-btn-primary text-xs sm:text-sm py-2.5 px-6 font-bold inline-flex items-center gap-2"
               to={isTeacher ? "/teach" : "/app"}
             >
-              <span>{isTeacher ? "Ustoz Kabineti" : "Darslarga o'tish"}</span>
+              <span>{isTeacher ? "Ustoz Kabineti" : "Darslarimga o'tish"}</span>
               <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           ) : (
-            <>
+            <div className="flex items-center gap-2.5">
               <Link
                 onClick={() => sounds.playClick()}
-                className="duo-btn-white text-xs sm:text-sm py-2 px-5 font-black"
+                className="mondly-btn-secondary text-xs sm:text-sm py-2 px-5 font-bold"
                 to="/login"
               >
                 {UZ.cta.login}
               </Link>
               <Link
                 onClick={() => sounds.playClick()}
-                className="duo-btn-green text-xs sm:text-sm py-2 px-6 font-black"
+                className="mondly-btn-primary text-xs sm:text-sm py-2 px-6 font-bold"
                 to="/register"
               >
                 {UZ.cta.register}
               </Link>
-            </>
+            </div>
           )}
         </div>
       </nav>
 
-      {/* Hero Section - Duolingo High Energy Desktop Hero */}
+      {/* Hero Section - Mondly High Contrast Educational Hero */}
       <main className="w-full px-6 sm:px-12 lg:px-20 py-16 text-center space-y-10 my-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D7FFB8] border border-[#84CC16] text-xs font-black uppercase tracking-wider text-[#46A302]">
-          <Sparkles className="w-4 h-4 fill-[#58CC02]" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold uppercase tracking-wider text-emerald-800">
+          <Sparkles className="w-4 h-4 text-emerald-600" />
           <span>{UZ.tagline}</span>
         </div>
 
-        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-[#3C3C3C] leading-tight font-display">
-          Kod yoz. <span className="text-[#58CC02]">O'zing yoz!</span>
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-tight font-display">
+          Kod yozishni o'rgan. <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600">O'zing yoz!</span>
         </h1>
 
-        <p className="max-w-3xl mx-auto text-lg sm:text-2xl text-slate-600 leading-relaxed font-semibold">
-          IT o'quv markazlari uchun HTML va CSS amaliyot platformasi. Ustoz AI tayyor kodni bermaydi —
-          4 bosqichli maslahat zinapoyasi orqali har bir talabaga mustaqil fikrlab yozishni o'rgatadi.
+        <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-600 leading-relaxed font-normal">
+          IT o'quv markazlari uchun zamonaviy HTML va CSS amaliyot platformasi. Ustoz AI tayyor kod bermaydi —
+          4 bosqichli maslahat zinapoyasi orqali mustaqil fikrlab yozishga yo'naltiradi.
         </p>
 
-        {/* Action Buttons - Duolingo Chunky 3D Pushable Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 pt-4">
+        {/* Action Buttons */}
+        <div className="flex flex-wrap justify-center gap-4 pt-2">
           <Link
             onClick={() => sounds.playClick()}
-            className="duo-btn-green px-10 py-4 text-base font-black inline-flex items-center gap-3 shadow-md"
-            to="/app"
+            className="mondly-btn-primary px-9 py-3.5 text-base font-bold inline-flex items-center gap-2.5 shadow-md hover:shadow-lg"
+            to={isAuthenticated ? "/app" : "/register"}
           >
             <span>Darslarni Boshlash</span>
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link
-            onClick={() => sounds.playClick()}
-            className="duo-btn-white px-8 py-4 text-base font-black"
-            to="/teach/login"
-          >
-            Ustoz kabineti (teacher@ilmla.uz)
-          </Link>
+          {!isAuthenticated && (
+            <Link
+              onClick={() => sounds.playClick()}
+              className="mondly-btn-secondary px-8 py-3.5 text-base font-bold"
+              to="/login"
+            >
+              Tizimga kirish
+            </Link>
+          )}
         </div>
 
-        {/* Three Value Pillars - Duolingo 3D Chunky Cards */}
+        {/* Three Value Pillars - Mondly Style Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left pt-12 w-full">
-          <div className="duo-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-14 h-14 rounded-2xl bg-[#D7FFB8] border-b-4 border-[#84CC16] flex items-center justify-center text-[#46A302]">
-              <Sparkles className="w-7 h-7 stroke-[2.5]" />
+          <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-xs">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <h3 className="font-black text-xl text-slate-900">Ustoz AI (4 bosqichli)</h3>
-            <p className="text-base text-slate-600 leading-relaxed font-medium">
-              Savol → Yo'nalish → Tushuntirish → Qisman yechim. Leak-guard algoritmi tayyor javob chiqib ketishini qat'iy bloklaydi.
+            <h3 className="font-extrabold text-xl text-slate-900">Ustoz AI (Leak-Guard)</h3>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              Savol → Yo'nalish → Tushuntirish → Qisman yechim. Tayyor kod hech qachon berilmaydi, talaba o'z kodi muallifi bo'ladi.
             </p>
           </div>
 
-          <div className="duo-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-14 h-14 rounded-2xl bg-[#DDF4FF] border-b-4 border-[#1899D6] flex items-center justify-center text-[#1CB0F6]">
-              <QrCode className="w-7 h-7 stroke-[2.5]" />
+          <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 shadow-xs">
+              <QrCode className="w-6 h-6" />
             </div>
-            <h3 className="font-black text-xl text-slate-900">Jonli Musobaqa (Live QR)</h3>
-            <p className="text-base text-slate-600 leading-relaxed font-medium">
-              Talabalar 5 soniyada QR kod bilan ulanadi. Proyektorda real-vaqt reyting va konsept xaritasi jonli ko'rinadi.
+            <h3 className="font-extrabold text-xl text-slate-900">Jonli Musobaqa (Live QR)</h3>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              Talabalar 5 soniyada QR kod orqali ulanadi. Katta proyektor doskasida real-vaqt reytingi va konsept xaritasi ko'rinadi.
             </p>
           </div>
 
-          <div className="duo-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-14 h-14 rounded-2xl bg-[#FFEDB3] border-b-4 border-[#E07D00] flex items-center justify-center text-[#FF9600]">
-              <ShieldCheck className="w-7 h-7 stroke-[2.5]" />
+          <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
+              <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-black text-xl text-slate-900">Ustoz nazorati</h3>
-            <p className="text-base text-slate-600 leading-relaxed font-medium">
-              Qiynalayotgan talabalarning kodini jonli ko'ring, guruhga tezkor ko'rsatma (nudge) yuboring va AI bilan yangi topshiriq yarating.
+            <h3 className="font-extrabold text-xl text-slate-900">Xavfsiz Ustoz Nazorati</h3>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              Qiynalayotgan talabalar kodini jonli tekshiring, xonaga yo'riqnoma yuboring va AI bilan yangi topshiriqlar yarating.
             </p>
           </div>
         </div>
       </main>
 
-      <footer className="py-8 text-center text-sm font-bold text-slate-400 border-t-2 border-[#E5E5E5]">
-        O'zing Yoz © 2026 — "Javobni emas, yo'lni ko'rsatamiz."
+      <footer className="py-8 text-center text-sm font-semibold text-slate-400 border-t border-slate-200">
+        O'zing Yoz © 2026 — Har bir talaba o'z kodi muallifi
       </footer>
     </div>
   );
@@ -366,52 +371,171 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
   );
 };
 
-// 3. GUEST JOIN PAGE (/join/:code)
+// 3. STUDENT & TEACHER ROUTE GUARDS (Enforce Auth Strictly)
+const StudentRouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const profile = appStore.getProfile();
+  const isAuthenticated = Boolean(profile.id && !profile.is_guest && profile.email);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
+
+const TeacherRouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const profile = appStore.getProfile();
+  const isTeacher = Boolean(profile.id && !profile.is_guest && profile.role === "teacher");
+  if (!isTeacher) {
+    return <Navigate to="/teach/login" replace />;
+  }
+  return <>{children}</>;
+};
+
+// 4. GUEST / STUDENT JOIN PAGE (/join/:code)
 const GuestJoinPage: React.FC = () => {
   const { code = "FLX742" } = useParams();
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
+  const profile = appStore.getProfile();
+  const isAuthenticated = Boolean(profile.id && !profile.is_guest && profile.email);
 
-  const handleGuestJoin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nickname.trim()) return;
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleAuthenticatedJoin = () => {
     sounds.playSuccess();
-    appStore.setProfile({
-      id: `guest-${Date.now()}`,
-      full_name: nickname.trim(),
-      email: "",
-      username: `guest_${Date.now().toString().slice(-4)}`,
-      role: "student",
-      is_guest: true,
-    });
     navigate(`/room/${code.trim().toUpperCase()}`);
+  };
+
+  const handleRegisterAndJoin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    sounds.playClick();
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    try {
+      if (!fullName.trim()) throw new Error("Iltimos, ismingizni kiriting");
+      if (password.length < 6) throw new Error("Parol kamida 6 ta belgidan iborat bo'lishi kerak");
+
+      try {
+        await supabase.auth.signUp({
+          email: cleanEmail,
+          password,
+          options: { data: { full_name: fullName.trim(), role: "student" } },
+        });
+      } catch (_) {}
+
+      appStore.setProfile({
+        id: `student-${Date.now()}`,
+        full_name: fullName.trim(),
+        email: cleanEmail,
+        username: cleanEmail.split("@")[0].toLowerCase().replace(/[^a-z0-9_]/g, ""),
+        role: "student",
+        xp: 0,
+        streak: 0,
+        is_guest: false,
+      });
+
+      sounds.playSuccess();
+      navigate(`/room/${code.trim().toUpperCase()}`);
+    } catch (err: any) {
+      sounds.playError();
+      setError(err.message || "Ro'yxatdan o'tishda xatolik yuz berdi");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#F8FAFC]">
-      <form onSubmit={handleGuestJoin} className="glass-panel max-w-sm w-full p-8 space-y-5 text-center shadow-glass-lg rounded-2xl">
+      <div className="glass-panel max-w-md w-full p-8 space-y-6 text-center shadow-glass-lg rounded-2xl">
         <BrandLogo size="lg" />
+
         <div className="space-y-1">
-          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Jonli musobaqa xonasi</p>
+          <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Jonli musobaqa xonasi</p>
           <div className="font-mono text-3xl font-extrabold text-slate-900">{code}</div>
         </div>
 
-        <div className="text-left">
-          <label className="text-xs font-semibold text-slate-700 mb-1 block">Ismingiz</label>
-          <input
-            required
-            autoFocus
-            placeholder="Masalan: Sardor"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            className="glass-input text-center text-sm font-semibold py-2.5"
-          />
-        </div>
+        {isAuthenticated ? (
+          <div className="space-y-4 pt-2">
+            <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-sm text-emerald-900">
+              Salom, <strong>{profile.full_name}</strong>! Xonaga ulanishga tayyormisiz?
+            </div>
+            <button
+              onClick={handleAuthenticatedJoin}
+              className="mondly-btn-primary w-full py-3.5 text-base font-bold shadow-sm"
+            >
+              Musobaqaga qo'shilish →
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleRegisterAndJoin} className="space-y-4 text-left pt-2">
+            <p className="text-xs text-slate-500 font-semibold text-center">
+              Musobaqada qatnashish uchun talaba sifatida ro'yxatdan o'ting:
+            </p>
 
-        <button type="submit" className="duo-btn-green w-full py-3.5 text-sm font-black shadow-xs">
-          Xonaga qo'shilish →
-        </button>
-      </form>
+            {error && (
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-semibold">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 mb-1 block">To'liq ismingiz</label>
+              <input
+                required
+                autoFocus
+                placeholder="Masalan: Sardor Aliyev"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="glass-input text-sm py-2"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 mb-1 block">Elektron pochta (Email)</label>
+              <input
+                required
+                type="email"
+                placeholder="talaba@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="glass-input text-sm font-mono py-2"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 mb-1 block">Parol (kamida 6 ta belgi)</label>
+              <input
+                required
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="glass-input text-sm py-2"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="mondly-btn-primary w-full py-3.5 text-sm font-bold shadow-sm"
+            >
+              {loading ? "Yuklanmoqda..." : "Ro'yxatdan o'tib, xonaga kirish →"}
+            </button>
+
+            <p className="text-center text-xs text-slate-500 pt-1">
+              Hisobingiz bormi?{" "}
+              <Link to="/login" className="text-slate-900 font-bold underline">
+                Kirish
+              </Link>
+            </p>
+          </form>
+        )}
+      </div>
     </div>
   );
 };
@@ -425,12 +549,58 @@ export default function App() {
         <Route path="/register" element={<AuthPage mode="register" />} />
         <Route path="/teach/login" element={<TeacherLoginPage />} />
         <Route path="/join/:code" element={<GuestJoinPage />} />
-        <Route path="/app" element={<StudentDashboard />} />
-        <Route path="/app/challenges" element={<StudentDashboard />} />
-        <Route path="/app/challenge/:id" element={<Workspace />} />
-        <Route path="/room/:code" element={<Workspace isRoom={true} />} />
-        <Route path="/teach" element={<TeacherDashboard />} />
-        <Route path="/teach/live/:code" element={<LiveControl isProjector={false} />} />
+
+        {/* Protected Student Routes */}
+        <Route
+          path="/app"
+          element={
+            <StudentRouteGuard>
+              <StudentDashboard />
+            </StudentRouteGuard>
+          }
+        />
+        <Route
+          path="/app/challenges"
+          element={
+            <StudentRouteGuard>
+              <StudentDashboard />
+            </StudentRouteGuard>
+          }
+        />
+        <Route
+          path="/app/challenge/:id"
+          element={
+            <StudentRouteGuard>
+              <Workspace />
+            </StudentRouteGuard>
+          }
+        />
+        <Route
+          path="/room/:code"
+          element={
+            <StudentRouteGuard>
+              <Workspace isRoom={true} />
+            </StudentRouteGuard>
+          }
+        />
+
+        {/* Protected Teacher Routes */}
+        <Route
+          path="/teach"
+          element={
+            <TeacherRouteGuard>
+              <TeacherDashboard />
+            </TeacherRouteGuard>
+          }
+        />
+        <Route
+          path="/teach/live/:code"
+          element={
+            <TeacherRouteGuard>
+              <LiveControl isProjector={false} />
+            </TeacherRouteGuard>
+          }
+        />
         <Route path="/teach/live/:code/screen" element={<LiveControl isProjector={true} />} />
       </Routes>
     </BrowserRouter>

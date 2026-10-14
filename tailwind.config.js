@@ -34,17 +34,27 @@ export default {
           card: "#FFFFFF",
           border: "#E5E5E5",
         },
+        mondly: {
+          teal: "#0D9488",
+          emerald: "#10B981",
+          sky: "#0284C7",
+          navy: "#0F172A",
+          slate: "#1E293B",
+          surface: "#F8FAFC",
+          card: "#FFFFFF",
+          accent: "#F59E0B",
+        },
         brand: {
-          DEFAULT: "#58CC02", // Duolingo iconic feather green
-          light: "#D7FFB8",
-          glow: "#58CC02",
-          dark: "#46A302",
+          DEFAULT: "#10B981", // Mondly emerald
+          light: "#D1FAE5",
+          glow: "#34D399",
+          dark: "#059669",
         },
         hint: {
-          1: "#1CB0F6", // Sky blue (Savol)
-          2: "#FF9600", // Amber (Yo'nalish)
-          3: "#CE82FF", // Purple (Tushuntirish)
-          4: "#FF4B4B", // Rose (Qisman yechim)
+          1: "#0284C7", // Sky blue (Savol)
+          2: "#F59E0B", // Amber (Yo'nalish)
+          3: "#8B5CF6", // Purple (Tushuntirish)
+          4: "#EF4444", // Rose (Qisman yechim)
         },
       },
       boxShadow: {

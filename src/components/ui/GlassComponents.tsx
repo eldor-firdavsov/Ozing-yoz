@@ -26,7 +26,7 @@ export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md"
   };
   const iconSizes = {
     sm: "w-7 h-7 text-xs rounded-xl",
-    md: "w-9 h-9 text-sm rounded-2xl",
+    md: "w-9 h-9 text-sm rounded-xl",
     lg: "w-12 h-12 text-base rounded-2xl",
   };
   return (
@@ -34,11 +34,11 @@ export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md"
       onClick={() => sounds.playClick()}
       className="inline-flex items-center gap-2.5 font-display font-black tracking-tight select-none cursor-pointer group"
     >
-      <div className={`${iconSizes[size]} bg-[#58CC02] border-b-4 border-[#46A302] flex items-center justify-center text-white font-black shadow-xs group-hover:scale-105 group-active:translate-y-0.5 transition-all`}>
+      <div className={`${iconSizes[size]} bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-500 flex items-center justify-center text-white font-black shadow-sm group-hover:scale-105 transition-all`}>
         OY
       </div>
-      <span className={`${sizeClasses[size]} text-[#58CC02] font-black tracking-tight`}>
-        O'zing Yoz
+      <span className={`${sizeClasses[size]} text-slate-900 font-extrabold tracking-tight`}>
+        O'zing<span className="text-emerald-600">Yoz</span>
       </span>
     </div>
   );

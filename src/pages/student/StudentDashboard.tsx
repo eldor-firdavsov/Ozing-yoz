@@ -16,14 +16,17 @@ import {
   QrCode,
   Trophy,
   HelpCircle,
-  GraduationCap,
   Heart,
   Zap,
   Target,
   ChevronRight,
   Lock,
   Star,
-  Check
+  Check,
+  Calendar,
+  Layers,
+  Clock,
+  Play
 } from "lucide-react";
 import { appStore } from "../../lib/store";
 import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
@@ -43,6 +46,7 @@ export const StudentDashboard: React.FC = () => {
 
   const challenges = appStore.getChallenges();
   const completedCount = challenges.filter((c) => appStore.isChallengeCompleted(c.id)).length;
+  const nextChallenge = challenges.find((c) => !appStore.isChallengeCompleted(c.id)) || challenges[0];
 
   const topics = [
     { id: "all", label: "Barchasi" },
@@ -63,7 +67,7 @@ export const StudentDashboard: React.FC = () => {
     return matchesSearch && matchesTopic && matchesLevel;
   });
 
-  // Split into Duolingo-style Units
+  // Group into Curriculum Units
   const unit1 = filteredChallenges.filter((c) => c.level === 1 || c.topics.includes("forms"));
   const unit2 = filteredChallenges.filter((c) => c.level === 2 && !c.topics.includes("forms"));
   const unit3 = filteredChallenges.filter((c) => c.level === 3 || (!unit1.includes(c) && !unit2.includes(c)));
@@ -82,27 +86,36 @@ export const StudentDashboard: React.FC = () => {
     navigate("/login");
   };
 
+  const weekDays = [
+    { label: "Du", active: true },
+    { label: "Se", active: completedCount > 0 },
+    { label: "Cho", active: completedCount > 1 },
+    { label: "Pa", active: completedCount > 3 },
+    { label: "Ju", active: completedCount > 5 },
+    { label: "Sha", active: false },
+    { label: "Yak", active: false },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#FFFFFF] flex flex-col md:flex-row text-[#3C3C3C] selection:bg-[#D7FFB8]">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row text-slate-800 selection:bg-emerald-100">
       {/* ======================================================== */}
-      {/* 1. DUOLINGO DESKTOP LEFT STICKY SIDEBAR (w-64)            */}
+      {/* 1. MONDLY-STYLE LEFT NAVIGATION SIDEBAR (w-64)            */}
       {/* ======================================================== */}
-      <aside className="w-64 border-r-2 border-[#E5E5E5] bg-white h-screen sticky top-0 hidden md:flex flex-col justify-between p-4 shrink-0 select-none z-30">
+      <aside className="w-64 border-r border-slate-200/90 bg-white h-screen sticky top-0 hidden md:flex flex-col justify-between p-5 shrink-0 select-none z-30 shadow-xs">
         <div className="space-y-6">
-          {/* Duolingo Brand Header */}
-          <div className="px-3 pt-2">
+          <div className="px-1 pt-1">
             <BrandLogo size="md" />
           </div>
 
-          {/* Navigation Links with 3D Pill Look */}
-          <nav className="space-y-2">
+          {/* Student-Only Navigation Links */}
+          <nav className="space-y-1.5">
             <Link
               to="/app"
               onClick={() => sounds.playClick()}
-              className="flex items-center gap-4 px-4 py-3 rounded-2xl bg-[#DDF4FF] text-[#1CB0F6] border-2 border-[#84D8FF] border-b-4 border-b-[#1CB0F6] font-extrabold text-sm uppercase tracking-wider transition-all"
+              className="mondly-nav-item-active"
             >
-              <BookOpen className="w-5 h-5 stroke-[2.5]" />
-              <span>O'rganish</span>
+              <BookOpen className="w-5 h-5 text-emerald-600" />
+              <span>Darslar & Kurs</span>
             </Link>
 
             <button
@@ -110,10 +123,10 @@ export const StudentDashboard: React.FC = () => {
                 sounds.playClick();
                 setShowJoinModal(true);
               }}
-              className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border-2 border-transparent font-extrabold text-sm uppercase tracking-wider transition-all"
+              className="w-full mondly-nav-item"
             >
-              <Trophy className="w-5 h-5 text-[#FFC800] stroke-[2.5]" />
-              <span>Musobaqa</span>
+              <Trophy className="w-5 h-5 text-amber-500" />
+              <span>Jonli Musobaqa</span>
             </button>
 
             <button
@@ -121,35 +134,26 @@ export const StudentDashboard: React.FC = () => {
                 sounds.playClick();
                 setShowHelpModal(true);
               }}
-              className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border-2 border-transparent font-extrabold text-sm uppercase tracking-wider transition-all"
+              className="w-full mondly-nav-item"
             >
-              <Sparkles className="w-5 h-5 text-[#58CC02] stroke-[2.5]" />
-              <span>Ustoz AI</span>
+              <Sparkles className="w-5 h-5 text-sky-500" />
+              <span>Ustoz AI Qo'llanma</span>
             </button>
-
-            <Link
-              to="/teach/login"
-              onClick={() => sounds.playClick()}
-              className="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 border-2 border-transparent font-extrabold text-sm uppercase tracking-wider transition-all"
-            >
-              <GraduationCap className="w-5 h-5 text-indigo-500 stroke-[2.5]" />
-              <span>Ustoz Kabineti</span>
-            </Link>
           </nav>
         </div>
 
-        {/* Bottom User Profile Section */}
-        <div className="pt-4 border-t-2 border-[#E5E5E5] space-y-3">
+        {/* Bottom Student Profile & Logout (No Teacher Links!) */}
+        <div className="pt-4 border-t border-slate-200/90 space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#58CC02] text-white flex items-center justify-center font-black text-lg border-b-2 border-[#46A302]">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-base shadow-xs">
                 {profile.full_name ? profile.full_name.charAt(0).toUpperCase() : "T"}
               </div>
               <div className="overflow-hidden">
-                <p className="font-extrabold text-sm text-slate-900 truncate">
-                  {profile.full_name || "Mehmon talaba"}
+                <p className="font-bold text-sm text-slate-900 truncate">
+                  {profile.full_name || "Talaba"}
                 </p>
-                <p className="text-xs font-bold text-slate-400">Talaba</p>
+                <p className="text-xs text-emerald-600 font-semibold">{profile.xp} XP to'plandi</p>
               </div>
             </div>
             <SoundToggle />
@@ -157,49 +161,117 @@ export const StudentDashboard: React.FC = () => {
 
           <button
             onClick={handleLogout}
-            className="w-full duo-btn-white py-2 text-xs font-extrabold text-slate-500 hover:text-rose-600"
+            className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50/50 transition-all"
           >
-            <LogOut className="w-4 h-4 mr-1.5" />
-            <span>Chiqish</span>
+            <LogOut className="w-4 h-4" />
+            <span>Hisobdan chiqish</span>
           </button>
         </div>
       </aside>
 
       {/* ======================================================== */}
-      {/* 2. CENTER FEED: DUOLINGO UNITS LEARNING PATH (Expanded)   */}
+      {/* 2. CENTER FEED: MONDLY CURRICULUM ROADMAP                 */}
       {/* ======================================================== */}
-      <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-4xl w-full mx-auto space-y-8">
+      <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-4xl w-full mx-auto space-y-7">
         {/* Mobile Header (Hidden on Desktop) */}
-        <header className="md:hidden flex items-center justify-between p-4 bg-white border-2 border-[#E5E5E5] rounded-2xl">
+        <header className="md:hidden flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl shadow-xs">
           <BrandLogo size="sm" />
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 font-black text-[#FF9600]">
-              <Flame className="w-5 h-5 fill-[#FF9600]" />
+            <div className="flex items-center gap-1 font-bold text-amber-600 text-sm">
+              <Flame className="w-4 h-4 text-amber-500" />
               <span>{profile.streak}</span>
             </div>
-            <div className="flex items-center gap-1.5 font-black text-[#FFC800]">
-              <Zap className="w-5 h-5 fill-[#FFC800]" />
-              <span>{profile.xp}</span>
+            <div className="flex items-center gap-1 font-bold text-emerald-600 text-sm">
+              <Zap className="w-4 h-4 text-emerald-500" />
+              <span>{profile.xp} XP</span>
             </div>
             <SoundToggle />
           </div>
         </header>
 
-        {/* Filter and Search Bar (Duolingo Pill Bar) */}
-        <div className="duo-card p-4 space-y-3">
+        {/* Mondly-style Activity & Streak Tracker Banner */}
+        <div className="mondly-card p-5 sm:p-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 text-white rounded-2xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="space-y-1">
+            <span className="text-xs uppercase font-extrabold tracking-widest text-emerald-100 flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Haftalik Faollik</span>
+            </span>
+            <h2 className="text-2xl font-extrabold text-white">
+              Salom, {profile.full_name ? profile.full_name.split(" ")[0] : "Talaba"}!
+            </h2>
+            <p className="text-xs sm:text-sm text-emerald-100 font-medium max-w-md">
+              Har kuni 1 ta topshiriq bajarib ketma-ketlikni oshiring va mustaqil dasturchi bo'ling.
+            </p>
+          </div>
+
+          {/* 7-Day Week Activity Tracker */}
+          <div className="flex items-center gap-2 self-stretch md:self-auto justify-between bg-white/15 backdrop-blur-md p-2.5 rounded-xl border border-white/20">
+            {weekDays.map((day, idx) => (
+              <div key={idx} className="flex flex-col items-center gap-1 text-center px-1.5">
+                <span className="text-[10px] uppercase font-bold text-white/80">{day.label}</span>
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                    day.active
+                      ? "bg-white text-emerald-700 shadow-xs"
+                      : "bg-white/20 text-white/60"
+                  }`}
+                >
+                  {day.active ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : "•"}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Featured Next Lesson (Mondly Daily Challenge Card) */}
+        {nextChallenge && (
+          <div className="mondly-card p-5 sm:p-6 bg-white border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shrink-0">
+                <Play className="w-6 h-6 fill-emerald-600 text-emerald-600" />
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    Tavsiya etilgan amaliyot
+                  </span>
+                  <span className="text-xs font-semibold text-slate-500 font-mono">
+                    {nextChallenge.level}-daraja
+                  </span>
+                </div>
+                <h3 className="font-extrabold text-lg text-slate-900">{nextChallenge.title}</h3>
+                <p className="text-xs text-slate-500 line-clamp-1">
+                  {nextChallenge.description_md.replace(/[`*]/g, "")}
+                </p>
+              </div>
+            </div>
+
+            <Link
+              to={`/app/challenge/${nextChallenge.id}`}
+              onClick={() => sounds.playClick()}
+              className="mondly-btn-primary px-6 py-2.5 text-xs font-bold shrink-0 self-end sm:self-auto"
+            >
+              <span>Boshlash</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
+
+        {/* Filter and Search Bar */}
+        <div className="mondly-card p-4 space-y-3">
           <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div className="relative w-full sm:w-1/2">
-              <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-3" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Mashq nomi yoki mavzu bo'yicha qidiruv..."
-                className="w-full bg-[#F7F7F7] border-2 border-slate-200 rounded-xl pl-11 pr-4 py-2 text-sm font-semibold focus:outline-none focus:border-[#58CC02] focus:bg-white transition-all"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-sm font-medium focus:outline-none focus:border-emerald-500 focus:bg-white transition-all"
               />
             </div>
 
             <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
-              <span className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">
+              <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">
                 Daraja:
               </span>
               {(["all", 1, 2, 3] as const).map((lvl) => (
@@ -209,10 +281,10 @@ export const StudentDashboard: React.FC = () => {
                     sounds.playClick();
                     setSelectedLevel(lvl);
                   }}
-                  className={`text-xs px-3.5 py-1.5 rounded-xl font-extrabold uppercase transition-all ${
+                  className={`text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${
                     selectedLevel === lvl
-                      ? "bg-[#58CC02] text-white border-b-2 border-[#46A302]"
-                      : "bg-[#F7F7F7] border border-slate-200 text-slate-600 hover:bg-slate-100"
+                      ? "bg-slate-900 text-white shadow-xs"
+                      : "bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100"
                   }`}
                 >
                   {lvl === "all" ? "Barchasi" : `${lvl}-daraja`}
@@ -230,10 +302,10 @@ export const StudentDashboard: React.FC = () => {
                   sounds.playClick();
                   setSelectedTopic(t.id);
                 }}
-                className={`text-xs font-extrabold px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-all uppercase tracking-wider ${
+                className={`text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
                   selectedTopic === t.id
-                    ? "bg-[#1CB0F6] text-white border-b-2 border-[#1899D6]"
-                    : "bg-[#F7F7F7] border border-slate-200 text-slate-600 hover:bg-slate-100"
+                    ? "bg-emerald-600 text-white shadow-xs font-bold"
+                    : "bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100"
                 }`}
               >
                 {t.label}
@@ -243,21 +315,21 @@ export const StudentDashboard: React.FC = () => {
         </div>
 
         {/* ======================================================== */}
-        {/* UNIT 1: HTML ASOSLARI (Duolingo Green Banner)           */}
+        {/* UNIT 1: HTML ASOSLARI                                    */}
         {/* ======================================================== */}
-        <section className="space-y-4">
-          <div className="bg-[#58CC02] border-b-4 border-[#46A302] text-white p-6 rounded-2xl shadow-sm flex items-center justify-between">
-            <div className="space-y-1">
-              <span className="text-xs uppercase font-extrabold tracking-widest text-[#D7FFB8]">
-                1-BO'LIM
+        <section className="space-y-3.5">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white flex items-center justify-between shadow-xs">
+            <div className="space-y-0.5">
+              <span className="text-[11px] uppercase font-bold tracking-widest text-emerald-100">
+                1-Mavzular to'plami
               </span>
-              <h2 className="text-2xl font-black text-white">HTML Asoslari va Matnlar</h2>
-              <p className="text-sm font-semibold text-[#D7FFB8]">
-                Teglar, sarlavhalar, paragraflar va formalar bilan boshlang'ich sahifani yozing
+              <h2 className="text-xl font-bold text-white">HTML Asoslari va Semantika</h2>
+              <p className="text-xs text-emerald-100 font-normal">
+                Teglar, matnlar, sarlavhalar va formalar tuzilishi
               </p>
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-              <BookOpen className="w-7 h-7 text-white stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <BookOpen className="w-5 h-5 text-white" />
             </div>
           </div>
 
@@ -267,31 +339,43 @@ export const StudentDashboard: React.FC = () => {
               return (
                 <div
                   key={c.id}
-                  className={`duo-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-slate-300 ${
-                    isDone ? "bg-[#F7FEE7] border-lime-300 border-b-lime-400" : ""
+                  className={`mondly-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-emerald-300 ${
+                    isDone ? "bg-emerald-50/30 border-emerald-200" : ""
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black text-xl border-b-4 ${
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
                         isDone
-                          ? "bg-[#58CC02] border-[#46A302] text-white"
-                          : "bg-[#F7F7F7] border-slate-300 text-slate-700"
+                          ? "bg-emerald-500 border-emerald-600 text-white shadow-xs"
+                          : "bg-slate-50 border-slate-200 text-slate-700"
                       }`}
                     >
-                      {isDone ? <Check className="w-7 h-7 stroke-[3]" /> : <Star className="w-6 h-6 fill-[#FFC800] text-[#FFC800]" />}
+                      {isDone ? (
+                        <Check className="w-6 h-6 stroke-[3]" />
+                      ) : (
+                        <span className="font-mono text-sm font-bold text-slate-500">#{c.level}</span>
+                      )}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 uppercase">
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
                           {c.level}-daraja
                         </span>
-                        <span className="text-xs font-mono font-bold text-[#FF9600]">
+                        <div className="flex items-center gap-0.5 text-amber-400">
+                          {[1, 2, 3].map((star) => (
+                            <Star
+                              key={star}
+                              className={`w-3.5 h-3.5 ${isDone ? "fill-amber-400 text-amber-400" : "text-slate-300"}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs font-mono font-bold text-emerald-600">
                           +100 XP
                         </span>
                       </div>
-                      <h3 className="font-extrabold text-lg text-slate-900 mt-0.5">{c.title}</h3>
-                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-medium">
+                      <h3 className="font-bold text-base text-slate-900 mt-1">{c.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
                         {c.description_md.replace(/[`*]/g, "")}
                       </p>
                     </div>
@@ -300,10 +384,10 @@ export const StudentDashboard: React.FC = () => {
                   <Link
                     onClick={() => sounds.playClick()}
                     to={`/app/challenge/${c.id}`}
-                    className={`${isDone ? "duo-btn-white" : "duo-btn-green"} px-6 py-2.5 text-xs shrink-0 self-end sm:self-auto`}
+                    className={`${isDone ? "mondly-btn-secondary" : "mondly-btn-primary"} px-5 py-2 text-xs font-bold shrink-0 self-end sm:self-auto`}
                   >
                     <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               );
@@ -312,21 +396,21 @@ export const StudentDashboard: React.FC = () => {
         </section>
 
         {/* ======================================================== */}
-        {/* UNIT 2: CSS FLEXBOX TARTIBI (Duolingo Blue Banner)       */}
+        {/* UNIT 2: CSS FLEXBOX                                      */}
         {/* ======================================================== */}
-        <section className="space-y-4 pt-4">
-          <div className="bg-[#1CB0F6] border-b-4 border-[#1899D6] text-white p-6 rounded-2xl shadow-sm flex items-center justify-between">
-            <div className="space-y-1">
-              <span className="text-xs uppercase font-extrabold tracking-widest text-[#DDF4FF]">
-                2-BO'LIM
+        <section className="space-y-3.5 pt-2">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white flex items-center justify-between shadow-xs">
+            <div className="space-y-0.5">
+              <span className="text-[11px] uppercase font-bold tracking-widest text-sky-100">
+                2-Mavzular to'plami
               </span>
-              <h2 className="text-2xl font-black text-white">Flexbox va Zamonaviy Joylashuv</h2>
-              <p className="text-sm font-semibold text-[#DDF4FF]">
-                Elementlarni markazlash, navbar yasash va interaktiv tugmalar
+              <h2 className="text-xl font-bold text-white">Flexbox va Zamonaviy Joylashuv</h2>
+              <p className="text-xs text-sky-100 font-normal">
+                Elementlarni markazlash, qatorlar va navigatsiya menyusi
               </p>
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-              <Sparkles className="w-7 h-7 text-white stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <Sparkles className="w-5 h-5 text-white" />
             </div>
           </div>
 
@@ -336,31 +420,43 @@ export const StudentDashboard: React.FC = () => {
               return (
                 <div
                   key={c.id}
-                  className={`duo-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-slate-300 ${
-                    isDone ? "bg-[#F7FEE7] border-lime-300 border-b-lime-400" : ""
+                  className={`mondly-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-sky-300 ${
+                    isDone ? "bg-sky-50/30 border-sky-200" : ""
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black text-xl border-b-4 ${
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
                         isDone
-                          ? "bg-[#58CC02] border-[#46A302] text-white"
-                          : "bg-[#F7F7F7] border-slate-300 text-slate-700"
+                          ? "bg-sky-500 border-sky-600 text-white shadow-xs"
+                          : "bg-slate-50 border-slate-200 text-slate-700"
                       }`}
                     >
-                      {isDone ? <Check className="w-7 h-7 stroke-[3]" /> : <Star className="w-6 h-6 fill-[#FFC800] text-[#FFC800]" />}
+                      {isDone ? (
+                        <Check className="w-6 h-6 stroke-[3]" />
+                      ) : (
+                        <span className="font-mono text-sm font-bold text-slate-500">#{c.level}</span>
+                      )}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 uppercase">
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
                           {c.level}-daraja
                         </span>
-                        <span className="text-xs font-mono font-bold text-[#FF9600]">
+                        <div className="flex items-center gap-0.5 text-amber-400">
+                          {[1, 2, 3].map((star) => (
+                            <Star
+                              key={star}
+                              className={`w-3.5 h-3.5 ${isDone ? "fill-amber-400 text-amber-400" : "text-slate-300"}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs font-mono font-bold text-sky-600">
                           +100 XP
                         </span>
                       </div>
-                      <h3 className="font-extrabold text-lg text-slate-900 mt-0.5">{c.title}</h3>
-                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-medium">
+                      <h3 className="font-bold text-base text-slate-900 mt-1">{c.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
                         {c.description_md.replace(/[`*]/g, "")}
                       </p>
                     </div>
@@ -369,10 +465,10 @@ export const StudentDashboard: React.FC = () => {
                   <Link
                     onClick={() => sounds.playClick()}
                     to={`/app/challenge/${c.id}`}
-                    className={`${isDone ? "duo-btn-white" : "duo-btn-blue"} px-6 py-2.5 text-xs shrink-0 self-end sm:self-auto`}
+                    className={`${isDone ? "mondly-btn-secondary" : "mondly-btn-sky"} px-5 py-2 text-xs font-bold shrink-0 self-end sm:self-auto`}
                   >
                     <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               );
@@ -381,21 +477,21 @@ export const StudentDashboard: React.FC = () => {
         </section>
 
         {/* ======================================================== */}
-        {/* UNIT 3: CSS GRID & RESPONSIVE (Duolingo Purple Banner)   */}
+        {/* UNIT 3: CSS GRID & RESPONSIVE                            */}
         {/* ======================================================== */}
-        <section className="space-y-4 pt-4">
-          <div className="bg-[#CE82FF] border-b-4 border-[#A55EEA] text-white p-6 rounded-2xl shadow-sm flex items-center justify-between">
-            <div className="space-y-1">
-              <span className="text-xs uppercase font-extrabold tracking-widest text-[#F3E8FF]">
-                3-BO'LIM
+        <section className="space-y-3.5 pt-2">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white flex items-center justify-between shadow-xs">
+            <div className="space-y-0.5">
+              <span className="text-[11px] uppercase font-bold tracking-widest text-purple-100">
+                3-Mavzular to'plami
               </span>
-              <h2 className="text-2xl font-black text-white">CSS Grid va Responsive Dizayn</h2>
-              <p className="text-sm font-semibold text-[#F3E8FF]">
-                Murakkab to'rlar, moslashuvchan media so'rovlari va professional tartib
+              <h2 className="text-xl font-bold text-white">CSS Grid va Moslashuvchan Dizayn</h2>
+              <p className="text-xs text-purple-100 font-normal">
+                Galereyalar, kartalar to'plami va mobil ekran moslashuvi
               </p>
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-              <Trophy className="w-7 h-7 text-white stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+              <Trophy className="w-5 h-5 text-white" />
             </div>
           </div>
 
@@ -405,31 +501,43 @@ export const StudentDashboard: React.FC = () => {
               return (
                 <div
                   key={c.id}
-                  className={`duo-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-slate-300 ${
-                    isDone ? "bg-[#F7FEE7] border-lime-300 border-b-lime-400" : ""
+                  className={`mondly-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-purple-300 ${
+                    isDone ? "bg-purple-50/30 border-purple-200" : ""
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 font-black text-xl border-b-4 ${
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
                         isDone
-                          ? "bg-[#58CC02] border-[#46A302] text-white"
-                          : "bg-[#F7F7F7] border-slate-300 text-slate-700"
+                          ? "bg-purple-500 border-purple-600 text-white shadow-xs"
+                          : "bg-slate-50 border-slate-200 text-slate-700"
                       }`}
                     >
-                      {isDone ? <Check className="w-7 h-7 stroke-[3]" /> : <Star className="w-6 h-6 fill-[#FFC800] text-[#FFC800]" />}
+                      {isDone ? (
+                        <Check className="w-6 h-6 stroke-[3]" />
+                      ) : (
+                        <span className="font-mono text-sm font-bold text-slate-500">#{c.level}</span>
+                      )}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 uppercase">
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
                           {c.level}-daraja
                         </span>
-                        <span className="text-xs font-mono font-bold text-[#FF9600]">
+                        <div className="flex items-center gap-0.5 text-amber-400">
+                          {[1, 2, 3].map((star) => (
+                            <Star
+                              key={star}
+                              className={`w-3.5 h-3.5 ${isDone ? "fill-amber-400 text-amber-400" : "text-slate-300"}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs font-mono font-bold text-purple-600">
                           +100 XP
                         </span>
                       </div>
-                      <h3 className="font-extrabold text-lg text-slate-900 mt-0.5">{c.title}</h3>
-                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-medium">
+                      <h3 className="font-bold text-base text-slate-900 mt-1">{c.title}</h3>
+                      <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
                         {c.description_md.replace(/[`*]/g, "")}
                       </p>
                     </div>
@@ -438,10 +546,10 @@ export const StudentDashboard: React.FC = () => {
                   <Link
                     onClick={() => sounds.playClick()}
                     to={`/app/challenge/${c.id}`}
-                    className={`${isDone ? "duo-btn-white" : "duo-btn-green"} px-6 py-2.5 text-xs shrink-0 self-end sm:self-auto`}
+                    className={`${isDone ? "mondly-btn-secondary" : "mondly-btn-primary"} px-5 py-2 text-xs font-bold shrink-0 self-end sm:self-auto`}
                   >
                     <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               );
@@ -451,69 +559,72 @@ export const StudentDashboard: React.FC = () => {
       </main>
 
       {/* ======================================================== */}
-      {/* 3. DUOLINGO DESKTOP RIGHT SIDEBAR (w-80)                  */}
+      {/* 3. MONDLY-STYLE RIGHT STATS SIDEBAR (w-80)                */}
       {/* ======================================================== */}
-      <aside className="w-80 p-6 space-y-6 hidden lg:block shrink-0 sticky top-0 h-screen overflow-y-auto select-none border-l-2 border-[#E5E5E5] bg-white">
-        {/* Top Floating Stat Pills */}
-        <div className="flex items-center justify-between gap-2 p-2 bg-[#F7F7F7] rounded-2xl border-2 border-[#E5E5E5]">
+      <aside className="w-80 p-6 space-y-6 hidden lg:block shrink-0 sticky top-0 h-screen overflow-y-auto select-none border-l border-slate-200/90 bg-white">
+        {/* Top Stat Summary Pills */}
+        <div className="grid grid-cols-3 gap-2 p-2 bg-slate-50 rounded-2xl border border-slate-200/90">
           {/* Streak Flame */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 font-extrabold text-sm text-[#FF9600]">
-            <Flame className="w-5 h-5 fill-[#FF9600]" />
-            <span>{profile.streak}</span>
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-slate-200/60 shadow-2xs">
+            <Flame className="w-5 h-5 text-amber-500" />
+            <span className="text-xs font-bold text-slate-900 mt-1">{profile.streak} kun</span>
+            <span className="text-[10px] text-slate-400 font-semibold">Ketma-ket</span>
           </div>
 
           {/* XP Lightning */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 font-extrabold text-sm text-[#FFC800]">
-            <Zap className="w-5 h-5 fill-[#FFC800]" />
-            <span>{profile.xp}</span>
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-slate-200/60 shadow-2xs">
+            <Zap className="w-5 h-5 text-emerald-500" />
+            <span className="text-xs font-bold text-slate-900 mt-1">{profile.xp} XP</span>
+            <span className="text-[10px] text-slate-400 font-semibold">Ball</span>
           </div>
 
-          {/* Hearts / Hints */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 font-extrabold text-sm text-[#FF4B4B]">
-            <Heart className="w-5 h-5 fill-[#FF4B4B]" />
-            <span>4/4</span>
+          {/* Completed */}
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-slate-200/60 shadow-2xs">
+            <Award className="w-5 h-5 text-sky-500" />
+            <span className="text-xs font-bold text-slate-900 mt-1">{completedCount}/{challenges.length}</span>
+            <span className="text-[10px] text-slate-400 font-semibold">Tugallandi</span>
           </div>
         </div>
 
-        {/* Daily Quests Card (Duolingo Style) */}
-        <div className="duo-card p-5 space-y-3">
+        {/* Daily Goal Card */}
+        <div className="mondly-card p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h4 className="font-black text-sm uppercase tracking-wider text-slate-800 flex items-center gap-2">
-              <Target className="w-4 h-4 text-[#58CC02]" />
+            <h4 className="font-bold text-sm text-slate-800 flex items-center gap-2">
+              <Target className="w-4 h-4 text-emerald-600" />
               <span>Kunlik Maqsad</span>
             </h4>
-            <span className="text-xs font-extrabold text-slate-400">
-              {Math.min(completedCount, 3)}/3
+            <span className="text-xs font-bold text-slate-500">
+              {Math.min(completedCount, 3)}/3 mashq
             </span>
           </div>
 
-          <p className="text-xs text-slate-600 font-semibold">
-            Bugun kamida 3 ta amaliy mashqni mustaqil yakunlang.
+          <p className="text-xs text-slate-500 leading-relaxed font-normal">
+            Har kuni kamida 3 ta amaliy topshiriqni mustaqil yakunlab bilimingizni mustahkamlang.
           </p>
 
-          <div className="w-full bg-[#E5E5E5] h-3.5 rounded-full overflow-hidden p-0.5">
+          <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden p-0.5">
             <div
-              className="h-full bg-[#58CC02] rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full transition-all duration-500"
               style={{ width: `${Math.min(100, (completedCount / 3) * 100)}%` }}
             />
           </div>
         </div>
 
         {/* Live Classroom Tournament Widget */}
-        <div className="duo-card p-5 space-y-3.5 bg-gradient-to-br from-white to-amber-50/40 border-amber-200">
+        <div className="mondly-card p-5 space-y-3.5 bg-gradient-to-br from-white to-amber-50/30 border-amber-200/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#FFC800] border-b-2 border-[#E5B400] flex items-center justify-center text-white shrink-0">
-              <Trophy className="w-5 h-5 stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <Trophy className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-black text-sm uppercase tracking-wider text-slate-900">
+              <h4 className="font-bold text-sm text-slate-900">
                 Jonli Musobaqa
               </h4>
-              <p className="text-xs text-slate-500 font-semibold">Sinf xonasiga ulanish</p>
+              <p className="text-xs text-slate-500">Sinf xonasiga ulanish</p>
             </div>
           </div>
 
-          <p className="text-xs text-slate-600 leading-relaxed font-semibold">
+          <p className="text-xs text-slate-600 leading-relaxed">
             Ustoz taqdim etgan 6 xonali xona kodini kiriting (masalan: <strong>FLX742</strong>).
           </p>
 
@@ -522,28 +633,28 @@ export const StudentDashboard: React.FC = () => {
               sounds.playClick();
               setShowJoinModal(true);
             }}
-            className="w-full duo-btn-orange py-2.5 text-xs font-black shadow-xs"
+            className="w-full mondly-btn-primary py-2.5 text-xs font-bold shadow-xs"
           >
             Xonaga ulanish →
           </button>
         </div>
 
-        {/* Ustoz AI Mascot Bubble Card */}
-        <div className="duo-card p-5 space-y-3 bg-[#F7FEE7] border-lime-300">
+        {/* Ustoz AI Advice Card */}
+        <div className="mondly-card p-5 space-y-3 bg-gradient-to-br from-white to-emerald-50/30 border-emerald-200/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#58CC02] border-b-2 border-[#46A302] flex items-center justify-center text-white shrink-0">
-              <Sparkles className="w-5 h-5 stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-black text-sm uppercase tracking-wider text-[#58CC02]">
-                Ustoz AI Maslahati
+              <h4 className="font-bold text-sm text-slate-900">
+                Ustoz AI
               </h4>
-              <p className="text-xs text-lime-800 font-bold">Zinapoya tizimi</p>
+              <p className="text-xs text-emerald-700 font-semibold">4 bosqichli maslahat</p>
             </div>
           </div>
 
-          <p className="text-xs text-slate-700 leading-relaxed font-semibold">
-            "Kodni tayyor ko'chirmang. 1-darajali maslahat orqali fikrlab o'zingiz yozing — natija ancha mustahkam bo'ladi!"
+          <p className="text-xs text-slate-600 leading-relaxed">
+            "Kodni tayyor ko'chirmang. 1-darajali maslahat bilan o'ylab yozish — mustaqil dasturchi bo'lishning yagona yo'lidir!"
           </p>
         </div>
       </aside>
@@ -553,7 +664,7 @@ export const StudentDashboard: React.FC = () => {
       {/* ======================================================== */}
       <GlassModal open={showJoinModal} onClose={() => setShowJoinModal(false)} title="Jonli Xonaga Ulanish">
         <form onSubmit={handleJoinClass} className="space-y-4">
-          <p className="text-sm font-semibold text-slate-600">
+          <p className="text-sm font-normal text-slate-600">
             Ustozingiz bergan 6 xonali xona kodini (masalan: <strong>FLX742</strong>) kiriting:
           </p>
           <input
@@ -563,17 +674,17 @@ export const StudentDashboard: React.FC = () => {
             placeholder="FLX742"
             value={classCode}
             onChange={(e) => setClassCode(e.target.value.toUpperCase())}
-            className="glass-input text-center font-mono text-2xl tracking-widest uppercase font-black py-3 border-2 focus:border-[#58CC02]"
+            className="glass-input text-center font-mono text-2xl tracking-widest uppercase font-extrabold py-3 border focus:border-emerald-500"
           />
           <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => setShowJoinModal(false)}
-              className="duo-btn-white text-xs py-2 px-4"
+              className="mondly-btn-secondary text-xs py-2 px-4 font-bold"
             >
               Bekor qilish
             </button>
-            <button type="submit" className="duo-btn-green text-xs py-2 px-5 font-black">
+            <button type="submit" className="mondly-btn-primary text-xs py-2 px-5 font-bold">
               Xonaga kirish →
             </button>
           </div>
@@ -582,23 +693,26 @@ export const StudentDashboard: React.FC = () => {
 
       <GlassModal open={showHelpModal} onClose={() => setShowHelpModal(false)} title="Talaba Qo'llanmasi — O'zing Yoz">
         <div className="space-y-4 text-xs text-slate-700">
-          <p className="text-sm font-extrabold text-slate-900">Platforma qanday ishlaydi?</p>
+          <p className="text-sm font-bold text-slate-900">Platforma qanday ishlaydi?</p>
           <div className="space-y-2.5">
-            <div className="p-3.5 bg-lime-50 rounded-2xl border-2 border-lime-200 space-y-1">
-              <strong className="text-lime-900 text-sm">1. Mashg'ulotni tanlang</strong>
-              <p className="text-slate-600 font-semibold">Bo'limlar bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
+            <div className="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1">
+              <strong className="text-emerald-900 text-sm">1. Amaliyotni tanlang</strong>
+              <p className="text-slate-600">Bo'limlar bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
             </div>
-            <div className="p-3.5 bg-sky-50 rounded-2xl border-2 border-sky-200 space-y-1">
+            <div className="p-3.5 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
               <strong className="text-sky-900 text-sm">2. Mustaqil kod yozing</strong>
-              <p className="text-slate-600 font-semibold">VS Code muhiti va tezkor sinov (Ctrl+Enter) yordamida o'z kodingizni sinang.</p>
+              <p className="text-slate-600">VS Code uslubidagi muhitda kod yozing va Ctrl+Enter orqali testlarni bajaring.</p>
             </div>
-            <div className="p-3.5 bg-amber-50 rounded-2xl border-2 border-amber-200 space-y-1">
+            <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 space-y-1">
               <strong className="text-amber-900 text-sm">3. Ustoz AI dan maslahat oling</strong>
-              <p className="text-slate-600 font-semibold">Agar qiynalsangiz, 4 bosqichli maslahat zinapoyasidan foydalaning: Savol → Yo'nalish → Tushuntirish → Qisman yechim.</p>
+              <p className="text-slate-600">Savol → Yo'nalish → Tushuntirish → Qisman yechim zinapoyasi orqali yordam oling.</p>
             </div>
           </div>
           <div className="flex justify-end pt-2">
-            <button onClick={() => setShowHelpModal(false)} className="duo-btn-green text-xs py-2 px-5 font-black">
+            <button
+              onClick={() => setShowHelpModal(false)}
+              className="mondly-btn-primary text-xs py-2 px-5 font-bold"
+            >
               Tushundim
             </button>
           </div>

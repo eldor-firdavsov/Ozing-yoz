@@ -19,7 +19,7 @@ import {
 import { UZ } from "./lib/i18n/uz";
 import { supabase } from "./lib/supabase";
 import { appStore } from "./lib/store";
-import { BrandLogo, SoundToggle } from "./components/ui/GlassComponents";
+import { BrandLogo, SoundToggle, ThemeToggle } from "./components/ui/GlassComponents";
 import { sounds } from "./lib/audio";
 import { Workspace } from "./pages/student/Workspace";
 import { StudentDashboard } from "./pages/student/StudentDashboard";
@@ -34,12 +34,13 @@ const LandingPage: React.FC = () => {
   const isTeacher = profile.role === "teacher";
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-white text-slate-800">
+    <div className="min-h-screen flex flex-col justify-between bg-white dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 transition-colors">
       {/* Navigation - Mondly Sleek Header */}
-      <nav className="border-b border-slate-200/90 px-6 sm:px-12 py-4 flex items-center justify-between w-full bg-white/95 backdrop-blur-md sticky top-0 z-40">
+      <nav className="border-b border-slate-200/90 dark:border-slate-800 px-6 sm:px-12 py-4 flex items-center justify-between w-full bg-white/95 dark:bg-[#0F172A]/90 backdrop-blur-md sticky top-0 z-40">
         <BrandLogo size="lg" />
         <div className="flex items-center gap-3">
           <SoundToggle />
+          <ThemeToggle />
           {isAuthenticated ? (
             <Link
               onClick={() => sounds.playClick()}
@@ -72,16 +73,16 @@ const LandingPage: React.FC = () => {
 
       {/* Hero Section - Mondly High Contrast Educational Hero */}
       <main className="w-full px-6 sm:px-12 lg:px-20 py-16 text-center space-y-10 my-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold uppercase tracking-wider text-emerald-800">
-          <Sparkles className="w-4 h-4 text-emerald-600" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+          <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           <span>{UZ.tagline}</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-tight font-display">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight font-display">
           Kod yozishni o'rgan. <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600">O'zing yoz!</span>
         </h1>
 
-        <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-600 leading-relaxed font-normal">
+        <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
           IT o'quv markazlari uchun zamonaviy HTML va CSS amaliyot platformasi. Ustoz AI tayyor kod bermaydi —
           4 bosqichli maslahat zinapoyasi orqali mustaqil fikrlab yozishga yo'naltiradi.
         </p>
@@ -110,38 +111,38 @@ const LandingPage: React.FC = () => {
         {/* Three Value Pillars - Mondly Style Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left pt-12 w-full">
           <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-xs">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-xl text-slate-900">Ustoz AI (Leak-Guard)</h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Ustoz AI (Leak-Guard)</h3>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
               Savol → Yo'nalish → Tushuntirish → Qisman yechim. Tayyor kod hech qachon berilmaydi, talaba o'z kodi muallifi bo'ladi.
             </p>
           </div>
 
           <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 flex items-center justify-center text-sky-600 dark:text-sky-400 shadow-xs">
               <QrCode className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-xl text-slate-900">Jonli Musobaqa (Live QR)</h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Jonli Musobaqa (Live QR)</h3>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
               Talabalar 5 soniyada QR kod orqali ulanadi. Katta proyektor doskasida real-vaqt reytingi va konsept xaritasi ko'rinadi.
             </p>
           </div>
 
           <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-xs">
               <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold text-xl text-slate-900">Xavfsiz Ustoz Nazorati</h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Xavfsiz Ustoz Nazorati</h3>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
               Qiynalayotgan talabalar kodini jonli tekshiring, xonaga yo'riqnoma yuboring va AI bilan yangi topshiriqlar yarating.
             </p>
           </div>
         </div>
       </main>
 
-      <footer className="py-8 text-center text-sm font-semibold text-slate-400 border-t border-slate-200">
+      <footer className="py-8 text-center text-sm font-semibold text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-800">
         O'zing Yoz © 2026 — Har bir talaba o'z kodi muallifi
       </footer>
     </div>
@@ -223,39 +224,40 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-4 sm:p-6 bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col justify-between p-4 sm:p-6 bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 transition-colors">
       <header className="max-w-xl w-full mx-auto pt-4 flex items-center justify-between">
         <BrandLogo size="md" />
         <div className="flex items-center gap-3">
           <Link
             to="/teach/login"
             onClick={() => sounds.playClick()}
-            className="text-sm font-semibold text-lime-900 hover:text-lime-950 bg-lime-100 hover:bg-lime-200 px-3.5 py-2 rounded-xl border border-lime-300 shadow-xs inline-flex items-center gap-1.5 transition-all"
+            className="text-sm font-semibold text-lime-900 dark:text-emerald-300 hover:text-lime-950 dark:hover:text-white bg-lime-100 dark:bg-emerald-950/60 hover:bg-lime-200 dark:hover:bg-emerald-900 px-3.5 py-2 rounded-xl border border-lime-300 dark:border-emerald-700 shadow-xs inline-flex items-center gap-1.5 transition-all"
           >
-            <GraduationCap className="w-4 h-4 text-lime-700" />
+            <GraduationCap className="w-4 h-4 text-lime-700 dark:text-emerald-400" />
             <span>Ustozmisiz?</span>
-            <ArrowRight className="w-3.5 h-3.5 text-lime-700" />
+            <ArrowRight className="w-3.5 h-3.5 text-lime-700 dark:text-emerald-400" />
           </Link>
           <SoundToggle />
+          <ThemeToggle />
         </div>
       </header>
 
       <main className="max-w-xl w-full mx-auto my-auto py-8">
         <form
           onSubmit={handleSubmit}
-          className="glass-panel p-8 sm:p-10 space-y-6 shadow-glass-lg rounded-2xl border border-slate-200/80"
+          className="glass-panel dark:bg-[#0F172A] p-8 sm:p-10 space-y-6 shadow-glass-lg rounded-2xl border border-slate-200/80 dark:border-slate-800"
         >
           {/* Teacher link pill in header for login */}
           {mode === "login" && (
-            <div className="flex items-center justify-between p-3.5 bg-gradient-to-r from-lime-50 to-white rounded-xl border border-lime-200/90 text-sm">
-              <span className="text-slate-800 font-medium flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-lime-700" />
+            <div className="flex items-center justify-between p-3.5 bg-gradient-to-r from-lime-50 to-white dark:from-emerald-950/40 dark:to-slate-900 rounded-xl border border-lime-200/90 dark:border-emerald-800 text-sm">
+              <span className="text-slate-800 dark:text-slate-200 font-medium flex items-center gap-2">
+                <GraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Ustoz hisobi bilan kirasizmi?</span>
               </span>
               <Link
                 to="/teach/login"
                 onClick={() => sounds.playClick()}
-                className="font-bold text-lime-800 hover:text-lime-900 inline-flex items-center gap-1 underline"
+                className="font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 inline-flex items-center gap-1 underline"
               >
                 <span>Ustoz kabineti</span>
                 <ArrowRight className="w-4 h-4" />
@@ -264,10 +266,10 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
           )}
 
           <div className="text-center space-y-1.5">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
               {mode === "login" ? "Talaba Kabinetiga Kirish" : "Talaba Ro'yxatdan O'tishi"}
             </h2>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               {mode === "login"
                 ? "Darslar va musobaqalarni davom ettirish uchun kiring"
                 : "Kod yozishni boshlash uchun hisobingizni oching"}
@@ -275,7 +277,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
           </div>
 
           {error && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-700 font-medium">
+            <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-sm text-rose-700 dark:text-rose-300 font-medium">
               {error}
             </div>
           )}
@@ -283,7 +285,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
           <div className="space-y-4">
             {mode === "register" && (
               <div>
-                <label className="text-sm font-semibold text-slate-700 mb-1.5 block">To'liq ism-familiyangiz</label>
+                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 block">To'liq ism-familiyangiz</label>
                 <div className="relative">
                   <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   <input
@@ -298,7 +300,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
             )}
 
             <div>
-              <label className="text-sm font-semibold text-slate-700 mb-1.5 block">Elektron pochta (Email)</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 block">Elektron pochta (Email)</label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
@@ -313,7 +315,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
             </div>
 
             <div>
-              <label className="text-sm font-semibold text-slate-700 mb-1.5 block">Parol</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 block">Parol</label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 <input
@@ -336,12 +338,12 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
             {loading ? "Yuklanmoqda..." : mode === "login" ? UZ.cta.login : UZ.cta.register}
           </button>
 
-          <p className="text-center text-sm text-slate-500 pt-2">
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400 pt-2">
             {mode === "login" ? (
               <>
                 Hisobingiz yo'qmi?{" "}
                 <Link
-                  className="text-slate-900 font-bold underline"
+                  className="text-slate-900 dark:text-white font-bold underline"
                   to="/register"
                   onClick={() => sounds.playClick()}
                 >
@@ -352,7 +354,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
               <>
                 Hisobingiz bormi?{" "}
                 <Link
-                  className="text-slate-900 font-bold underline"
+                  className="text-slate-900 dark:text-white font-bold underline"
                   to="/login"
                   onClick={() => sounds.playClick()}
                 >
@@ -364,7 +366,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
         </form>
       </main>
 
-      <footer className="py-4 text-center text-xs text-slate-400">
+      <footer className="py-4 text-center text-xs text-slate-400 dark:text-slate-500">
         O'zing Yoz — Har bir talaba o'z kodi muallifi
       </footer>
     </div>

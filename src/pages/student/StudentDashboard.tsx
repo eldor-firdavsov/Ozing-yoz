@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import { appStore } from "../../lib/store";
 import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
-import { BrandLogo, SoundToggle, GlassModal } from "../../components/ui/GlassComponents";
+import { BrandLogo, SoundToggle, ThemeToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
 import { UZ } from "../../lib/i18n/uz";
 
@@ -97,11 +97,11 @@ export const StudentDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row text-slate-800 selection:bg-emerald-100">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B0F19] flex flex-col md:flex-row text-slate-800 dark:text-slate-100 selection:bg-emerald-100 dark:selection:bg-emerald-950 transition-colors">
       {/* ======================================================== */}
       {/* 1. MONDLY-STYLE LEFT NAVIGATION SIDEBAR (w-64)            */}
       {/* ======================================================== */}
-      <aside className="w-64 border-r border-slate-200/90 bg-white h-screen sticky top-0 hidden md:flex flex-col justify-between p-5 shrink-0 select-none z-30 shadow-xs">
+      <aside className="w-64 border-r border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#0F172A] h-screen sticky top-0 hidden md:flex flex-col justify-between p-5 shrink-0 select-none z-30 shadow-xs">
         <div className="space-y-6">
           <div className="px-1 pt-1">
             <BrandLogo size="md" />
@@ -114,7 +114,7 @@ export const StudentDashboard: React.FC = () => {
               onClick={() => sounds.playClick()}
               className="mondly-nav-item-active"
             >
-              <BookOpen className="w-5 h-5 text-emerald-600" />
+              <BookOpen className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               <span>Darslar & Kurs</span>
             </Link>
 
@@ -143,25 +143,28 @@ export const StudentDashboard: React.FC = () => {
         </div>
 
         {/* Bottom Student Profile & Logout (No Teacher Links!) */}
-        <div className="pt-4 border-t border-slate-200/90 space-y-3">
+        <div className="pt-4 border-t border-slate-200/90 dark:border-slate-800 space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-base shadow-xs">
                 {profile.full_name ? profile.full_name.charAt(0).toUpperCase() : "T"}
               </div>
               <div className="overflow-hidden">
-                <p className="font-bold text-sm text-slate-900 truncate">
+                <p className="font-bold text-sm text-slate-900 dark:text-white truncate">
                   {profile.full_name || "Talaba"}
                 </p>
-                <p className="text-xs text-emerald-600 font-semibold">{profile.xp} XP to'plandi</p>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{profile.xp} XP to'plandi</p>
               </div>
             </div>
-            <SoundToggle />
+            <div className="flex items-center gap-1">
+              <SoundToggle />
+              <ThemeToggle />
+            </div>
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50/50 transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-200 dark:hover:border-rose-900 hover:bg-rose-50/50 dark:hover:bg-rose-950/30 transition-all"
           >
             <LogOut className="w-4 h-4" />
             <span>Hisobdan chiqish</span>
@@ -174,9 +177,9 @@ export const StudentDashboard: React.FC = () => {
       {/* ======================================================== */}
       <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-4xl w-full mx-auto space-y-7">
         {/* Mobile Header (Hidden on Desktop) */}
-        <header className="md:hidden flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl shadow-xs">
+        <header className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs">
           <BrandLogo size="sm" />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <div className="flex items-center gap-1 font-bold text-amber-600 text-sm">
               <Flame className="w-4 h-4 text-amber-500" />
               <span>{profile.streak}</span>
@@ -186,6 +189,7 @@ export const StudentDashboard: React.FC = () => {
               <span>{profile.xp} XP</span>
             </div>
             <SoundToggle />
+            <ThemeToggle />
           </div>
         </header>
 
@@ -225,22 +229,22 @@ export const StudentDashboard: React.FC = () => {
 
         {/* Featured Next Lesson (Mondly Daily Challenge Card) */}
         {nextChallenge && (
-          <div className="mondly-card p-5 sm:p-6 bg-white border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="mondly-card p-5 sm:p-6 bg-white dark:bg-[#0F172A] border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shrink-0">
-                <Play className="w-6 h-6 fill-emerald-600 text-emerald-600" />
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+                <Play className="w-6 h-6 fill-emerald-600 text-emerald-600 dark:fill-emerald-400 dark:text-emerald-400" />
               </div>
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
                     Tavsiya etilgan amaliyot
                   </span>
-                  <span className="text-xs font-semibold text-slate-500 font-mono">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono">
                     {nextChallenge.level}-daraja
                   </span>
                 </div>
-                <h3 className="font-extrabold text-lg text-slate-900">{nextChallenge.title}</h3>
-                <p className="text-xs text-slate-500 line-clamp-1">
+                <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">{nextChallenge.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                   {nextChallenge.description_md.replace(/[`*]/g, "")}
                 </p>
               </div>
@@ -266,7 +270,7 @@ export const StudentDashboard: React.FC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Mashq nomi yoki mavzu bo'yicha qidiruv..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-sm font-medium focus:outline-none focus:border-emerald-500 focus:bg-white transition-all"
+                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-900 transition-all"
               />
             </div>
 
@@ -283,8 +287,8 @@ export const StudentDashboard: React.FC = () => {
                   }}
                   className={`text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${
                     selectedLevel === lvl
-                      ? "bg-slate-900 text-white shadow-xs"
-                      : "bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100"
+                      ? "bg-slate-900 text-white dark:bg-emerald-600 dark:text-white shadow-xs"
+                      : "bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                   }`}
                 >
                   {lvl === "all" ? "Barchasi" : `${lvl}-daraja`}
@@ -305,7 +309,7 @@ export const StudentDashboard: React.FC = () => {
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
                   selectedTopic === t.id
                     ? "bg-emerald-600 text-white shadow-xs font-bold"
-                    : "bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100"
+                    : "bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                 }`}
               >
                 {t.label}
@@ -561,27 +565,27 @@ export const StudentDashboard: React.FC = () => {
       {/* ======================================================== */}
       {/* 3. MONDLY-STYLE RIGHT STATS SIDEBAR (w-80)                */}
       {/* ======================================================== */}
-      <aside className="w-80 p-6 space-y-6 hidden lg:block shrink-0 sticky top-0 h-screen overflow-y-auto select-none border-l border-slate-200/90 bg-white">
+      <aside className="w-80 p-6 space-y-6 hidden lg:block shrink-0 sticky top-0 h-screen overflow-y-auto select-none border-l border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#0F172A]">
         {/* Top Stat Summary Pills */}
-        <div className="grid grid-cols-3 gap-2 p-2 bg-slate-50 rounded-2xl border border-slate-200/90">
+        <div className="grid grid-cols-3 gap-2 p-2 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800">
           {/* Streak Flame */}
-          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-slate-200/60 shadow-2xs">
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 shadow-2xs">
             <Flame className="w-5 h-5 text-amber-500" />
-            <span className="text-xs font-bold text-slate-900 mt-1">{profile.streak} kun</span>
+            <span className="text-xs font-bold text-slate-900 dark:text-white mt-1">{profile.streak} kun</span>
             <span className="text-[10px] text-slate-400 font-semibold">Ketma-ket</span>
           </div>
 
           {/* XP Lightning */}
-          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-slate-200/60 shadow-2xs">
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 shadow-2xs">
             <Zap className="w-5 h-5 text-emerald-500" />
-            <span className="text-xs font-bold text-slate-900 mt-1">{profile.xp} XP</span>
+            <span className="text-xs font-bold text-slate-900 dark:text-white mt-1">{profile.xp} XP</span>
             <span className="text-[10px] text-slate-400 font-semibold">Ball</span>
           </div>
 
           {/* Completed */}
-          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white border border-slate-200/60 shadow-2xs">
+          <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 shadow-2xs">
             <Award className="w-5 h-5 text-sky-500" />
-            <span className="text-xs font-bold text-slate-900 mt-1">{completedCount}/{challenges.length}</span>
+            <span className="text-xs font-bold text-slate-900 dark:text-white mt-1">{completedCount}/{challenges.length}</span>
             <span className="text-[10px] text-slate-400 font-semibold">Tugallandi</span>
           </div>
         </div>
@@ -589,20 +593,20 @@ export const StudentDashboard: React.FC = () => {
         {/* Daily Goal Card */}
         <div className="mondly-card p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h4 className="font-bold text-sm text-slate-800 flex items-center gap-2">
-              <Target className="w-4 h-4 text-emerald-600" />
+            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>Kunlik Maqsad</span>
             </h4>
-            <span className="text-xs font-bold text-slate-500">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
               {Math.min(completedCount, 3)}/3 mashq
             </span>
           </div>
 
-          <p className="text-xs text-slate-500 leading-relaxed font-normal">
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
             Har kuni kamida 3 ta amaliy topshiriqni mustaqil yakunlab bilimingizni mustahkamlang.
           </p>
 
-          <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden p-0.5">
+          <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden p-0.5">
             <div
               className="h-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full transition-all duration-500"
               style={{ width: `${Math.min(100, (completedCount / 3) * 100)}%` }}
@@ -611,20 +615,20 @@ export const StudentDashboard: React.FC = () => {
         </div>
 
         {/* Live Classroom Tournament Widget */}
-        <div className="mondly-card p-5 space-y-3.5 bg-gradient-to-br from-white to-amber-50/30 border-amber-200/80">
+        <div className="mondly-card p-5 space-y-3.5 bg-gradient-to-br from-white to-amber-50/30 dark:from-[#0F172A] dark:to-amber-950/20 border-amber-200/80 dark:border-amber-900/60">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
               <Trophy className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-bold text-sm text-slate-900">
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">
                 Jonli Musobaqa
               </h4>
-              <p className="text-xs text-slate-500">Sinf xonasiga ulanish</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Sinf xonasiga ulanish</p>
             </div>
           </div>
 
-          <p className="text-xs text-slate-600 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
             Ustoz taqdim etgan 6 xonali xona kodini kiriting (masalan: <strong>FLX742</strong>).
           </p>
 
@@ -640,20 +644,20 @@ export const StudentDashboard: React.FC = () => {
         </div>
 
         {/* Ustoz AI Advice Card */}
-        <div className="mondly-card p-5 space-y-3 bg-gradient-to-br from-white to-emerald-50/30 border-emerald-200/80">
+        <div className="mondly-card p-5 space-y-3 bg-gradient-to-br from-white to-emerald-50/30 dark:from-[#0F172A] dark:to-emerald-950/20 border-emerald-200/80 dark:border-emerald-900/60">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-bold text-sm text-slate-900">
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">
                 Ustoz AI
               </h4>
-              <p className="text-xs text-emerald-700 font-semibold">4 bosqichli maslahat</p>
+              <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">4 bosqichli maslahat</p>
             </div>
           </div>
 
-          <p className="text-xs text-slate-600 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
             "Kodni tayyor ko'chirmang. 1-darajali maslahat bilan o'ylab yozish — mustaqil dasturchi bo'lishning yagona yo'lidir!"
           </p>
         </div>

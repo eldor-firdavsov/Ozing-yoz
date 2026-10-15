@@ -14,9 +14,12 @@ import {
   Terminal,
   ExternalLink,
   ChevronRight,
-  Code
+  Code,
+  Sun,
+  Moon
 } from "lucide-react";
 import { sounds } from "../../lib/audio";
+import { themeManager } from "../../lib/theme";
 
 export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md" }) => {
   const sizeClasses = {
@@ -37,8 +40,8 @@ export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md"
       <div className={`${iconSizes[size]} bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-500 flex items-center justify-center text-white font-black shadow-sm group-hover:scale-105 transition-all`}>
         OY
       </div>
-      <span className={`${sizeClasses[size]} text-slate-900 font-extrabold tracking-tight`}>
-        O'zing<span className="text-emerald-600">Yoz</span>
+      <span className={`${sizeClasses[size]} text-slate-900 dark:text-white font-extrabold tracking-tight transition-colors`}>
+        O'zing<span className="text-emerald-600 dark:text-emerald-400">Yoz</span>
       </span>
     </div>
   );
@@ -57,9 +60,38 @@ export const SoundToggle: React.FC = () => {
     <button
       onClick={toggle}
       title={enabled ? "Ovozni o'chirish" : "Ovozni yoqish"}
-      className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100/80 transition-all"
+      className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100/80 dark:hover:bg-slate-800 transition-all"
     >
-      {enabled ? <Volume2 className="w-4 h-4 text-lime-600" /> : <VolumeX className="w-4 h-4 text-slate-400" />}
+      {enabled ? <Volume2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <VolumeX className="w-4 h-4 text-slate-400 dark:text-slate-500" />}
+    </button>
+  );
+};
+
+export const ThemeToggle: React.FC = () => {
+  const [isDark, setIsDark] = useState(themeManager.isDark());
+
+  useEffect(() => {
+    return themeManager.subscribe((theme) => {
+      setIsDark(theme === "dark");
+    });
+  }, []);
+
+  const toggle = () => {
+    sounds.playClick();
+    themeManager.toggle();
+  };
+
+  return (
+    <button
+      onClick={toggle}
+      title={isDark ? "Yorug' rejim (Light Mode)" : "Qorong'i rejim (Dark Mode)"}
+      className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-amber-300 hover:bg-slate-100/80 dark:hover:bg-slate-800 transition-all flex items-center justify-center"
+    >
+      {isDark ? (
+        <Sun className="w-4 h-4 text-amber-400 animate-in spin-in-90 duration-200" />
+      ) : (
+        <Moon className="w-4 h-4 text-slate-600 dark:text-slate-400 animate-in spin-in-90 duration-200" />
+      )}
     </button>
   );
 };
@@ -208,21 +240,21 @@ export const GlassModal: React.FC<{
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="glass-panel max-w-xl w-full p-7 space-y-5 shadow-glass-lg border border-white/90 rounded-2xl animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between border-b border-slate-200/70 pb-3.5">
-          <h3 className="font-bold text-slate-900 text-lg">{title}</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 dark:bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200">
+      <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 max-w-xl w-full p-7 space-y-5 shadow-glass-lg rounded-2xl animate-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800 pb-3.5">
+          <h3 className="font-bold text-slate-900 dark:text-white text-lg">{title}</h3>
           <button
             onClick={() => {
               sounds.playClick();
               onClose();
             }}
-            className="text-slate-400 hover:text-slate-700 h-8 w-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-lg transition-all"
+            className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 h-8 w-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-lg transition-all"
           >
             ✕
           </button>
         </div>
-        <div>{children}</div>
+        <div className="text-slate-700 dark:text-slate-300">{children}</div>
       </div>
     </div>
   );
@@ -240,18 +272,18 @@ export const QRCard: React.FC<{ code: string }> = ({ code }) => {
   };
 
   return (
-    <div className="glass-panel p-7 flex flex-col items-center gap-5 text-center shadow-glass">
+    <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-7 flex flex-col items-center gap-5 text-center shadow-glass">
       <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm">
         <QRCodeSVG size={200} value={joinUrl} />
       </div>
       <div className="w-full">
         <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Xona kodi</p>
-        <p className="font-mono text-4xl sm:text-5xl font-black tracking-widest text-slate-900 mt-1">{code}</p>
+        <p className="font-mono text-4xl sm:text-5xl font-black tracking-widest text-slate-900 dark:text-white mt-1">{code}</p>
         <button
           onClick={copyLink}
-          className="mt-4 inline-flex items-center gap-2 text-sm text-slate-700 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-xs hover:shadow transition-all font-medium"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl shadow-xs hover:shadow transition-all font-medium"
         >
-          {copied ? <Check className="w-4 h-4 text-lime-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
           <span>{copied ? "Havola nusxalandi!" : "Havolani nusxalash"}</span>
         </button>
       </div>
@@ -288,11 +320,11 @@ export const SyncedTimer: React.FC<{ startedAt?: string | null; durationSec: num
     <div
       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-mono text-sm font-semibold transition-all ${
         isUrgent
-          ? "bg-rose-50 border-rose-300 text-rose-700 animate-pulse"
-          : "bg-white/80 border-slate-200 text-slate-900 shadow-xs"
+          ? "bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-400 animate-pulse"
+          : "bg-white/80 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 shadow-xs"
       }`}
     >
-      <Clock className={`w-4 h-4 ${isUrgent ? "text-rose-600" : "text-lime-600"}`} />
+      <Clock className={`w-4 h-4 ${isUrgent ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"}`} />
       <span>
         {mins}:{secs}
       </span>
@@ -310,7 +342,7 @@ export const VsCodeTabs: React.FC<{
   onReset?: () => void;
 }> = ({ activeTab, onChangeTab, isDirtyHtml, isDirtyCss, onFormat, onReset }) => {
   return (
-    <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-100/60 px-3 pt-2 select-none">
+    <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-zinc-800 bg-slate-100/60 dark:bg-zinc-900/90 px-3 pt-2 select-none">
       <div className="flex items-center gap-1.5">
         {/* index.html Tab */}
         <button
@@ -320,8 +352,8 @@ export const VsCodeTabs: React.FC<{
           }}
           className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all ${
             activeTab === "html"
-              ? "bg-white text-slate-900 font-bold border-t-2 border-t-[#e44d26] border-x border-slate-200 shadow-xs"
-              : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900"
+              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#e44d26] border-x border-slate-200 dark:border-zinc-700 shadow-xs"
+              : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <span className="text-[#e44d26] font-bold text-sm">‹›</span>
@@ -337,8 +369,8 @@ export const VsCodeTabs: React.FC<{
           }}
           className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all ${
             activeTab === "css"
-              ? "bg-white text-slate-900 font-bold border-t-2 border-t-[#264de4] border-x border-slate-200 shadow-xs"
-              : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900"
+              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#264de4] border-x border-slate-200 dark:border-zinc-700 shadow-xs"
+              : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <span className="text-[#264de4] font-bold text-sm">#</span>
@@ -355,9 +387,9 @@ export const VsCodeTabs: React.FC<{
               onFormat();
             }}
             title="Kodni formatlash (Shift+Alt+F)"
-            className="text-xs font-mono font-medium text-slate-600 hover:text-slate-900 hover:bg-white px-2.5 py-1.5 rounded-lg border border-transparent hover:border-slate-200 shadow-xs transition-all inline-flex items-center gap-1.5"
+            className="text-xs font-mono font-medium text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-800 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 shadow-xs transition-all inline-flex items-center gap-1.5"
           >
-            <AlignLeft className="w-4 h-4 text-slate-500" />
+            <AlignLeft className="w-4 h-4 text-slate-500 dark:text-zinc-400" />
             <span>Formatlash</span>
           </button>
         )}
@@ -368,7 +400,7 @@ export const VsCodeTabs: React.FC<{
               onReset();
             }}
             title="Kodni boshlang'ich holatga qaytarish"
-            className="text-xs font-medium text-slate-500 hover:text-rose-600 px-2.5 py-1.5 rounded-lg transition-all"
+            className="text-xs font-medium text-slate-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 px-2.5 py-1.5 rounded-lg transition-all"
           >
             Qaytarish
           </button>
@@ -386,14 +418,14 @@ export const VsCodeStatusBar: React.FC<{
   passedCount?: number;
 }> = ({ cursorPos = { line: 1, col: 1 }, activeTab, testCount = 0, passedCount = 0 }) => {
   return (
-    <div className="flex items-center justify-between px-4 py-1.5 bg-slate-100/90 border-t border-slate-200/80 text-xs text-slate-600 font-mono select-none">
+    <div className="flex items-center justify-between px-4 py-1.5 bg-slate-100/90 dark:bg-zinc-900 border-t border-slate-200/80 dark:border-zinc-800 text-xs text-slate-600 dark:text-zinc-400 font-mono select-none">
       <div className="flex items-center gap-3">
-        <span className="flex items-center gap-1.5 text-slate-800 font-medium">
-          <Terminal className="w-3.5 h-3.5 text-lime-700" />
+        <span className="flex items-center gap-1.5 text-slate-800 dark:text-zinc-200 font-medium">
+          <Terminal className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>O'zing Yoz v2.6</span>
         </span>
-        <span className="text-slate-300">|</span>
-        <span className={passedCount === testCount && testCount > 0 ? "text-lime-700 font-bold" : "font-medium"}>
+        <span className="text-slate-300 dark:text-zinc-700">|</span>
+        <span className={passedCount === testCount && testCount > 0 ? "text-emerald-600 dark:text-emerald-400 font-bold" : "font-medium"}>
           Testlar: {passedCount}/{testCount} o'tdi
         </span>
       </div>
@@ -402,12 +434,12 @@ export const VsCodeStatusBar: React.FC<{
         <span>
           Qat {cursorPos.line}, Ust {cursorPos.col}
         </span>
-        <span className="text-slate-300">|</span>
+        <span className="text-slate-300 dark:text-zinc-700">|</span>
         <span>Bo'shliq: 2</span>
-        <span className="text-slate-300">|</span>
+        <span className="text-slate-300 dark:text-zinc-700">|</span>
         <span>UTF-8</span>
-        <span className="text-slate-300">|</span>
-        <span className="font-bold uppercase text-slate-900">{activeTab}</span>
+        <span className="text-slate-300 dark:text-zinc-700">|</span>
+        <span className="font-bold uppercase text-slate-900 dark:text-white">{activeTab}</span>
       </div>
     </div>
   );

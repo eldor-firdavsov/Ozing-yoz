@@ -35,7 +35,8 @@ import { appStore, LiveRoomState } from "../../lib/store";
 import { buildSandboxedSrcDoc, AssertionResult } from "../../lib/tests-runner";
 import { calculateScore } from "../../lib/scoring";
 import { formatHtml, formatCss } from "../../lib/formatter";
-import { vsCodeExtension } from "../../lib/editor-theme";
+import { getVsCodeExtension } from "../../lib/editor-theme";
+import { themeManager } from "../../lib/theme";
 import { sounds } from "../../lib/audio";
 import {
   BrandLogo,
@@ -46,6 +47,7 @@ import {
   VsCodeTabs,
   VsCodeStatusBar,
   SoundToggle,
+  ThemeToggle,
   SyncedTimer
 } from "../../components/ui/GlassComponents";
 
@@ -131,6 +133,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 2500);
   };
+
+  const [isDark, setIsDark] = useState(themeManager.isDark());
+
+  useEffect(() => {
+    return themeManager.subscribe((t) => {
+      setIsDark(t === "dark");
+    });
+  }, []);
 
   // Sync Room Updates
   useEffect(() => {
@@ -414,8 +424,8 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
         </div>
       )}
 
-      {/* Top Duolingo-style Lesson Header */}
-      <header className="glass-nav px-4 sm:px-6 py-2.5 flex items-center justify-between border-b-2 border-slate-200">
+      {/* Top Lesson Header */}
+      <header className="glass-nav px-4 sm:px-6 py-2.5 flex items-center justify-between border-b-2 border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
           <button
             onClick={() => {
@@ -423,34 +433,34 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               navigate(isLiveRoom ? "/app" : "/app/challenges");
             }}
             title="Ortga qaytish"
-            className="w-10 h-10 rounded-2xl border-2 border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-all font-black"
+            className="w-10 h-10 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all font-black"
           >
             ✕
           </button>
           <BrandLogo size="md" />
 
           {/* Breadcrumb path */}
-          <div className="hidden lg:flex items-center gap-2 text-sm text-slate-500 font-mono">
+          <div className="hidden lg:flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 font-mono">
             <span>{isLiveRoom ? "musobaqa" : "mashqlar"}</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-extrabold text-slate-900">{challenge.title}</span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#D7FFB8] text-[#2E6D01] font-black border border-[#58CC02]">
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-600" />
+            <span className="font-extrabold text-slate-900 dark:text-white">{challenge.title}</span>
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-black border border-emerald-300 dark:border-emerald-700">
               {challenge.level}-daraja
             </span>
           </div>
         </div>
 
-        {/* Duolingo Lesson Progress Bar */}
+        {/* Lesson Progress Bar */}
         <div className="flex-1 max-w-xs sm:max-w-md mx-3 sm:mx-6 flex items-center gap-2.5">
-          <div className="flex-1 h-4 bg-slate-200 rounded-full overflow-hidden p-0.5">
+          <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
             <div
-              className="h-full bg-[#58CC02] rounded-full transition-all duration-500"
+              className="h-full bg-emerald-500 rounded-full transition-all duration-500"
               style={{
                 width: `${challenge.tests.length > 0 ? (passedTestsCount / challenge.tests.length) * 100 : 0}%`,
               }}
             />
           </div>
-          <span className="font-black text-xs text-slate-500 font-mono shrink-0">
+          <span className="font-black text-xs text-slate-500 dark:text-slate-400 font-mono shrink-0">
             {passedTestsCount}/{challenge.tests.length}
           </span>
         </div>
@@ -458,6 +468,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
         {/* Action Controls & Clear Tooltips */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           <SoundToggle />
+          <ThemeToggle />
 
           {/* Help Button Guide */}
           <button
@@ -466,14 +477,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               setShowButtonsGuide(true);
             }}
             title="Tugmalar vazifasi va qoidalar"
-            className="duo-btn-white text-xs sm:text-sm py-2 px-3 font-extrabold flex items-center gap-1.5 text-slate-700"
+            className="duo-btn-white text-xs sm:text-sm py-2 px-3 font-extrabold flex items-center gap-1.5 text-slate-700 dark:text-slate-200"
           >
-            <HelpCircle className="w-4 h-4 text-[#58CC02]" />
+            <HelpCircle className="w-4 h-4 text-emerald-500" />
             <span className="hidden sm:inline">Qoidalar</span>
           </button>
 
           {/* Score Badge */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF9E6] border-2 border-[#FFC800] border-b-4 border-b-[#E0A800] rounded-2xl font-black text-xs sm:text-sm text-[#B88700] select-none">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF9E6] dark:bg-amber-950/40 border-2 border-[#FFC800] dark:border-amber-700 border-b-4 border-b-[#E0A800] dark:border-b-amber-800 rounded-2xl font-black text-xs sm:text-sm text-[#B88700] dark:text-amber-400 select-none">
             <span>⚡</span>
             <span>+{currentScore} XP</span>
           </div>
@@ -486,9 +497,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               showToast("Natija yangilandi (Ctrl+S)");
             }}
             title="Yozgan kodingizni ekranda sinab ko'rish (Ctrl+S)"
-            className="duo-btn-white text-xs sm:text-sm py-2 px-3.5 font-extrabold"
+            className="duo-btn-white text-xs sm:text-sm py-2 px-3.5 font-extrabold text-slate-700 dark:text-slate-200"
           >
-            <Play className="w-4 h-4 text-slate-600" />
+            <Play className="w-4 h-4 text-slate-600 dark:text-slate-300" />
             <span className="hidden md:inline">{UZ.cta.run}</span>
           </button>
 
@@ -506,7 +517,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
             title={isFullscreen ? "Kichraytirish" : "To'liq ekran"}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 hidden xl:block"
+            className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 hidden xl:block"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
@@ -522,14 +533,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           }`}
         >
           {/* Sub-tabs: Vazifa vs Kutilayotgan Natija (Target) */}
-          <div className="flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-xl">
+          <div className="flex items-center gap-1.5 p-1 bg-slate-100/90 dark:bg-slate-800/90 rounded-xl">
             <button
               onClick={() => {
                 sounds.playClick();
                 setLeftTab("task");
               }}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                leftTab === "task" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"
+                leftTab === "task" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
               }`}
             >
               <Layers className="w-4 h-4" />
@@ -541,10 +552,10 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 setLeftTab("target");
               }}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                leftTab === "target" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"
+                leftTab === "target" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
               }`}
             >
-              <Eye className="w-4 h-4 text-lime-600" />
+              <Eye className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>{UZ.workspace.targetTab}</span>
             </button>
           </div>
@@ -552,19 +563,19 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           {leftTab === "task" ? (
             <div className="flex-1 overflow-y-auto space-y-5 pr-1">
               <div>
-                <h2 className="font-bold text-lg sm:text-xl text-slate-900 leading-snug">{challenge.title}</h2>
-                <p className="text-sm sm:text-base text-slate-600 mt-2.5 leading-relaxed whitespace-pre-line font-sans">
+                <h2 className="font-bold text-lg sm:text-xl text-slate-900 dark:text-white leading-snug">{challenge.title}</h2>
+                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mt-2.5 leading-relaxed whitespace-pre-line font-sans">
                   {challenge.description_md}
                 </p>
               </div>
 
               {/* Checklist Requirements */}
-              <div className="space-y-2.5 pt-3 border-t border-slate-200/70">
+              <div className="space-y-2.5 pt-3 border-t border-slate-200/70 dark:border-slate-800">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     Talablar va Testlar
                   </h3>
-                  <span className="text-sm font-mono font-bold text-slate-800">
+                  <span className="text-sm font-mono font-bold text-slate-800 dark:text-slate-200">
                     {passedTestsCount}/{challenge.tests.length}
                   </span>
                 </div>
@@ -582,23 +593,23 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
               {/* Live Room Guidance Banner */}
               {isLiveRoom && (
-                <div className="p-3.5 bg-gradient-to-r from-amber-50 to-lime-50 rounded-xl border border-amber-300/80 text-sm text-slate-800 space-y-1 shadow-xs">
-                  <p className="font-bold text-amber-950 flex items-center gap-1.5">
+                <div className="p-3.5 bg-gradient-to-r from-amber-50 to-lime-50 dark:from-amber-950/40 dark:to-emerald-950/40 rounded-xl border border-amber-300/80 dark:border-amber-800 text-sm text-slate-800 dark:text-slate-200 space-y-1 shadow-xs">
+                  <p className="font-bold text-amber-950 dark:text-amber-300 flex items-center gap-1.5">
                     <span>🏆 Jonli musobaqa: {roomCode}</span>
                   </p>
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     Testlarni to'liq topshiring ("Tekshirish" yoki Ctrl+Enter). Har bir to'g'ri test balingizni oshiradi va natijangiz doskadagi proyektor reytingiga avtomatik uzatiladi!
                   </p>
                 </div>
               )}
 
               {/* Step by step simple instruction for students */}
-              <div className="p-4 bg-lime-50/70 rounded-xl border border-lime-200/80 text-sm text-slate-700 space-y-2">
-                <p className="font-bold text-lime-900 flex items-center gap-1.5">
-                  <Info className="w-4 h-4 text-lime-700" />
+              <div className="p-4 bg-lime-50/70 dark:bg-emerald-950/30 rounded-xl border border-lime-200/80 dark:border-emerald-800 text-sm text-slate-700 dark:text-slate-300 space-y-2">
+                <p className="font-bold text-lime-900 dark:text-emerald-300 flex items-center gap-1.5">
+                  <Info className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Nima qilish kerak?</span>
                 </p>
-                <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                   <li>O'rtada ochilgan <strong>style.css</strong> faylida kod yozing.</li>
                   <li><strong>"Ishga tushirish"</strong> (yoki Ctrl+S) orqali natijani ko'ring.</li>
                   <li><strong>"Tekshirish"</strong> (yoki Ctrl+Enter) orqali ball to'plang.</li>
@@ -610,11 +621,11 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             /* Target Expected View */
             <div className="flex-1 flex flex-col glass-card p-5 text-center justify-between overflow-hidden">
               <div>
-                <p className="text-sm font-semibold text-slate-800 mb-1">Kutilayotgan dizayn (Maqsad):</p>
-                <p className="text-xs text-slate-500 mb-3">Siz yozgan kod aynan shu ko'rinishni hosil qilishi kerak.</p>
+                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1">Kutilayotgan dizayn (Maqsad):</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">Siz yozgan kod aynan shu ko'rinishni hosil qilishi kerak.</p>
               </div>
 
-              <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 rounded-xl bg-white/90 shadow-inner overflow-auto max-h-60">
+              <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl bg-white/90 dark:bg-slate-900 shadow-inner overflow-auto max-h-60">
                 <div
                   dangerouslySetInnerHTML={{ __html: challenge.target_html }}
                 />
@@ -644,23 +655,23 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           />
 
           {/* Breadcrumb Path Bar */}
-          <div className="px-3 py-1 bg-white/60 border-b border-slate-200/60 flex items-center gap-1.5 text-[11px] font-mono text-slate-500 select-none">
+          <div className="px-3 py-1 bg-white/60 dark:bg-zinc-900 border-b border-slate-200/60 dark:border-zinc-800 flex items-center gap-1.5 text-[11px] font-mono text-slate-500 dark:text-zinc-400 select-none">
             <span>ozing-yoz</span>
             <span>›</span>
             <span>src</span>
             <span>›</span>
-            <span className="text-slate-800 font-medium">{activeCodeTab === "html" ? "index.html" : "style.css"}</span>
+            <span className="text-slate-800 dark:text-zinc-200 font-medium">{activeCodeTab === "html" ? "index.html" : "style.css"}</span>
           </div>
 
-          {/* CodeMirror 6 Editor with VS Code Light Theme */}
-          <div className="flex-1 overflow-auto bg-white/80 relative">
+          {/* CodeMirror 6 Editor with Dynamic Theme */}
+          <div className="flex-1 overflow-auto bg-white/80 dark:bg-[#18181b] relative">
             <CodeMirror
               value={activeCodeTab === "html" ? codeHtml : codeCss}
               height="100%"
               minHeight="420px"
               extensions={[
                 activeCodeTab === "html" ? langHtml() : langCss(),
-                vsCodeExtension,
+                getVsCodeExtension(isDark),
                 highlightLineField,
               ]}
               onCreateEditor={(view) => {
@@ -695,21 +706,21 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
         >
           {/* Top Half: Sandboxed Preview */}
           <div className="glass-panel flex flex-col h-76 overflow-hidden shadow-glass-sm">
-            <div className="px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between bg-white/80 select-none">
+            <div className="px-4 py-2.5 border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between bg-white/80 dark:bg-slate-900/90 select-none">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-slate-900">{UZ.workspace.resultTitle}</span>
-                <span className="text-xs text-slate-500 font-mono">({viewportWidth})</span>
+                <span className="text-sm font-bold text-slate-900 dark:text-white">{UZ.workspace.resultTitle}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">({viewportWidth})</span>
               </div>
 
               {/* Viewport Width Toggles */}
-              <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg">
+              <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg">
                 <button
                   onClick={() => {
                     sounds.playClick();
                     setViewportWidth("100%");
                   }}
                   title="Monitor / Desktop (100%)"
-                  className={`p-1.5 rounded-md ${viewportWidth === "100%" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "100%" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
                 >
                   <Monitor className="w-4 h-4" />
                 </button>
@@ -719,7 +730,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("768px");
                   }}
                   title="Planshet (768px)"
-                  className={`p-1.5 rounded-md ${viewportWidth === "768px" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "768px" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
                 >
                   <Tablet className="w-4 h-4" />
                 </button>
@@ -729,7 +740,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("375px");
                   }}
                   title="Telefon (375px)"
-                  className={`p-1.5 rounded-md ${viewportWidth === "375px" ? "bg-white shadow-xs text-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "375px" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
                 >
                   <Smartphone className="w-4 h-4" />
                 </button>
@@ -737,7 +748,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             </div>
 
             {/* Iframe Viewport with Realistic Frame for Mobile */}
-            <div className="flex-1 bg-slate-100/50 flex justify-center items-center overflow-auto p-2">
+            <div className="flex-1 bg-slate-100/50 dark:bg-slate-950/70 flex justify-center items-center overflow-auto p-2">
               <div
                 style={{ width: viewportWidth }}
                 className={`h-full transition-all duration-300 bg-white ${
@@ -759,14 +770,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
           {/* Bottom Half: Ustoz AI Hint Ladder */}
           <div className="glass-panel flex-1 p-5 flex flex-col justify-between gap-3 shadow-glass">
-            <div className="flex items-center justify-between border-b border-slate-200/70 pb-3">
+            <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-lime-100 border border-lime-300 flex items-center justify-center shadow-xs">
-                  <Sparkles className="w-5 h-5 text-lime-700" />
+                <div className="w-9 h-9 rounded-xl bg-lime-100 dark:bg-emerald-950/60 border border-lime-300 dark:border-emerald-700 flex items-center justify-center shadow-xs">
+                  <Sparkles className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">{UZ.workspace.tutorTitle}</h3>
-                  <p className="text-xs text-slate-500">{UZ.tagline}</p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">{UZ.workspace.tutorTitle}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{UZ.tagline}</p>
                 </div>
               </div>
               <LevelDots currentLevel={maxHintLevel} />
@@ -775,13 +786,13 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             {/* Hint Conversation History */}
             <div className="flex-1 overflow-y-auto space-y-3.5 max-h-56 pr-1">
               {hints.length === 0 ? (
-                <div className="text-center py-6 px-3 text-sm text-slate-600 space-y-2.5">
+                <div className="text-center py-6 px-3 text-sm text-slate-600 dark:text-slate-300 space-y-2.5">
                   <p className="leading-relaxed">Ustoz AI tayyor javobni berib qo'ymaydi — 4 bosqichli maslahat zinapoyasi orqali fikrlashga undaydi.</p>
                   <div className="flex flex-wrap justify-center gap-2 pt-1">
-                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">1. Savol</span>
-                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">2. Yo'nalish</span>
-                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">3. Tushuntirish</span>
-                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-semibold text-slate-700">4. Qisman yechim</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">1. Savol</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">2. Yo'nalish</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">3. Tushuntirish</span>
+                    <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">4. Qisman yechim</span>
                   </div>
                 </div>
               ) : (
@@ -800,9 +811,9 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             </div>
 
             {/* Hint Action Bar */}
-            <div className="pt-3 border-t-2 border-slate-200 flex items-center justify-between gap-3">
-              <span className="text-sm text-slate-700 font-extrabold">
-                Keyingi: <strong className="text-slate-900">{UZ.hintLevels[nextHintLevel as 1 | 2 | 3 | 4]}</strong>
+            <div className="pt-3 border-t-2 border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+              <span className="text-sm text-slate-700 dark:text-slate-300 font-extrabold">
+                Keyingi: <strong className="text-slate-900 dark:text-white">{UZ.hintLevels[nextHintLevel as 1 | 2 | 3 | 4]}</strong>
               </span>
 
               <button
@@ -822,7 +833,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="lg:hidden glass-nav border-t border-slate-200 grid grid-cols-4 py-2.5 text-center text-sm font-semibold select-none">
+      <nav className="lg:hidden glass-nav border-t border-slate-200 dark:border-slate-800 grid grid-cols-4 py-2.5 text-center text-sm font-semibold select-none">
         {(["vazifa", "kod", "natija", "ustoz"] as const).map((tab) => (
           <button
             key={tab}
@@ -831,7 +842,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               setMobileTab(tab);
             }}
             className={`py-2 capitalize transition-all ${
-              mobileTab === tab ? "text-lime-700 font-bold border-b-2 border-b-lime-600" : "text-slate-500"
+              mobileTab === tab ? "text-emerald-600 dark:text-emerald-400 font-bold border-b-2 border-b-emerald-600" : "text-slate-500 dark:text-slate-400"
             }`}
           >
             {tab}
@@ -843,42 +854,42 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       <GlassModal open={showButtonsGuide} onClose={() => setShowButtonsGuide(false)} title="Platforma Tugmalari va Qoidalari">
         <div className="space-y-4 text-sm">
           <div className="space-y-3">
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-              <p className="font-bold text-slate-900 flex items-center gap-2">
-                <Play className="w-4 h-4 text-slate-700" />
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1">
+              <p className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Play className="w-4 h-4 text-slate-700 dark:text-slate-300" />
                 <span>Ishga tushirish (Run) — [Ctrl+S]</span>
               </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                 Yozgan kodingizni tekshirishdan oldin o'ng tomondagi ekranda ko'rish imkonini beradi.
               </p>
             </div>
 
-            <div className="p-3.5 bg-lime-50 rounded-xl border border-lime-200 space-y-1">
-              <p className="font-bold text-lime-900 flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-lime-700" />
+            <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800 space-y-1">
+              <p className="font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Tekshirish (Check) — [Ctrl+Enter]</span>
               </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                 Kodingizni avtomatik testlar orqali tekshiradi va barcha shartlar bajarilganda ball qo'shadi.
               </p>
             </div>
 
-            <div className="p-3.5 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
-              <p className="font-bold text-sky-900 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-sky-700" />
+            <div className="p-3.5 bg-sky-50 dark:bg-sky-950/40 rounded-xl border border-sky-200 dark:border-sky-800 space-y-1">
+              <p className="font-bold text-sky-900 dark:text-sky-300 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-sky-600 dark:text-sky-400" />
                 <span>Maslahat so'rash (Ustoz AI)</span>
               </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                 4 bosqichli maslahat zinapoyasi. 1-2 darajalar ozgina jarima bilan yo'naltiradi, 4-daraja qisman yechimni ko'rsatadi (-40 ball).
               </p>
             </div>
 
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-              <p className="font-bold text-slate-900 flex items-center gap-2">
-                <AlignLeft className="w-4 h-4 text-slate-700" />
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1">
+              <p className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <AlignLeft className="w-4 h-4 text-slate-700 dark:text-slate-300" />
                 <span>Formatlash — [Shift+Alt+F]</span>
               </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                 Koddagi bo'shliqlar va xatoliklarni chiroyli tartiblab beradi (VS Code Prettier kabi).
               </p>
             </div>

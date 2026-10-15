@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { appStore } from "../../lib/store";
 import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
-import { BrandLogo, SoundToggle, GlassModal } from "../../components/ui/GlassComponents";
+import { BrandLogo, SoundToggle, ThemeToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
 import { UZ } from "../../lib/i18n/uz";
 import { supabase } from "../../lib/supabase";
@@ -144,19 +144,20 @@ export const TeacherDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] px-4 sm:px-8 lg:px-12 py-6 w-full space-y-8">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B0F19] px-4 sm:px-8 lg:px-12 py-6 w-full space-y-8 text-slate-800 dark:text-slate-100 transition-colors">
       {/* Top Navbar */}
-      <header className="glass-panel px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl">
+      <header className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-glass-sm rounded-2xl">
         <div className="flex items-center gap-3">
           <BrandLogo size="md" />
-          <span className="text-sm font-semibold px-3 py-1.5 rounded-lg bg-slate-900 text-white font-mono flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-lime-400" />
+          <span className="text-sm font-semibold px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-800 text-white font-mono flex items-center gap-2 border border-slate-700">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
             <span>Ustoz: teacher@ilmla.uz</span>
           </span>
         </div>
 
         <div className="flex items-center gap-3">
           <SoundToggle />
+          <ThemeToggle />
           <button
             onClick={() => {
               sounds.playClick();
@@ -170,14 +171,14 @@ export const TeacherDashboard: React.FC = () => {
           <Link
             onClick={() => sounds.playClick()}
             to="/app"
-            className="duo-btn-white text-xs sm:text-sm py-2.5 px-4 font-extrabold text-slate-700"
+            className="duo-btn-white dark:bg-slate-800 dark:border-slate-700 text-xs sm:text-sm py-2.5 px-4 font-extrabold text-slate-700 dark:text-slate-200"
           >
             Talaba ekrani
           </Link>
           <button
             onClick={handleTeacherLogout}
             title="Ustoz hisobidan chiqish"
-            className="duo-btn-white text-xs sm:text-sm py-2.5 px-4 font-extrabold text-rose-600 hover:text-rose-700 flex items-center gap-2"
+            className="duo-btn-white dark:bg-slate-800 dark:border-slate-700 text-xs sm:text-sm py-2.5 px-4 font-extrabold text-rose-600 hover:text-rose-700 dark:text-rose-400 flex items-center gap-2"
           >
             <LogOut className="w-4 h-4" />
             <span className="hidden sm:inline">Chiqish</span>
@@ -187,67 +188,67 @@ export const TeacherDashboard: React.FC = () => {
 
       {/* Quick Overview Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="glass-panel p-6 shadow-glass-sm">
-          <p className="text-sm text-slate-500 font-semibold">Jami o'quvchilar</p>
-          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">38 nafar</p>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">Ro'yxatdan o'tgan faol talabalar</p>
+        <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-6 shadow-glass-sm">
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold">Jami o'quvchilar</p>
+          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">38 nafar</p>
+          <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 mt-1">Ro'yxatdan o'tgan faol talabalar</p>
         </div>
-        <div className="glass-panel p-6 shadow-glass-sm">
-          <p className="text-sm text-slate-500 font-semibold">Bugun topshirganlar</p>
-          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-lime-700 mt-2">29 ta</p>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">Mustaqil tekshiruvdan o'tgan</p>
+        <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-6 shadow-glass-sm">
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold">Bugun topshirganlar</p>
+          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-2">29 ta</p>
+          <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 mt-1">Mustaqil tekshiruvdan o'tgan</p>
         </div>
-        <div className="glass-panel p-6 shadow-glass-sm">
-          <p className="text-sm text-slate-500 font-semibold">O'rtacha maslahat darajasi</p>
-          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">L 1.6</p>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">O'quvchilar mustaqil yozmoqda</p>
+        <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-6 shadow-glass-sm">
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold">O'rtacha maslahat darajasi</p>
+          <p className="font-mono text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">L 1.6</p>
+          <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 mt-1">O'quvchilar mustaqil yozmoqda</p>
         </div>
-        <div className="glass-panel p-6 shadow-glass-sm bg-gradient-to-br from-white to-lime-50/40">
-          <p className="text-sm text-slate-500 font-semibold">Ustoz AI xavfsizligi</p>
-          <p className="text-xl sm:text-2xl font-bold text-lime-800 mt-2">Leak-Guard Faol</p>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">Tayyor yechim talabaga berilmaydi</p>
+        <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-6 shadow-glass-sm bg-gradient-to-br from-white to-lime-50/40 dark:from-[#0F172A] dark:to-emerald-950/20">
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold">Ustoz AI xavfsizligi</p>
+          <p className="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-2">Leak-Guard Faol</p>
+          <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 mt-1">Tayyor yechim talabaga berilmaydi</p>
         </div>
       </div>
 
       {/* Teacher Competition Workflow Guide */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-lime-500/10 via-white to-slate-50 border border-lime-200/90 shadow-glass-sm space-y-4">
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-lime-500/10 via-white to-slate-50 dark:from-emerald-950/30 dark:via-slate-900 dark:to-[#0B0F19] border border-lime-200/90 dark:border-emerald-800 shadow-glass-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
-            <Lightbulb className="w-5 h-5 text-lime-700" />
+          <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <Lightbulb className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             <span>Ustoz uchun yo'riqnoma: Darsda jonli musobaqa o'tkazish</span>
           </h3>
-          <span className="text-xs sm:text-sm font-semibold text-lime-800 bg-lime-100 px-3 py-1 rounded-full">
+          <span className="text-xs sm:text-sm font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-700">
             3 oddiy qadam
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="p-4 bg-white/95 rounded-xl border border-slate-200/80 space-y-2">
-            <span className="font-bold text-slate-900 flex items-center gap-2 text-base">
-              <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">1</span>
+          <div className="p-4 bg-white/95 dark:bg-[#0F172A] rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+            <span className="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-900 dark:bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">1</span>
               <span>Xonani oching</span>
             </span>
-            <p className="text-slate-600 leading-relaxed text-sm">
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
               Yuqoridagi <strong>"Jonli xona ochish"</strong> tugmasini bosing yoki tayyor <strong>FLX742</strong> xonasiga kiring.
             </p>
           </div>
 
-          <div className="p-4 bg-white/95 rounded-xl border border-slate-200/80 space-y-2">
-            <span className="font-bold text-slate-900 flex items-center gap-2 text-base">
-              <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">2</span>
+          <div className="p-4 bg-white/95 dark:bg-[#0F172A] rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+            <span className="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-900 dark:bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">2</span>
               <span>Proyektorga uzating</span>
             </span>
-            <p className="text-slate-600 leading-relaxed text-sm">
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
               <strong>"Proyektor ekrani"</strong> tugmasini bosing va doskaga oching. O'quvchilar QR kod orqali 5 soniyada ulanishadi.
             </p>
           </div>
 
-          <div className="p-4 bg-white/95 rounded-xl border border-slate-200/80 space-y-2">
-            <span className="font-bold text-slate-900 flex items-center gap-2 text-base">
-              <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">3</span>
+          <div className="p-4 bg-white/95 dark:bg-[#0F172A] rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+            <span className="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-900 dark:bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">3</span>
               <span>Darsni boshqaring</span>
             </span>
-            <p className="text-slate-600 leading-relaxed text-sm">
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
               <strong>"Boshlash"</strong> tugmasini bosing, qiynalgan talabalar kodini ko'ring va umumiy ko'rsatma (Nudge) yuboring.
             </p>
           </div>
@@ -257,14 +258,14 @@ export const TeacherDashboard: React.FC = () => {
       {/* Main Actions Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: AI Challenge Builder Card (2 Cols) */}
-        <div className="lg:col-span-2 glass-panel p-6 sm:p-7 space-y-6 shadow-glass">
-          <div className="flex items-center justify-between border-b border-slate-200/70 pb-4">
+        <div className="lg:col-span-2 glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-6 sm:p-7 space-y-6 shadow-glass">
+          <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800 pb-4">
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-lime-600" />
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 <span>Ustoz AI bilan Yangi Challenge yaratish</span>
               </h2>
-              <p className="text-sm text-slate-600 mt-1 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                 Gemini AI o'quv markazingiz talabalari uchun kod, yechim, 4 bosqichli maslahat va avtomatik testlarni shakllantiradi.
               </p>
             </div>
@@ -281,15 +282,15 @@ export const TeacherDashboard: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="glass-card p-5 space-y-2.5 border-l-4 border-l-sky-500">
-              <span className="text-xs font-bold text-sky-800 uppercase tracking-wider">1-daraja: Boshlang'ich</span>
-              <h4 className="font-bold text-base text-slate-900">HTML teglari va matnlar</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">Semantik HTML, sarlavhalar, paragraflar, rasmlar va havolalar.</p>
+            <div className="glass-card dark:bg-slate-900 dark:border-slate-800 p-5 space-y-2.5 border-l-4 border-l-sky-500">
+              <span className="text-xs font-bold text-sky-800 dark:text-sky-400 uppercase tracking-wider">1-daraja: Boshlang'ich</span>
+              <h4 className="font-bold text-base text-slate-900 dark:text-white">HTML teglari va matnlar</h4>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Semantik HTML, sarlavhalar, paragraflar, rasmlar va havolalar.</p>
             </div>
-            <div className="glass-card p-5 space-y-2.5 border-l-4 border-l-amber-500">
-              <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">2-daraja: O'rta</span>
-              <h4 className="font-bold text-base text-slate-900">Flexbox & Grid tartiblash</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">Markazlash, kartalar galereyasi va navigatsiya panellari.</p>
+            <div className="glass-card dark:bg-slate-900 dark:border-slate-800 p-5 space-y-2.5 border-l-4 border-l-amber-500">
+              <span className="text-xs font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider">2-daraja: O'rta</span>
+              <h4 className="font-bold text-base text-slate-900 dark:text-white">Flexbox & Grid tartiblash</h4>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Markazlash, kartalar galereyasi va navigatsiya panellari.</p>
             </div>
           </div>
 
@@ -297,7 +298,7 @@ export const TeacherDashboard: React.FC = () => {
           <div className="p-6 rounded-2xl bg-[#0F172A] border-2 border-slate-700 border-b-4 border-b-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
             <div className="space-y-1">
               <h3 className="font-extrabold text-base sm:text-lg flex items-center gap-2">
-                <QrCode className="w-5 h-5 text-[#58CC02]" />
+                <QrCode className="w-5 h-5 text-emerald-400" />
                 <span>Jonli Dars Xonasi (Live Room)</span>
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
@@ -315,10 +316,10 @@ export const TeacherDashboard: React.FC = () => {
         </div>
 
         {/* Right Column: Class Management (1 Col) */}
-        <div className="glass-panel p-6 sm:p-7 space-y-5 shadow-glass">
-          <div className="flex items-center justify-between border-b border-slate-200/70 pb-3.5">
-            <h3 className="font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-slate-700" />
+        <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 p-6 sm:p-7 space-y-5 shadow-glass">
+          <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800 pb-3.5">
+            <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
+              <Users className="w-5 h-5 text-slate-700 dark:text-slate-300" />
               <span>Guruhlarim ({classesList.length})</span>
             </h3>
             <button
@@ -326,7 +327,7 @@ export const TeacherDashboard: React.FC = () => {
                 sounds.playClick();
                 setShowCreateClassModal(true);
               }}
-              className="text-sm text-slate-700 hover:text-slate-900 font-bold inline-flex items-center gap-1.5"
+              className="text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold inline-flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" /> Yangi
             </button>
@@ -334,14 +335,14 @@ export const TeacherDashboard: React.FC = () => {
 
           <div className="space-y-3.5">
             {classesList.map((cls) => (
-              <div key={cls.id} className="glass-card p-4 space-y-2.5">
+              <div key={cls.id} className="glass-card dark:bg-slate-900 dark:border-slate-800 p-4 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-base text-slate-900">{cls.name}</h4>
-                  <span className="font-mono text-xs font-bold text-lime-800 bg-lime-100 px-2.5 py-1 rounded-md">
+                  <h4 className="font-bold text-base text-slate-900 dark:text-white">{cls.name}</h4>
+                  <span className="font-mono text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-300 dark:border-emerald-700">
                     {cls.joinCode}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm text-slate-500">
+                <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
                   <span>{cls.studentsCount} nafar talaba</span>
                   <button
                     onClick={() => {
@@ -349,7 +350,7 @@ export const TeacherDashboard: React.FC = () => {
                       sounds.playClick();
                       alert(`Havola nusxalandi: /join/${cls.joinCode}`);
                     }}
-                    className="text-slate-700 hover:text-slate-900 underline font-medium"
+                    className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white underline font-medium"
                   >
                     Ulanish havolasi
                   </button>

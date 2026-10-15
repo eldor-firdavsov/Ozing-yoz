@@ -135,7 +135,101 @@ export const vsCodeTheme = EditorView.theme(
   { dark: false }
 );
 
+// VS Code Dark+ Syntax Highlight Styles
+export const vsCodeDarkHighlightStyle = HighlightStyle.define([
+  { tag: t.keyword, color: "#c586c0", fontWeight: "600" },
+  { tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName], color: "#9cdcfe" },
+  { tag: [t.variableName, t.labelName], color: "#9cdcfe" },
+  { tag: [t.color, t.constant(t.name), t.standard(t.name)], color: "#4fc1ff" },
+  { tag: [t.definition(t.name), t.separator], color: "#d4d4d4" },
+  { tag: [t.typeName, t.className, t.annotation, t.modifier, t.self, t.namespace], color: "#4ec9b0" },
+  { tag: t.number, color: "#b5cea8" },
+  { tag: [t.operator, t.operatorKeyword, t.url, t.escape, t.regexp, t.link, t.special(t.string)], color: "#d4d4d4" },
+  { tag: [t.meta, t.comment], color: "#6a9955", fontStyle: "italic" },
+  { tag: t.strong, fontWeight: "bold" },
+  { tag: t.emphasis, fontStyle: "italic" },
+  { tag: t.strikethrough, textDecoration: "line-through" },
+  { tag: t.link, color: "#3794ff", textDecoration: "underline" },
+  { tag: t.heading, fontWeight: "bold", color: "#4fc1ff" },
+  { tag: [t.atom, t.bool, t.special(t.variableName)], color: "#569cd6" },
+  { tag: [t.processingInstruction, t.string, t.inserted], color: "#ce9178" },
+  { tag: t.invalid, color: "#f44747" },
+  // HTML / CSS specific tags
+  { tag: t.tagName, color: "#569cd6", fontWeight: "600" },
+  { tag: t.attributeName, color: "#9cdcfe" },
+  { tag: t.attributeValue, color: "#ce9178" },
+  { tag: t.angleBracket, color: "#808080" },
+]);
+
+export const vsCodeDarkTheme = EditorView.theme(
+  {
+    "&": {
+      color: "#d4d4d4",
+      backgroundColor: "transparent",
+      fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
+      fontSize: "15px",
+      letterSpacing: "0.2px",
+      fontVariantLigatures: "contextual",
+    },
+    ".cm-content": {
+      padding: "12px 0",
+      caretColor: "#ffffff",
+      lineHeight: "1.75",
+    },
+    "&.cm-focused .cm-cursor": {
+      borderLeftColor: "#ffffff",
+      borderLeftWidth: "2px",
+    },
+    "&.cm-focused .cm-selectionBackground, ::selection": {
+      backgroundColor: "#264f78 !important",
+    },
+    ".cm-selectionMatch": {
+      backgroundColor: "#3a3d41",
+      outline: "1px solid #515c6a",
+    },
+    ".cm-gutters": {
+      backgroundColor: "#18181b",
+      color: "#71717a",
+      borderRight: "1px solid #27272a",
+      paddingRight: "6px",
+      minWidth: "42px",
+    },
+    ".cm-gutterElement": {
+      padding: "0 8px 0 10px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      fontFamily: "'JetBrains Mono', monospace",
+      fontSize: "12px",
+    },
+    ".cm-activeLine": {
+      backgroundColor: "rgba(255, 255, 255, 0.04)",
+    },
+    ".cm-activeLineGutter": {
+      backgroundColor: "rgba(255, 255, 255, 0.08)",
+      color: "#ffffff",
+      fontWeight: "700",
+    },
+    ".cm-matchingBracket": {
+      backgroundColor: "rgba(16, 185, 129, 0.25)",
+      outline: "1px solid #10b981",
+      color: "#ffffff !important",
+      fontWeight: "bold",
+    },
+  },
+  { dark: true }
+);
+
 export const vsCodeExtension: Extension = [
   vsCodeTheme,
   syntaxHighlighting(vsCodeLightHighlightStyle),
 ];
+
+export const vsCodeDarkExtension: Extension = [
+  vsCodeDarkTheme,
+  syntaxHighlighting(vsCodeDarkHighlightStyle),
+];
+
+export const getVsCodeExtension = (isDark: boolean): Extension => {
+  return isDark ? vsCodeDarkExtension : vsCodeExtension;
+};

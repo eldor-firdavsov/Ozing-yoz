@@ -31,6 +31,51 @@ export interface LiveRoomState {
   latest_nudge?: string | null;
 }
 
+export function getLocalDateString(d: Date = new Date()): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function calculateStreak(activityDates: string[] = []): number {
+  if (!activityDates || activityDates.length === 0) return 0;
+  const uniqueDates = Array.from(new Set(activityDates));
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayStr = getLocalDateString(today);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayStr = getLocalDateString(yesterday);
+
+  let currentCheckDate: Date;
+
+  if (uniqueDates.includes(todayStr)) {
+    currentCheckDate = today;
+  } else if (uniqueDates.includes(yesterdayStr)) {
+    currentCheckDate = yesterday;
+  } else {
+    return 0;
+  }
+
+  let streak = 0;
+  const check = new Date(currentCheckDate);
+
+  while (true) {
+    const str = getLocalDateString(check);
+    if (uniqueDates.includes(str)) {
+      streak++;
+      check.setDate(check.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+}
+
 class AppStore {
   private localKey = "ozing_yoz_data_v3";
   private channel: BroadcastChannel | null = null;
@@ -61,7 +106,19 @@ class AppStore {
     if (typeof localStorage !== "undefined") {
       try {
         const raw = localStorage.getItem(this.localKey);
-        if (raw) return JSON.parse(raw);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (!parsed.activityDates) {
+            parsed.activityDates = [];
+          }
+          if (parsed.completedIds?.length > 0 && parsed.activityDates.length === 0) {
+            parsed.activityDates.push(getLocalDateString());
+            if (!parsed.profile.streak) {
+              parsed.profile.streak = 1;
+            }
+          }
+          return parsed;
+        }
       } catch {}
     } else if (this.memoryCache) {
       return this.memoryCache;
@@ -80,6 +137,7 @@ class AppStore {
       } as UserProfile,
       customChallenges: [] as ChallengeItem[],
       completedIds: [] as string[],
+      activityDates: [] as string[],
       codeDrafts: {} as Record<string, { html: string; css: string; js?: string }>,
       rooms: {} as Record<string, LiveRoomState>,
     };
@@ -158,12 +216,26 @@ class AppStore {
     this.saveLocalData(data);
   }
 
+  getActivityDates(): string[] {
+    const data = this.getLocalData();
+    return data.activityDates || [];
+  }
+
   markChallengeCompleted(id: string) {
     const data = this.getLocalData();
+    const todayStr = getLocalDateString();
+    if (!data.activityDates) {
+      data.activityDates = [];
+    }
+    if (!data.activityDates.includes(todayStr)) {
+      data.activityDates.push(todayStr);
+    }
+    data.profile.streak = calculateStreak(data.activityDates);
+
     if (!data.completedIds.includes(id)) {
       data.completedIds.push(id);
-      this.saveLocalData(data);
     }
+    this.saveLocalData(data);
   }
 
   isChallengeCompleted(id: string): boolean {
@@ -214,6 +286,7 @@ class AppStore {
       },
       customChallenges: [],
       completedIds: [],
+      activityDates: [],
       codeDrafts: {},
       rooms: {},
     };

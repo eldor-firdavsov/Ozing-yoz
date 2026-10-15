@@ -1,4 +1,4 @@
-import { appStore } from "../src/lib/store";
+import { appStore, getLocalDateString, calculateStreak } from "../src/lib/store";
 import { calculateScore } from "../src/lib/scoring";
 import { COURSE_CHALLENGES } from "../src/lib/challenges-data";
 import { formatHtml, formatCss, formatJs } from "../src/lib/formatter";
@@ -90,6 +90,8 @@ const flexboxId = "22222222-2222-2222-2222-222222222222";
 assert(!appStore.isChallengeCompleted(flexboxId), "Challenge initially not completed");
 appStore.markChallengeCompleted(flexboxId);
 assert(appStore.isChallengeCompleted(flexboxId), "Challenge correctly marked completed");
+assert(appStore.getActivityDates().length > 0, "Activity dates tracked on challenge completion");
+assert(calculateStreak([getLocalDateString()]) === 1, "Today single day streak calculated as 1");
 
 // Teacher Auth Simulation
 const teacherEmail = "teacher@ilmla.uz";

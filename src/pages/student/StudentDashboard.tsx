@@ -17,7 +17,7 @@ import {
   Calendar,
   Play
 } from "lucide-react";
-import { appStore } from "../../lib/store";
+import { appStore, getLocalDateString } from "../../lib/store";
 import { BrandLogo, SoundToggle, ThemeToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
 
@@ -76,15 +76,48 @@ export const StudentDashboard: React.FC = () => {
     navigate("/login");
   };
 
-  const weekDays = [
-    { label: "Du", active: true },
-    { label: "Se", active: completedCount > 0 },
-    { label: "Cho", active: completedCount > 1 },
-    { label: "Pa", active: completedCount > 3 },
-    { label: "Ju", active: completedCount > 5 },
-    { label: "Sha", active: false },
-    { label: "Yak", active: false },
+  // Dynamic 7-day Week Activity Tracker (Du - Yak)
+  const now = new Date();
+  const dayOfWeek = (now.getDay() + 6) % 7; // 0 = Du, 1 = Se, ..., 6 = Yak
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - dayOfWeek);
+  monday.setHours(0, 0, 0, 0);
+
+  const activityDates = appStore.getActivityDates();
+
+  const dayLabels = [
+    { label: "Du", name: "Dushanba" },
+    { label: "Se", name: "Seshanba" },
+    { label: "Cho", name: "Chorshanba" },
+    { label: "Pa", name: "Payshanba" },
+    { label: "Ju", name: "Juma" },
+    { label: "Sha", name: "Shanba" },
+    { label: "Yak", name: "Yakshanba" },
   ];
+
+  const weekDays = dayLabels.map((item, idx) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + idx);
+    const dateStr = getLocalDateString(d);
+    const isToday = idx === dayOfWeek;
+    const isPast = idx < dayOfWeek;
+    const isFuture = idx > dayOfWeek;
+
+    // Active if recorded in activityDates or if today and student has completed challenges
+    const active =
+      activityDates.includes(dateStr) ||
+      (isToday && completedCount > 0);
+
+    return {
+      ...item,
+      dateStr,
+      dayNumber: d.getDate(),
+      isToday,
+      isPast,
+      isFuture,
+      active,
+    };
+  });
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B0F19] flex flex-col md:flex-row text-slate-800 dark:text-slate-100 selection:bg-emerald-100 dark:selection:bg-emerald-950 transition-colors">
@@ -199,21 +232,56 @@ export const StudentDashboard: React.FC = () => {
           </div>
 
           {/* 7-Day Week Activity Tracker */}
-          <div className="flex items-center gap-2 self-stretch md:self-auto justify-between bg-white/15 backdrop-blur-md p-2.5 rounded-xl border border-white/20">
-            {weekDays.map((day, idx) => (
-              <div key={idx} className="flex flex-col items-center gap-1 text-center px-1.5">
-                <span className="text-[10px] uppercase font-bold text-white/80">{day.label}</span>
+          <div className="flex flex-col items-stretch sm:items-end gap-1.5 self-stretch md:self-auto">
+            <div className="flex items-center gap-1.5 sm:gap-2 justify-between bg-white/15 backdrop-blur-md p-2.5 rounded-xl border border-white/20 shadow-inner">
+              {weekDays.map((day, idx) => (
                 <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                    day.active
-                      ? "bg-white text-emerald-700 shadow-sm"
-                      : "bg-white/20 text-white/60"
+                  key={idx}
+                  title={`${day.name} (${day.dayNumber}-kun)${day.isToday ? " • Bugun" : ""}`}
+                  className={`flex flex-col items-center gap-1 text-center px-1.5 sm:px-2 py-1 rounded-lg transition-all ${
+                    day.isToday ? "bg-white/20 ring-1 ring-white/50 shadow-xs" : ""
                   }`}
                 >
-                  {day.active ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : "•"}
+                  <span
+                    className={`text-[10px] uppercase tracking-wider ${
+                      day.isToday ? "font-black text-amber-200" : "font-bold text-white/80"
+                    }`}
+                  >
+                    {day.label}
+                  </span>
+                  <div
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                      day.active
+                        ? "bg-white text-emerald-700 shadow-md ring-2 ring-emerald-300/50 scale-105"
+                        : day.isToday
+                        ? "border-2 border-dashed border-amber-300 bg-amber-400/20 text-amber-200 animate-pulse"
+                        : "bg-white/20 text-white/60"
+                    }`}
+                  >
+                    {day.active ? (
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    ) : day.isToday ? (
+                      <span className="text-[11px] font-black">!</span>
+                    ) : (
+                      "•"
+                    )}
+                  </div>
+                  <span
+                    className={`text-[9px] font-semibold leading-none ${
+                      day.isToday ? "text-amber-200 font-extrabold" : "text-white/60"
+                    }`}
+                  >
+                    {day.isToday ? "Bugun" : day.dayNumber}
+                  </span>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex items-center justify-end gap-1 text-[11px] font-bold text-emerald-100 pr-1">
+              <Flame className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+              <span>
+                Ketma-ketlik: <span className="text-white font-extrabold">{profile.streak || (completedCount > 0 ? 1 : 0)} kun</span>
+              </span>
+            </div>
           </div>
         </div>
 

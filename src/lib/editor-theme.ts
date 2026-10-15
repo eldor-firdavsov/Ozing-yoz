@@ -216,6 +216,54 @@ export const vsCodeDarkTheme = EditorView.theme(
       color: "#ffffff !important",
       fontWeight: "bold",
     },
+    // Dark mode Autocompletion Tooltip (VS Code IntelliSense Dark)
+    ".cm-tooltip": {
+      border: "1px solid #3f3f46",
+      borderRadius: "8px",
+      backgroundColor: "#18181b",
+      backdropFilter: "blur(12px)",
+      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5)",
+      overflow: "hidden",
+      color: "#f4f4f5",
+    },
+    ".cm-tooltip-autocomplete": {
+      "& > ul": {
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: "12px",
+        maxHeight: "220px",
+        backgroundColor: "#18181b",
+        color: "#d4d4d4",
+      },
+      "& > ul > li": {
+        padding: "5px 10px",
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+      },
+      "& > ul > li[aria-selected]": {
+        backgroundColor: "#27272a",
+        color: "#38bdf8",
+        fontWeight: "600",
+      },
+      "& > ul > li:hover": {
+        backgroundColor: "#27272a",
+      },
+    },
+    ".cm-completionIcon": {
+      width: "14px",
+      height: "14px",
+      opacity: "0.9",
+      marginRight: "4px",
+    },
+    ".cm-completionLabel": {
+      flex: 1,
+      color: "#f4f4f5",
+    },
+    ".cm-completionDetail": {
+      fontSize: "11px",
+      color: "#a1a1aa",
+      fontStyle: "italic",
+    },
   },
   { dark: true }
 );

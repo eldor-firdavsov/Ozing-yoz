@@ -33,6 +33,7 @@ import { buildSandboxedSrcDoc, AssertionResult } from "../../lib/tests-runner";
 import { calculateScore } from "../../lib/scoring";
 import { formatHtml, formatCss, formatJs } from "../../lib/formatter";
 import { getVsCodeExtension } from "../../lib/editor-theme";
+import { getAutocompleteExtension } from "../../lib/editor-autocomplete";
 import { themeManager } from "../../lib/theme";
 import { sounds } from "../../lib/audio";
 import {
@@ -405,7 +406,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
   const passedTestsCount = testResults.filter((r) => r.passed).length;
 
   return (
-    <div className={`min-h-screen flex flex-col bg-[#F8FAFC] ${isFullscreen ? "fixed inset-0 z-50" : ""}`}>
+    <div className={`min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 transition-colors ${isFullscreen ? "fixed inset-0 z-50" : ""}`}>
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 right-6 z-50 bg-slate-900/90 text-white text-xs font-mono px-4 py-2 rounded-xl backdrop-blur-md shadow-glass-lg animate-in slide-in-from-top-2 duration-150 flex items-center gap-2">
@@ -696,13 +697,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">Siz yozgan kod aynan shu ko'rinishni hosil qilishi kerak.</p>
               </div>
 
-              <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl bg-white/90 dark:bg-slate-900 shadow-inner overflow-auto max-h-60">
+              <div className="w-full my-auto p-4 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl bg-white/90 dark:bg-slate-900 shadow-inner overflow-auto max-h-60 flex items-center justify-center">
                 <div
+                  className="w-full flex items-center justify-center text-slate-900 dark:text-slate-100"
                   dangerouslySetInnerHTML={{ __html: challenge.target_html }}
                 />
               </div>
 
-              <div className="text-xs text-slate-400 mt-2">
+              <div className="text-xs text-slate-400 dark:text-slate-500 mt-2">
                 O'ng tomondagi "Natija" ekrani bilan solishtiring.
               </div>
             </div>
@@ -746,6 +748,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               extensions={[
                 activeCodeTab === "html" ? langHtml() : activeCodeTab === "css" ? langCss() : langJs(),
                 getVsCodeExtension(isDark),
+                getAutocompleteExtension(activeCodeTab),
                 highlightLineField,
               ]}
               onCreateEditor={(view) => {
@@ -981,7 +984,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       {/* Modal: Reset Code Confirmation */}
       <GlassModal open={showResetModal} onClose={() => setShowResetModal(false)} title={UZ.cta.reset}>
         <div className="space-y-5">
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">{UZ.workspace.resetWarning}</p>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">{UZ.workspace.resetWarning}</p>
           <div className="flex justify-end gap-3">
             <button onClick={() => setShowResetModal(false)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
               Bekor qilish
@@ -1006,7 +1009,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       {/* Modal: Level 4 Penalty Confirmation */}
       <GlassModal open={showL4Modal} onClose={() => setShowL4Modal(false)} title="4-daraja: Qisman yechim (-40 ball)">
         <div className="space-y-5">
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">{UZ.workspace.level4Warning}</p>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">{UZ.workspace.level4Warning}</p>
           <div className="flex justify-end gap-3">
             <button onClick={() => setShowL4Modal(false)} className="glass-btn-secondary text-sm py-2.5 px-4 font-semibold rounded-xl">
               Yo'q, o'zim yozaman
@@ -1027,15 +1030,15 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       {/* Modal: Challenge Passed Celebration */}
       <GlassModal open={showPassModal} onClose={() => setShowPassModal(false)} title={UZ.workspace.passMessage}>
         <div className="space-y-6 text-center">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-lime-100 border border-lime-300 flex items-center justify-center shadow-glass">
-            <Check className="w-9 h-9 text-lime-700 stroke-[3]" />
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-lime-100 dark:bg-emerald-950/60 border border-lime-300 dark:border-emerald-700 flex items-center justify-center shadow-glass">
+            <Check className="w-9 h-9 text-lime-700 dark:text-emerald-400 stroke-[3]" />
           </div>
 
           <div>
-            <h4 className="text-xl font-bold text-slate-900">
+            <h4 className="text-xl font-bold text-slate-900 dark:text-white">
               {isLiveRoom ? "Musobaqa topshirig'i bajarildi!" : "Ajoyib natija!"}
             </h4>
-            <p className="text-sm text-slate-500 mt-1.5 leading-relaxed">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
               {isLiveRoom
                 ? "Natijangiz doskadagi proyektor reytingiga muvaffaqiyatli uzatildi."
                 : "Siz topshiriqni muvaffaqiyatli bajardingiz."}
@@ -1044,12 +1047,12 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
           <div className="grid grid-cols-2 gap-4 text-center">
             <div className="glass-card p-4">
-              <p className="text-xs sm:text-sm text-slate-500 font-semibold">To'plangan ball</p>
-              <p className="font-mono text-3xl font-extrabold text-lime-700 mt-1">+{currentScore} XP</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold">To'plangan ball</p>
+              <p className="font-mono text-3xl font-extrabold text-lime-700 dark:text-lime-400 mt-1">+{currentScore} XP</p>
             </div>
             <div className="glass-card p-4">
-              <p className="text-xs sm:text-sm text-slate-500 font-semibold">Maslahatlar</p>
-              <p className="font-mono text-3xl font-extrabold text-slate-900 mt-1">{hints.length} ta</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold">Maslahatlar</p>
+              <p className="font-mono text-3xl font-extrabold text-slate-900 dark:text-white mt-1">{hints.length} ta</p>
             </div>
           </div>
 

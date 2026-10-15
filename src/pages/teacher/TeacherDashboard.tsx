@@ -411,13 +411,13 @@ export const TeacherDashboard: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-5">
-            <div className="p-4 bg-lime-50 rounded-xl border border-lime-200 space-y-1.5">
-              <h4 className="font-bold text-base text-slate-900">{draftResult.title}</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">{draftResult.description_md}</p>
+            <div className="p-4 bg-lime-50 dark:bg-emerald-950/40 rounded-xl border border-lime-200 dark:border-emerald-800 space-y-1.5">
+              <h4 className="font-bold text-base text-slate-900 dark:text-white">{draftResult.title}</h4>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{draftResult.description_md}</p>
             </div>
 
-            <div className="text-sm text-slate-600 space-y-1.5">
-              <p>• Testlar soni: <strong>{draftResult.tests.length} ta</strong></p>
+            <div className="text-sm text-slate-600 dark:text-slate-300 space-y-1.5">
+              <p>• Testlar soni: <strong className="text-slate-900 dark:text-white">{draftResult.tests.length} ta</strong></p>
               <p>• Boshlang'ich kod va to'liq yechim tayyorlandi</p>
             </div>
 
@@ -437,14 +437,14 @@ export const TeacherDashboard: React.FC = () => {
       <GlassModal open={showCreateRoomModal} onClose={() => setShowCreateRoomModal(false)} title="Yangi Jonli Xona Boshlash">
         <form onSubmit={handleCreateRoom} className="space-y-5">
           <div>
-            <label className="text-sm font-semibold text-slate-700">Topshiriqni tanlang</label>
+            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Topshiriqni tanlang</label>
             <select
               value={selectedChallengeId}
               onChange={(e) => setSelectedChallengeId(e.target.value)}
               className="glass-input text-sm py-2.5 mt-1.5"
             >
               {COURSE_CHALLENGES.map((c) => (
-                <option key={c.id} value={c.id}>
+                <option key={c.id} value={c.id} className="dark:bg-slate-900 dark:text-white">
                   {c.title} ({c.level}-daraja)
                 </option>
               ))}
@@ -452,16 +452,16 @@ export const TeacherDashboard: React.FC = () => {
           </div>
 
           <div>
-            <label className="text-sm font-semibold text-slate-700">Dars vaqti (taymer)</label>
+            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Dars vaqti (taymer)</label>
             <select
               value={roomDuration}
               onChange={(e) => setRoomDuration(Number(e.target.value))}
               className="glass-input text-sm py-2.5 mt-1.5"
             >
-              <option value={300}>5 daqiqa (Tezkor mashq)</option>
-              <option value={600}>10 daqiqa</option>
-              <option value={900}>15 daqiqa (Standart)</option>
-              <option value={1800}>30 daqiqa</option>
+              <option value={300} className="dark:bg-slate-900 dark:text-white">5 daqiqa (Tezkor mashq)</option>
+              <option value={600} className="dark:bg-slate-900 dark:text-white">10 daqiqa</option>
+              <option value={900} className="dark:bg-slate-900 dark:text-white">15 daqiqa (Standart)</option>
+              <option value={1800} className="dark:bg-slate-900 dark:text-white">30 daqiqa</option>
             </select>
           </div>
 
@@ -484,7 +484,7 @@ export const TeacherDashboard: React.FC = () => {
       <GlassModal open={showCreateClassModal} onClose={() => setShowCreateClassModal(false)} title="Yangi Sinf Yaratish">
         <form onSubmit={handleAddClass} className="space-y-5">
           <div>
-            <label className="text-sm font-semibold text-slate-700">Sinf / Guruh nomi</label>
+            <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Sinf / Guruh nomi</label>
             <input
               required
               placeholder="Masalan: Frontend 15-guruh"

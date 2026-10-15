@@ -446,18 +446,28 @@ const GuestJoinPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#F8FAFC]">
-      <div className="glass-panel max-w-md w-full p-8 space-y-6 text-center shadow-glass-lg rounded-2xl">
+    <div className="min-h-screen flex flex-col justify-between p-4 bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 transition-colors">
+      <header className="max-w-md w-full mx-auto pt-4 flex items-center justify-between">
+        <Link to="/" onClick={() => sounds.playClick()} className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          ← Bosh sahifa
+        </Link>
+        <div className="flex items-center gap-2">
+          <SoundToggle />
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <div className="glass-panel dark:bg-[#0F172A] max-w-md w-full mx-auto my-auto p-8 space-y-6 text-center shadow-glass-lg rounded-2xl border border-slate-200/80 dark:border-slate-800">
         <BrandLogo size="lg" />
 
         <div className="space-y-1">
-          <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Jonli musobaqa xonasi</p>
-          <div className="font-mono text-3xl font-extrabold text-slate-900">{code}</div>
+          <p className="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Jonli musobaqa xonasi</p>
+          <div className="font-mono text-3xl font-extrabold text-slate-900 dark:text-white">{code}</div>
         </div>
 
         {isAuthenticated ? (
           <div className="space-y-4 pt-2">
-            <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-sm text-emerald-900">
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800 text-sm text-emerald-900 dark:text-emerald-300">
               Salom, <strong>{profile.full_name}</strong>! Xonaga ulanishga tayyormisiz?
             </div>
             <button
@@ -469,18 +479,18 @@ const GuestJoinPage: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleRegisterAndJoin} className="space-y-4 text-left pt-2">
-            <p className="text-xs text-slate-500 font-semibold text-center">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold text-center">
               Musobaqada qatnashish uchun talaba sifatida ro'yxatdan o'ting:
             </p>
 
             {error && (
-              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-semibold">
+              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-xs text-rose-700 dark:text-rose-300 font-semibold">
                 {error}
               </div>
             )}
 
             <div>
-              <label className="text-xs font-bold text-slate-700 mb-1 block">To'liq ismingiz</label>
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">To'liq ismingiz</label>
               <input
                 required
                 autoFocus
@@ -492,7 +502,7 @@ const GuestJoinPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 mb-1 block">Elektron pochta (Email)</label>
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Elektron pochta (Email)</label>
               <input
                 required
                 type="email"
@@ -504,7 +514,7 @@ const GuestJoinPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 mb-1 block">Parol (kamida 6 ta belgi)</label>
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Parol (kamida 6 ta belgi)</label>
               <input
                 required
                 type="password"
@@ -523,15 +533,19 @@ const GuestJoinPage: React.FC = () => {
               {loading ? "Yuklanmoqda..." : "Ro'yxatdan o'tib, xonaga kirish →"}
             </button>
 
-            <p className="text-center text-xs text-slate-500 pt-1">
+            <p className="text-center text-xs text-slate-500 dark:text-slate-400 pt-1">
               Hisobingiz bormi?{" "}
-              <Link to="/login" className="text-slate-900 font-bold underline">
+              <Link to="/login" className="text-slate-900 dark:text-white font-bold underline">
                 Kirish
               </Link>
             </p>
           </form>
         )}
       </div>
+
+      <footer className="text-center text-xs text-slate-400 dark:text-slate-500 py-2">
+        O'zing Yoz © 2026
+      </footer>
     </div>
   );
 };

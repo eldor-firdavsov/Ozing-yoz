@@ -139,10 +139,10 @@ export const TypewriterHint: React.FC<{
   }, [text]);
 
   const badgeColors: Record<number, string> = {
-    1: "bg-sky-50 text-sky-700 border-sky-200",
-    2: "bg-amber-50 text-amber-700 border-amber-200",
-    3: "bg-orange-50 text-orange-700 border-orange-200",
-    4: "bg-rose-50 text-rose-700 border-rose-200",
+    1: "bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800",
+    2: "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800",
+    3: "bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800",
+    4: "bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800",
   };
 
   const handleCopy = () => {
@@ -163,7 +163,7 @@ export const TypewriterHint: React.FC<{
             {level}-daraja maslahat
           </span>
           {concept && (
-            <span className="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200 font-bold">
+            <span className="font-mono text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 font-bold">
               #{concept}
             </span>
           )}
@@ -173,7 +173,7 @@ export const TypewriterHint: React.FC<{
             <button
               onClick={() => onNavigateLine?.(line)}
               title="Koddagi ushbu qatorga o'tish"
-              className="font-mono text-xs text-amber-800 font-bold bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-xl border border-amber-200 flex items-center gap-1 transition-all"
+              className="font-mono text-xs text-amber-800 dark:text-amber-300 font-bold bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 dark:hover:bg-amber-900/50 px-2.5 py-1 rounded-xl border border-amber-200 dark:border-amber-800 flex items-center gap-1 transition-all"
             >
               <span>{line}-qator</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -182,16 +182,16 @@ export const TypewriterHint: React.FC<{
           {level === 4 && (
             <button
               onClick={handleCopy}
-              className="text-xs text-slate-700 hover:text-slate-900 inline-flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-xl shadow-sm font-bold"
+              className="text-xs text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-1 rounded-xl shadow-sm font-bold transition-all"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-lime-600" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-lime-600 dark:text-lime-400" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? "Nusxalandi" : "Nusxalash"}</span>
             </button>
           )}
-          {fromFallback && <span className="text-slate-400 text-xs font-semibold">Standart</span>}
+          {fromFallback && <span className="text-slate-400 dark:text-slate-500 text-xs font-semibold">Standart</span>}
         </div>
       </div>
-      <p className="text-sm sm:text-base text-slate-800 leading-relaxed whitespace-pre-wrap font-sans font-medium selection:bg-[#D7FFB8]">
+      <p className="text-sm sm:text-base text-slate-800 dark:text-slate-100 leading-relaxed whitespace-pre-wrap font-sans font-medium selection:bg-[#D7FFB8] dark:selection:bg-emerald-900/60">
         {displayed}
       </p>
     </div>
@@ -200,24 +200,24 @@ export const TypewriterHint: React.FC<{
 
 export const TestChecklistItem: React.FC<{ label: string; passed?: boolean }> = ({ label, passed }) => (
   <div
-    className={`duo-choice-card text-sm sm:text-base ${
+    className={`p-3 rounded-xl border flex items-center gap-3 transition-all text-sm font-medium ${
       passed === true
-        ? "duo-choice-passed"
+        ? "bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800 text-emerald-950 dark:text-emerald-200 shadow-xs"
         : passed === false
-        ? "duo-choice-failed"
-        : "hover:border-slate-300"
+        ? "bg-rose-50/70 dark:bg-rose-950/30 border-rose-300 dark:border-rose-800 text-rose-950 dark:text-rose-200 shadow-xs"
+        : "bg-white/80 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
     }`}
   >
     {passed === true ? (
-      <div className="w-6 h-6 rounded-full bg-[#58CC02] text-white flex items-center justify-center shrink-0 shadow-sm">
-        <Check className="w-4 h-4 stroke-[3]" />
+      <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+        <Check className="w-3.5 h-3.5 stroke-[3]" />
       </div>
     ) : passed === false ? (
-      <div className="w-6 h-6 rounded-full bg-[#FF4B4B] text-white flex items-center justify-center shrink-0 shadow-sm">
-        <XCircle className="w-4 h-4 stroke-[3]" />
+      <div className="w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+        <XCircle className="w-3.5 h-3.5 stroke-[3]" />
       </div>
     ) : (
-      <div className="w-6 h-6 rounded-full border-2 border-slate-300 shrink-0" />
+      <div className="w-5 h-5 rounded-full border-2 border-slate-300 dark:border-slate-600 shrink-0" />
     )}
     <span className="flex-1 leading-snug">{label}</span>
   </div>
@@ -245,9 +245,8 @@ export const GlassModal: React.FC<{
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white/95 dark:bg-[#1C1C1E]/95 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.12] max-w-xl w-full p-7 space-y-5 rounded-3xl shadow-2xl"
+        className="bg-white/95 dark:bg-[#18181b]/95 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.12] max-w-xl w-full p-7 space-y-5 rounded-3xl shadow-2xl dark:shadow-slate-950/60"
         style={{
-          boxShadow: "0 1px 0 0 rgba(255, 255, 255, 0.9) inset, 0 24px 48px -12px rgba(0, 0, 0, 0.18)",
           animation: "appleModalIn 220ms cubic-bezier(0.32, 0.72, 0, 1) forwards",
         }}
       >

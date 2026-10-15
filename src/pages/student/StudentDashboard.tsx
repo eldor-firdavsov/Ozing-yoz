@@ -809,7 +809,7 @@ export const StudentDashboard: React.FC = () => {
       {/* ======================================================== */}
       <GlassModal open={showJoinModal} onClose={() => setShowJoinModal(false)} title="Jonli Xonaga Ulanish">
         <form onSubmit={handleJoinClass} className="space-y-4">
-          <p className="text-sm font-normal text-slate-600">
+          <p className="text-sm font-normal text-slate-600 dark:text-slate-300">
             Ustozingiz bergan 6 xonali xona kodini (masalan: <strong>FLX742</strong>) kiriting:
           </p>
           <input
@@ -837,20 +837,20 @@ export const StudentDashboard: React.FC = () => {
       </GlassModal>
 
       <GlassModal open={showHelpModal} onClose={() => setShowHelpModal(false)} title="Talaba Qo'llanmasi — O'zing Yoz">
-        <div className="space-y-4 text-xs text-slate-700">
-          <p className="text-sm font-bold text-slate-900">Platforma qanday ishlaydi?</p>
+        <div className="space-y-4 text-xs text-slate-700 dark:text-slate-300">
+          <p className="text-sm font-bold text-slate-900 dark:text-white">Platforma qanday ishlaydi?</p>
           <div className="space-y-2.5">
-            <div className="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1">
-              <strong className="text-emerald-900 text-sm">1. Amaliyotni tanlang</strong>
-              <p className="text-slate-600">Bo'limlar bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
+            <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800 space-y-1">
+              <strong className="text-emerald-900 dark:text-emerald-300 text-sm">1. Amaliyotni tanlang</strong>
+              <p className="text-slate-600 dark:text-slate-400">Bo'limlar bo'yicha HTML/CSS mashqlarini tanlab "Boshlash" tugmasini bosing.</p>
             </div>
-            <div className="p-3.5 bg-sky-50 rounded-xl border border-sky-200 space-y-1">
-              <strong className="text-sky-900 text-sm">2. Mustaqil kod yozing</strong>
-              <p className="text-slate-600">VS Code uslubidagi muhitda kod yozing va Ctrl+Enter orqali testlarni bajaring.</p>
+            <div className="p-3.5 bg-sky-50 dark:bg-sky-950/40 rounded-xl border border-sky-200 dark:border-sky-800 space-y-1">
+              <strong className="text-sky-900 dark:text-sky-300 text-sm">2. Mustaqil kod yozing</strong>
+              <p className="text-slate-600 dark:text-slate-400">VS Code uslubidagi muhitda kod yozing va Ctrl+Enter orqali testlarni bajaring.</p>
             </div>
-            <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 space-y-1">
-              <strong className="text-amber-900 text-sm">3. Ustoz AI dan maslahat oling</strong>
-              <p className="text-slate-600">Savol → Yo'nalish → Tushuntirish → Qisman yechim zinapoyasi orqali yordam oling.</p>
+            <div className="p-3.5 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-800 space-y-1">
+              <strong className="text-amber-900 dark:text-amber-300 text-sm">3. Ustoz AI dan maslahat oling</strong>
+              <p className="text-slate-600 dark:text-slate-400">Savol → Yo'nalish → Tushuntirish → Qisman yechim zinapoyasi orqali yordam oling.</p>
             </div>
           </div>
           <div className="flex justify-end pt-2">

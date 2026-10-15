@@ -171,6 +171,38 @@
   .glass-btn-secondary {
     @apply duo-btn-white;
   }
+
+  /* Dark Mode Inset Glow Override (replaces blinding white lines with subtle luxury dark borders) */
+  .dark .apple-glass-nav,
+  .dark .apple-card,
+  .dark .mondly-card,
+  .dark .mondly-card-interactive,
+  .dark .mondly-btn-secondary,
+  .dark .glass-panel,
+  .dark .glass-card,
+  .dark .glass-nav {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06) inset, 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .apple-btn-secondary {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset;
+  }
+
+  .duo-choice-card {
+    @apply p-3 rounded-xl border flex items-center gap-3 transition-all text-sm font-medium bg-white/80 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-300;
+  }
+
+  .duo-choice-passed {
+    @apply bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800 text-emerald-950 dark:text-emerald-200 !important;
+  }
+
+  .duo-choice-failed {
+    @apply bg-rose-50/70 dark:bg-rose-950/30 border-rose-300 dark:border-rose-800 text-rose-950 dark:text-rose-200 !important;
+  }
+
+  .duo-speech-bubble {
+    @apply p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-sm;
+  }
 }
 
 /* Pulse highlight for Level 2 line pointers in CodeMirror */

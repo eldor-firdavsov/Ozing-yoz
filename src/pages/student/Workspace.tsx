@@ -86,9 +86,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
   const roomCode = code || "FLX742";
 
   // Challenge selection
-  const challengeId = id || (isLiveRoom ? appStore.getRoom(roomCode).challenge_id : "22222222-2222-2222-2222-222222222222");
+  const challengeId = id || (isLiveRoom ? appStore.getRoom(roomCode).challenge_id : "11111111-1111-1111-1111-111111111111");
   const initialChallenge = useMemo(() => appStore.getChallengeById(challengeId), [challengeId]);
   const [challenge, setChallenge] = useState(initialChallenge);
+
+  // All challenges & Next challenge calculation
+  const allChallenges = useMemo(() => appStore.getChallenges(), []);
+  const currentIndex = allChallenges.findIndex((c) => c.id === challenge.id);
+  const nextChallenge = currentIndex >= 0 && currentIndex < allChallenges.length - 1 ? allChallenges[currentIndex + 1] : null;
 
   // Live Room state if in room mode
   const [roomState, setRoomState] = useState<LiveRoomState | null>(() =>
@@ -141,6 +146,38 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
       setIsDark(t === "dark");
     });
   }, []);
+
+  // Dynamic sync when challengeId in URL route changes
+  useEffect(() => {
+    const nextItem = appStore.getChallengeById(challengeId);
+    setChallenge(nextItem);
+    const draft = appStore.getDraft(nextItem.id);
+    setCodeHtml(draft?.html || nextItem.starter_html);
+    setCodeCss(draft?.css || nextItem.starter_css);
+    setHints([]);
+    setTestResults([]);
+    setShowPassModal(false);
+    setMaxHintLevel(0);
+    setFailedChecksSinceL3(0);
+    setActiveCodeTab("css");
+    setLeftTab("task");
+    setDebouncedDoc(buildSandboxedSrcDoc(draft?.html || nextItem.starter_html, draft?.css || nextItem.starter_css, nextItem.tests));
+  }, [challengeId]);
+
+  const handleNextChallenge = () => {
+    sounds.playClick();
+    setShowPassModal(false);
+    if (isLiveRoom) {
+      navigate("/app");
+      return;
+    }
+    if (nextChallenge) {
+      navigate(`/app/challenge/${nextChallenge.id}`);
+    } else {
+      showToast("Tabriklaymiz! Barcha mavzulardagi topshiriqlarni to'liq yakunladingiz!");
+      navigate("/app");
+    }
+  };
 
   // Sync Room Updates
   useEffect(() => {
@@ -982,13 +1019,16 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               Yopish
             </button>
             <button
-              onClick={() => {
-                sounds.playClick();
-                navigate("/app");
-              }}
-              className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl"
+              onClick={handleNextChallenge}
+              className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl active:scale-95 transition-transform inline-flex items-center gap-1.5"
             >
-              {isLiveRoom ? "Darslarga qaytish" : "Keyingi mashqqa o'tish →"}
+              <span>
+                {isLiveRoom
+                  ? "Darslarga qaytish"
+                  : nextChallenge
+                  ? `Keyingi mashqqa o'tish (${nextChallenge.title.split('.')[0]}-mashq) →`
+                  : "Barcha mashqlar yakunlandi (Bosh sahifa) →"}
+              </span>
             </button>
           </div>
         </div>

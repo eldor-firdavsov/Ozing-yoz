@@ -32,7 +32,7 @@ import { appStore, LiveRoomState } from "../../lib/store";
 import { buildSandboxedSrcDoc, AssertionResult } from "../../lib/tests-runner";
 import { calculateScore } from "../../lib/scoring";
 import { formatHtml, formatCss, formatJs } from "../../lib/formatter";
-import { getVsCodeExtension } from "../../lib/editor-theme";
+import { getVsCodeExtension, vsCodeDarkTheme, vsCodeTheme } from "../../lib/editor-theme";
 import { getAutocompleteExtension } from "../../lib/editor-autocomplete";
 import { themeManager } from "../../lib/theme";
 import { sounds } from "../../lib/audio";
@@ -735,12 +735,13 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           </div>
 
           {/* CodeMirror 6 Editor with Dynamic Theme */}
-          <div className="flex-1 overflow-auto bg-white/80 dark:bg-[#18181b] relative">
+          <div className="flex-1 overflow-auto bg-white dark:bg-[#18181b] relative">
             <CodeMirror
-              key={`${challenge.id}-${activeCodeTab}`}
+              key={`${challenge.id}-${activeCodeTab}-${isDark ? "dark" : "light"}`}
               value={activeCodeTab === "html" ? codeHtml : activeCodeTab === "css" ? codeCss : codeJs}
               height="100%"
               minHeight="420px"
+              theme={isDark ? vsCodeDarkTheme : vsCodeTheme}
               extensions={[
                 activeCodeTab === "html" ? langHtml() : activeCodeTab === "css" ? langCss() : langJs(),
                 getVsCodeExtension(isDark),

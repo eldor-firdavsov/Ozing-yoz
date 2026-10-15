@@ -33,14 +33,18 @@ export const vsCodeTheme = EditorView.theme(
   {
     "&": {
       color: "#1e293b",
-      backgroundColor: "transparent",
+      backgroundColor: "#ffffff",
       fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Source Code Pro', monospace",
       fontSize: "15px",
       letterSpacing: "0.2px",
       fontVariantLigatures: "contextual",
       fontFeatureSettings: "'liga' 1, 'calt' 1",
     },
+    ".cm-scroller": {
+      backgroundColor: "#ffffff",
+    },
     ".cm-content": {
+      backgroundColor: "#ffffff",
       padding: "12px 0",
       caretColor: "#0f172a",
       lineHeight: "1.75",
@@ -165,13 +169,17 @@ export const vsCodeDarkTheme = EditorView.theme(
   {
     "&": {
       color: "#d4d4d4",
-      backgroundColor: "transparent",
+      backgroundColor: "#18181b",
       fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
       fontSize: "15px",
       letterSpacing: "0.2px",
       fontVariantLigatures: "contextual",
     },
+    ".cm-scroller": {
+      backgroundColor: "#18181b",
+    },
     ".cm-content": {
+      backgroundColor: "#18181b",
       padding: "12px 0",
       caretColor: "#ffffff",
       lineHeight: "1.75",

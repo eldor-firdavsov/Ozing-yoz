@@ -255,3 +255,44 @@
     background-color: #0F172A !important;
   }
 }
+
+/* CodeMirror Strict Dark / Light Mode Background & Contrast */
+.dark .cm-editor,
+.dark .cm-editor .cm-scroller,
+.dark .cm-editor .cm-content {
+  background-color: #18181b !important;
+  color: #d4d4d4 !important;
+}
+
+.dark .cm-editor .cm-gutters {
+  background-color: #18181b !important;
+  color: #71717a !important;
+  border-right: 1px solid #27272a !important;
+}
+
+.dark .cm-editor .cm-activeLine {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .cm-editor .cm-activeLineGutter {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
+
+.dark .cm-editor.cm-focused .cm-cursor {
+  border-left-color: #ffffff !important;
+}
+
+html:not(.dark) .cm-editor,
+html:not(.dark) .cm-editor .cm-scroller,
+html:not(.dark) .cm-editor .cm-content {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+}
+
+html:not(.dark) .cm-editor .cm-gutters {
+  background-color: rgba(248, 250, 252, 0.8) !important;
+  color: #94a3b8 !important;
+  border-right: 1px solid rgba(226, 232, 240, 0.8) !important;
+}
+

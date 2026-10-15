@@ -302,7 +302,7 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
             onClick={() => broadcastState("live")}
             disabled={status === "live"}
             title="Musobaqaga start berish. Barcha talabalarda taymer ishga tushadi."
-            className="duo-btn-green text-xs sm:text-sm py-2 px-4 font-black shadow-xs flex items-center gap-2 disabled:opacity-40"
+            className="duo-btn-green text-xs sm:text-sm py-2 px-4 font-black shadow-sm flex items-center gap-2 disabled:opacity-40"
           >
             <Play className="w-4 h-4 fill-white" />
             <span>Boshlash</span>
@@ -332,7 +332,7 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
 
           {/* Projector Screen Button */}
           <Link
-            className="duo-btn-blue text-xs sm:text-sm py-2 px-4 font-black shadow-xs flex items-center gap-2"
+            className="duo-btn-blue text-xs sm:text-sm py-2 px-4 font-black shadow-sm flex items-center gap-2"
             target="_blank"
             to={`/teach/live/${code}/screen`}
             title="Doskadagi katta ekranga uzatish (QR kod + Jonli reyting)"

@@ -101,7 +101,7 @@ export const StudentDashboard: React.FC = () => {
       {/* ======================================================== */}
       {/* 1. MONDLY-STYLE LEFT NAVIGATION SIDEBAR (w-64)            */}
       {/* ======================================================== */}
-      <aside className="w-64 border-r border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#0F172A] h-screen sticky top-0 hidden md:flex flex-col justify-between p-5 shrink-0 select-none z-30 shadow-xs">
+      <aside className="w-64 border-r border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#0F172A] h-screen sticky top-0 hidden md:flex flex-col justify-between p-5 shrink-0 select-none z-30 shadow-sm">
         <div className="space-y-6">
           <div className="px-1 pt-1">
             <BrandLogo size="md" />
@@ -146,7 +146,7 @@ export const StudentDashboard: React.FC = () => {
         <div className="pt-4 border-t border-slate-200/90 dark:border-slate-800 space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-base shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-base shadow-sm">
                 {profile.full_name ? profile.full_name.charAt(0).toUpperCase() : "T"}
               </div>
               <div className="overflow-hidden">
@@ -177,7 +177,7 @@ export const StudentDashboard: React.FC = () => {
       {/* ======================================================== */}
       <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-4xl w-full mx-auto space-y-7">
         {/* Mobile Header (Hidden on Desktop) */}
-        <header className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs">
+        <header className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
           <BrandLogo size="sm" />
           <div className="flex items-center gap-2.5">
             <div className="flex items-center gap-1 font-bold text-amber-600 text-sm">
@@ -216,7 +216,7 @@ export const StudentDashboard: React.FC = () => {
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                     day.active
-                      ? "bg-white text-emerald-700 shadow-xs"
+                      ? "bg-white text-emerald-700 shadow-sm"
                       : "bg-white/20 text-white/60"
                   }`}
                 >
@@ -287,7 +287,7 @@ export const StudentDashboard: React.FC = () => {
                   }}
                   className={`text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${
                     selectedLevel === lvl
-                      ? "bg-slate-900 text-white dark:bg-emerald-600 dark:text-white shadow-xs"
+                      ? "bg-slate-900 text-white dark:bg-emerald-600 dark:text-white shadow-sm"
                       : "bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                   }`}
                 >
@@ -308,7 +308,7 @@ export const StudentDashboard: React.FC = () => {
                 }}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
                   selectedTopic === t.id
-                    ? "bg-emerald-600 text-white shadow-xs font-bold"
+                    ? "bg-emerald-600 text-white shadow-sm font-bold"
                     : "bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                 }`}
               >
@@ -322,7 +322,7 @@ export const StudentDashboard: React.FC = () => {
         {/* UNIT 1: HTML ASOSLARI                                    */}
         {/* ======================================================== */}
         <section className="space-y-3.5">
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white flex items-center justify-between shadow-xs">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white flex items-center justify-between shadow-sm">
             <div className="space-y-0.5">
               <span className="text-[11px] uppercase font-bold tracking-widest text-emerald-100">
                 1-Mavzular to'plami
@@ -351,7 +351,7 @@ export const StudentDashboard: React.FC = () => {
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
                         isDone
-                          ? "bg-emerald-500 border-emerald-600 text-white shadow-xs"
+                          ? "bg-emerald-500 border-emerald-600 text-white shadow-sm"
                           : "bg-slate-50 border-slate-200 text-slate-700"
                       }`}
                     >
@@ -403,7 +403,7 @@ export const StudentDashboard: React.FC = () => {
         {/* UNIT 2: CSS FLEXBOX                                      */}
         {/* ======================================================== */}
         <section className="space-y-3.5 pt-2">
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white flex items-center justify-between shadow-xs">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white flex items-center justify-between shadow-sm">
             <div className="space-y-0.5">
               <span className="text-[11px] uppercase font-bold tracking-widest text-sky-100">
                 2-Mavzular to'plami
@@ -432,7 +432,7 @@ export const StudentDashboard: React.FC = () => {
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
                         isDone
-                          ? "bg-sky-500 border-sky-600 text-white shadow-xs"
+                          ? "bg-sky-500 border-sky-600 text-white shadow-sm"
                           : "bg-slate-50 border-slate-200 text-slate-700"
                       }`}
                     >
@@ -484,7 +484,7 @@ export const StudentDashboard: React.FC = () => {
         {/* UNIT 3: CSS GRID & RESPONSIVE                            */}
         {/* ======================================================== */}
         <section className="space-y-3.5 pt-2">
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white flex items-center justify-between shadow-xs">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white flex items-center justify-between shadow-sm">
             <div className="space-y-0.5">
               <span className="text-[11px] uppercase font-bold tracking-widest text-purple-100">
                 3-Mavzular to'plami
@@ -513,7 +513,7 @@ export const StudentDashboard: React.FC = () => {
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
                         isDone
-                          ? "bg-purple-500 border-purple-600 text-white shadow-xs"
+                          ? "bg-purple-500 border-purple-600 text-white shadow-sm"
                           : "bg-slate-50 border-slate-200 text-slate-700"
                       }`}
                     >
@@ -617,7 +617,7 @@ export const StudentDashboard: React.FC = () => {
         {/* Live Classroom Tournament Widget */}
         <div className="mondly-card p-5 space-y-3.5 bg-gradient-to-br from-white to-amber-50/30 dark:from-[#0F172A] dark:to-amber-950/20 border-amber-200/80 dark:border-amber-900/60">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
               <Trophy className="w-5 h-5" />
             </div>
             <div>
@@ -637,7 +637,7 @@ export const StudentDashboard: React.FC = () => {
               sounds.playClick();
               setShowJoinModal(true);
             }}
-            className="w-full mondly-btn-primary py-2.5 text-xs font-bold shadow-xs"
+            className="w-full mondly-btn-primary py-2.5 text-xs font-bold shadow-sm"
           >
             Xonaga ulanish →
           </button>
@@ -646,7 +646,7 @@ export const StudentDashboard: React.FC = () => {
         {/* Ustoz AI Advice Card */}
         <div className="mondly-card p-5 space-y-3 bg-gradient-to-br from-white to-emerald-50/30 dark:from-[#0F172A] dark:to-emerald-950/20 border-emerald-200/80 dark:border-emerald-900/60">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>

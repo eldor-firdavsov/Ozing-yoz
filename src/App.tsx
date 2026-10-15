@@ -35,8 +35,8 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-white dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 transition-colors">
-      {/* Navigation - Mondly Sleek Header */}
-      <nav className="border-b border-slate-200/90 dark:border-slate-800 px-6 sm:px-12 py-4 flex items-center justify-between w-full bg-white/95 dark:bg-[#0F172A]/90 backdrop-blur-md sticky top-0 z-40">
+      {/* Navigation - Apple Translucent Glass Bar */}
+      <nav className="apple-glass-nav px-6 sm:px-12 py-4 flex items-center justify-between w-full">
         <BrandLogo size="lg" />
         <div className="flex items-center gap-3">
           <SoundToggle />
@@ -108,10 +108,10 @@ const LandingPage: React.FC = () => {
           )}
         </div>
 
-        {/* Three Value Pillars - Mondly Style Cards */}
+        {/* Three Value Pillars - Mondly Style Cards with Apple Polish */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left pt-12 w-full">
           <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-sm">
               <Sparkles className="w-6 h-6" />
             </div>
             <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Ustoz AI (Leak-Guard)</h3>
@@ -121,7 +121,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 flex items-center justify-center text-sky-600 dark:text-sky-400 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 flex items-center justify-center text-sky-600 dark:text-sky-400 shadow-sm">
               <QrCode className="w-6 h-6" />
             </div>
             <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Jonli Musobaqa (Live QR)</h3>
@@ -131,7 +131,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           <div className="mondly-card p-8 space-y-4 hover:-translate-y-1 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-sm">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Xavfsiz Ustoz Nazorati</h3>
@@ -231,7 +231,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
           <Link
             to="/teach/login"
             onClick={() => sounds.playClick()}
-            className="text-sm font-semibold text-lime-900 dark:text-emerald-300 hover:text-lime-950 dark:hover:text-white bg-lime-100 dark:bg-emerald-950/60 hover:bg-lime-200 dark:hover:bg-emerald-900 px-3.5 py-2 rounded-xl border border-lime-300 dark:border-emerald-700 shadow-xs inline-flex items-center gap-1.5 transition-all"
+            className="text-sm font-semibold text-lime-900 dark:text-emerald-300 hover:text-lime-950 dark:hover:text-white bg-lime-100 dark:bg-emerald-950/60 hover:bg-lime-200 dark:hover:bg-emerald-900 px-3.5 py-2 rounded-xl border border-lime-300 dark:border-emerald-700 shadow-sm active:scale-[0.97] inline-flex items-center gap-1.5 transition-all"
           >
             <GraduationCap className="w-4 h-4 text-lime-700 dark:text-emerald-400" />
             <span>Ustozmisiz?</span>
@@ -333,7 +333,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
           <button
             type="submit"
             disabled={loading}
-            className="duo-btn-green w-full py-4 text-base font-black shadow-xs"
+            className="duo-btn-green w-full py-4 text-base font-black shadow-sm"
           >
             {loading ? "Yuklanmoqda..." : mode === "login" ? UZ.cta.login : UZ.cta.register}
           </button>

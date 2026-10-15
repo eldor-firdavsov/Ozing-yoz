@@ -5,6 +5,11 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --apple-spring: cubic-bezier(0.32, 0.72, 0, 1);
+    --apple-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   html {
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     text-rendering: optimizeLegibility;
@@ -13,47 +18,99 @@
   }
 
   body {
-    @apply bg-white dark:bg-[#0B0F19] text-[#3C3C3C] dark:text-slate-100 font-sans antialiased selection:bg-[#D7FFB8] selection:text-[#46A302];
-    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+    @apply bg-white dark:bg-[#0B0F19] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans antialiased selection:bg-emerald-100 selection:text-emerald-900 dark:selection:bg-emerald-900/40 dark:selection:text-emerald-300;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Nunito", system-ui, sans-serif;
+    letter-spacing: -0.006em;
+    line-height: 1.5;
   }
 
-  h1, h2, h3, h4, .font-heading {
-    font-family: 'Outfit', 'Nunito', system-ui, sans-serif;
-    letter-spacing: -0.015em;
+  /* Typography Optical Sizing & Size-Specific Tracking (Apple Design §15) */
+  h1, .font-display-large {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Outfit", "Nunito", system-ui, sans-serif;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  h2, h3, h4, .font-heading {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Outfit", "Nunito", system-ui, sans-serif;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
 @layer components {
-  /* Mondly-inspired Modern Educational UI Primitives */
+  /* Apple Translucent Materials (Apple Design §12) */
+  .apple-glass-nav {
+    @apply sticky top-0 z-40 bg-white/80 dark:bg-[#0B0F19]/80 backdrop-blur-2xl backdrop-saturate-150 border-b border-black/[0.06] dark:border-white/[0.08] transition-colors duration-200;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+  }
+
+  .apple-card {
+    @apply bg-white/90 dark:bg-[#161B26]/90 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.08] rounded-2xl shadow-sm transition-all;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8) inset, 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  .apple-card-interactive {
+    @apply apple-card cursor-pointer hover:border-black/[0.12] dark:hover:border-white/[0.16] hover:shadow-md active:scale-[0.98];
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  /* Apple-Style Fluid Tactile Buttons with Instant Response (Apple Design §1, §4) */
+  .apple-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] active:bg-[#0062C4] text-white font-semibold text-sm px-4 py-2.5 shadow-sm active:scale-[0.97] transition-all disabled:opacity-40 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), background-color 150ms ease, box-shadow 150ms ease;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.25) inset, 0 2px 8px rgba(0, 113, 227, 0.25);
+  }
+
+  .apple-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-black/[0.05] dark:bg-white/[0.1] hover:bg-black/[0.08] dark:hover:bg-white/[0.15] text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold text-sm px-4 py-2.5 active:scale-[0.97] transition-all disabled:opacity-40 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), background-color 150ms ease;
+  }
+
+  /* Mondly-inspired Modern Educational UI Primitives with Apple Polish */
   .mondly-card {
-    @apply bg-white dark:bg-[#0F172A] border border-slate-200/80 dark:border-slate-800 shadow-sm rounded-2xl transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700;
+    @apply bg-white/95 dark:bg-[#0F172A]/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-sm rounded-2xl transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.9) inset;
   }
 
   .mondly-card-interactive {
-    @apply bg-white dark:bg-[#0F172A] border border-slate-200/90 dark:border-slate-800 shadow-sm rounded-2xl p-5 transition-all duration-200 hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 hover:-translate-y-0.5 cursor-pointer;
+    @apply bg-white/95 dark:bg-[#0F172A]/90 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-sm rounded-2xl p-5 cursor-pointer hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 active:scale-[0.98];
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 180ms ease, border-color 180ms ease;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.9) inset;
   }
 
   .mondly-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:from-emerald-700 active:to-teal-800 text-white font-bold shadow-sm hover:shadow active:scale-[0.97] transition-all disabled:opacity-50 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), background-color 150ms ease, box-shadow 150ms ease;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.3) inset, 0 3px 12px rgba(16, 185, 129, 0.25);
   }
 
   .mondly-btn-sky {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 active:from-sky-700 active:to-blue-800 text-white font-bold shadow-sm hover:shadow active:scale-[0.97] transition-all disabled:opacity-50 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), background-color 150ms ease, box-shadow 150ms ease;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.3) inset, 0 3px 12px rgba(2, 132, 199, 0.25);
   }
 
   .mondly-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold shadow-sm active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold shadow-sm active:scale-[0.97] transition-all disabled:opacity-50 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), background-color 150ms ease;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
   }
 
   .mondly-nav-item {
-    @apply flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/80;
+    @apply flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/80 active:scale-[0.98];
+    transition: transform 100ms cubic-bezier(0.32, 0.72, 0, 1), background-color 150ms ease;
   }
 
   .mondly-nav-item-active {
     @apply flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 shadow-sm;
   }
 
-  /* Duolingo & Hybrid Tactile Buttons */
+  /* Tactile Button Mappings */
   .duo-btn-green {
     @apply mondly-btn-primary;
   }
@@ -63,11 +120,13 @@
   }
 
   .duo-btn-orange {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.97] transition-all disabled:opacity-50 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   .duo-btn-red {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.98] transition-all disabled:opacity-50 select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold shadow-sm hover:shadow active:scale-[0.97] transition-all disabled:opacity-50 select-none cursor-pointer;
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   .duo-btn-white {
@@ -82,48 +141,23 @@
     @apply bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 shadow-sm rounded-2xl transition-all;
   }
 
-  /* Interactive Choice Cards */
-  .duo-choice-card {
-    @apply flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-200 shadow-xs transition-all;
-  }
-
-  .duo-choice-passed {
-    @apply bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 shadow-xs;
-  }
-
-  .duo-choice-failed {
-    @apply bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-300 shadow-xs;
-  }
-
-  /* Mascot Speech Bubble */
-  .duo-speech-bubble {
-    @apply relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl p-4;
-  }
-
-  .duo-speech-bubble::before {
-    content: "";
-    @apply absolute -left-2 top-4 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-slate-200 dark:border-r-slate-800;
-  }
-
-  .duo-speech-bubble::after {
-    content: "";
-    @apply absolute -left-1.5 top-4 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-white dark:border-r-slate-900;
-  }
-
   .glass-panel {
-    @apply bg-white dark:bg-[#0F172A] border border-slate-200/80 dark:border-slate-800 shadow-sm rounded-2xl;
+    @apply bg-white/95 dark:bg-[#0F172A]/90 backdrop-blur-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm rounded-2xl;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8) inset, 0 4px 20px -2px rgba(15, 23, 42, 0.04);
   }
 
   .glass-card {
-    @apply bg-white dark:bg-[#0F172A] border border-slate-200/90 dark:border-slate-800 shadow-xs rounded-2xl transition-all hover:bg-slate-50/80 dark:hover:bg-slate-800/80 hover:shadow-sm;
+    @apply bg-white/95 dark:bg-[#0F172A]/90 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-sm rounded-2xl transition-all hover:bg-slate-50/80 dark:hover:bg-slate-800/80 hover:shadow-sm active:scale-[0.99];
+    transition: transform 120ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 150ms ease, border-color 150ms ease;
   }
 
   .glass-nav {
-    @apply bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-xs;
+    @apply bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-2xl backdrop-saturate-150 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-sm;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
   }
 
   .glass-input {
-    @apply w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#58CC02] focus:bg-white dark:focus:bg-slate-900 transition-all font-semibold;
+    @apply w-full bg-slate-50/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all font-semibold;
   }
 
   .glass-btn-primary {
@@ -145,8 +179,47 @@
   50% { background-color: rgba(251, 191, 36, 0.42); }
 }
 
+@keyframes appleModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 .cm-hint-line-highlight {
   animation: linePulse 1s ease-in-out 2;
   background-color: rgba(251, 191, 36, 0.20) !important;
   border-left: 3px solid #D97706 !important;
+}
+
+/* Reduced Motion & Transparency (Apple Design §14) */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .apple-glass-nav,
+  .apple-card,
+  .glass-panel,
+  .glass-card,
+  .glass-nav {
+    backdrop-filter: none !important;
+    background-color: #ffffff !important;
+  }
+  .dark .apple-glass-nav,
+  .dark .apple-card,
+  .dark .glass-panel,
+  .dark .glass-card,
+  .dark .glass-nav {
+    background-color: #0F172A !important;
+  }
 }

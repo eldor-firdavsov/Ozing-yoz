@@ -35,9 +35,14 @@ export const BrandLogo: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md"
   return (
     <div
       onClick={() => sounds.playClick()}
-      className="inline-flex items-center gap-2.5 font-display font-black tracking-tight select-none cursor-pointer group"
+      className="inline-flex items-center gap-2.5 font-display font-black tracking-tight select-none cursor-pointer group active:scale-95 transition-transform duration-100"
     >
-      <div className={`${iconSizes[size]} bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-500 flex items-center justify-center text-white font-black shadow-sm group-hover:scale-105 transition-all`}>
+      <div
+        className={`${iconSizes[size]} bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-500 flex items-center justify-center text-white font-black shadow-sm group-hover:scale-105 transition-all`}
+        style={{
+          boxShadow: "0 1px 0 0 rgba(255, 255, 255, 0.4) inset, 0 2px 8px rgba(16, 185, 129, 0.25)",
+        }}
+      >
         OY
       </div>
       <span className={`${sizeClasses[size]} text-slate-900 dark:text-white font-extrabold tracking-tight transition-colors`}>
@@ -60,7 +65,7 @@ export const SoundToggle: React.FC = () => {
     <button
       onClick={toggle}
       title={enabled ? "Ovozni o'chirish" : "Ovozni yoqish"}
-      className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100/80 dark:hover:bg-slate-800 transition-all"
+      className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 bg-black/[0.03] dark:bg-white/[0.06] hover:bg-black/[0.06] dark:hover:bg-white/[0.1] active:scale-[0.92] transition-all"
     >
       {enabled ? <Volume2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <VolumeX className="w-4 h-4 text-slate-400 dark:text-slate-500" />}
     </button>
@@ -85,7 +90,7 @@ export const ThemeToggle: React.FC = () => {
     <button
       onClick={toggle}
       title={isDark ? "Yorug' rejim (Light Mode)" : "Qorong'i rejim (Dark Mode)"}
-      className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-amber-300 hover:bg-slate-100/80 dark:hover:bg-slate-800 transition-all flex items-center justify-center"
+      className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-amber-300 bg-black/[0.03] dark:bg-white/[0.06] hover:bg-black/[0.06] dark:hover:bg-white/[0.1] active:scale-[0.92] transition-all flex items-center justify-center"
     >
       {isDark ? (
         <Sun className="w-4 h-4 text-amber-400 animate-in spin-in-90 duration-200" />
@@ -183,7 +188,7 @@ export const TypewriterHint: React.FC<{
           {level === 4 && (
             <button
               onClick={handleCopy}
-              className="text-xs text-slate-700 hover:text-slate-900 inline-flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-xl shadow-xs font-bold"
+              className="text-xs text-slate-700 hover:text-slate-900 inline-flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-xl shadow-sm font-bold"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-lime-600" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? "Nusxalandi" : "Nusxalash"}</span>
@@ -210,11 +215,11 @@ export const TestChecklistItem: React.FC<{ label: string; passed?: boolean }> = 
     }`}
   >
     {passed === true ? (
-      <div className="w-6 h-6 rounded-full bg-[#58CC02] text-white flex items-center justify-center shrink-0 shadow-xs">
+      <div className="w-6 h-6 rounded-full bg-[#58CC02] text-white flex items-center justify-center shrink-0 shadow-sm">
         <Check className="w-4 h-4 stroke-[3]" />
       </div>
     ) : passed === false ? (
-      <div className="w-6 h-6 rounded-full bg-[#FF4B4B] text-white flex items-center justify-center shrink-0 shadow-xs">
+      <div className="w-6 h-6 rounded-full bg-[#FF4B4B] text-white flex items-center justify-center shrink-0 shadow-sm">
         <XCircle className="w-4 h-4 stroke-[3]" />
       </div>
     ) : (
@@ -240,21 +245,31 @@ export const GlassModal: React.FC<{
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 dark:bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="glass-panel dark:bg-[#0F172A] dark:border-slate-800 max-w-xl w-full p-7 space-y-5 shadow-glass-lg rounded-2xl animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800 pb-3.5">
-          <h3 className="font-bold text-slate-900 dark:text-white text-lg">{title}</h3>
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-md p-4 transition-all"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white/95 dark:bg-[#1C1C1E]/95 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.12] max-w-xl w-full p-7 space-y-5 rounded-3xl shadow-2xl"
+        style={{
+          boxShadow: "0 1px 0 0 rgba(255, 255, 255, 0.9) inset, 0 24px 48px -12px rgba(0, 0, 0, 0.18)",
+          animation: "appleModalIn 220ms cubic-bezier(0.32, 0.72, 0, 1) forwards",
+        }}
+      >
+        <div className="flex items-center justify-between border-b border-black/[0.06] dark:border-white/[0.08] pb-3.5">
+          <h3 className="font-bold text-slate-900 dark:text-white text-lg tracking-tight">{title}</h3>
           <button
             onClick={() => {
               sounds.playClick();
               onClose();
             }}
-            className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 h-8 w-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-lg transition-all"
+            className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 h-8 w-8 rounded-full bg-black/[0.04] dark:bg-white/[0.08] hover:bg-black/[0.08] dark:hover:bg-white/[0.15] flex items-center justify-center text-sm font-semibold transition-all active:scale-95"
           >
             ✕
           </button>
         </div>
-        <div className="text-slate-700 dark:text-slate-300">{children}</div>
+        <div className="text-slate-700 dark:text-slate-300 leading-relaxed">{children}</div>
       </div>
     </div>
   );
@@ -281,7 +296,7 @@ export const QRCard: React.FC<{ code: string }> = ({ code }) => {
         <p className="font-mono text-4xl sm:text-5xl font-black tracking-widest text-slate-900 dark:text-white mt-1">{code}</p>
         <button
           onClick={copyLink}
-          className="mt-4 inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl shadow-xs hover:shadow transition-all font-medium"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl shadow-sm hover:shadow active:scale-[0.97] transition-all font-medium"
         >
           {copied ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4" />}
           <span>{copied ? "Havola nusxalandi!" : "Havolani nusxalash"}</span>
@@ -321,7 +336,7 @@ export const SyncedTimer: React.FC<{ startedAt?: string | null; durationSec: num
       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-mono text-sm font-semibold transition-all ${
         isUrgent
           ? "bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-400 animate-pulse"
-          : "bg-white/80 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 shadow-xs"
+          : "bg-white/80 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 shadow-sm"
       }`}
     >
       <Clock className={`w-4 h-4 ${isUrgent ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"}`} />
@@ -350,9 +365,9 @@ export const VsCodeTabs: React.FC<{
             sounds.playClick();
             onChangeTab("html");
           }}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
             activeTab === "html"
-              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#e44d26] border-x border-slate-200 dark:border-zinc-700 shadow-xs"
+              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#e44d26] border-x border-slate-200 dark:border-zinc-700 shadow-sm"
               : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
@@ -367,9 +382,9 @@ export const VsCodeTabs: React.FC<{
             sounds.playClick();
             onChangeTab("css");
           }}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all ${
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
             activeTab === "css"
-              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#264de4] border-x border-slate-200 dark:border-zinc-700 shadow-xs"
+              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#264de4] border-x border-slate-200 dark:border-zinc-700 shadow-sm"
               : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
@@ -387,7 +402,7 @@ export const VsCodeTabs: React.FC<{
               onFormat();
             }}
             title="Kodni formatlash (Shift+Alt+F)"
-            className="text-xs font-mono font-medium text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-800 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 shadow-xs transition-all inline-flex items-center gap-1.5"
+            className="text-xs font-mono font-medium text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-zinc-800 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 shadow-sm active:scale-[0.96] transition-all inline-flex items-center gap-1.5"
           >
             <AlignLeft className="w-4 h-4 text-slate-500 dark:text-zinc-400" />
             <span>Formatlash</span>

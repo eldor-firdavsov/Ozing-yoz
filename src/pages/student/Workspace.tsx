@@ -540,7 +540,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 setLeftTab("task");
               }}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                leftTab === "task" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
+                leftTab === "task" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
               }`}
             >
               <Layers className="w-4 h-4" />
@@ -552,7 +552,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 setLeftTab("target");
               }}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                leftTab === "target" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
+                leftTab === "target" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
               }`}
             >
               <Eye className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -593,7 +593,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
               {/* Live Room Guidance Banner */}
               {isLiveRoom && (
-                <div className="p-3.5 bg-gradient-to-r from-amber-50 to-lime-50 dark:from-amber-950/40 dark:to-emerald-950/40 rounded-xl border border-amber-300/80 dark:border-amber-800 text-sm text-slate-800 dark:text-slate-200 space-y-1 shadow-xs">
+                <div className="p-3.5 bg-gradient-to-r from-amber-50 to-lime-50 dark:from-amber-950/40 dark:to-emerald-950/40 rounded-xl border border-amber-300/80 dark:border-amber-800 text-sm text-slate-800 dark:text-slate-200 space-y-1 shadow-sm">
                   <p className="font-bold text-amber-950 dark:text-amber-300 flex items-center gap-1.5">
                     <span>🏆 Jonli musobaqa: {roomCode}</span>
                   </p>
@@ -720,7 +720,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("100%");
                   }}
                   title="Monitor / Desktop (100%)"
-                  className={`p-1.5 rounded-md ${viewportWidth === "100%" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "100%" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
                 >
                   <Monitor className="w-4 h-4" />
                 </button>
@@ -730,7 +730,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("768px");
                   }}
                   title="Planshet (768px)"
-                  className={`p-1.5 rounded-md ${viewportWidth === "768px" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "768px" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
                 >
                   <Tablet className="w-4 h-4" />
                 </button>
@@ -740,7 +740,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                     setViewportWidth("375px");
                   }}
                   title="Telefon (375px)"
-                  className={`p-1.5 rounded-md ${viewportWidth === "375px" ? "bg-white dark:bg-slate-700 shadow-xs text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
+                  className={`p-1.5 rounded-md ${viewportWidth === "375px" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"}`}
                 >
                   <Smartphone className="w-4 h-4" />
                 </button>
@@ -754,7 +754,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 className={`h-full transition-all duration-300 bg-white ${
                   viewportWidth !== "100%"
                     ? "border-4 border-slate-800 rounded-2xl shadow-xl overflow-hidden"
-                    : "rounded-lg border border-slate-200/80 shadow-xs"
+                    : "rounded-lg border border-slate-200/80 shadow-sm"
                 }`}
               >
                 <iframe
@@ -772,7 +772,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           <div className="glass-panel flex-1 p-5 flex flex-col justify-between gap-3 shadow-glass">
             <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-lime-100 dark:bg-emerald-950/60 border border-lime-300 dark:border-emerald-700 flex items-center justify-center shadow-xs">
+                <div className="w-9 h-9 rounded-xl bg-lime-100 dark:bg-emerald-950/60 border border-lime-300 dark:border-emerald-700 flex items-center justify-center shadow-sm">
                   <Sparkles className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
                 </div>
                 <div>

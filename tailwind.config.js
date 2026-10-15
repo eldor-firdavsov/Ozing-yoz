@@ -5,9 +5,37 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Nunito'", "system-ui", "-apple-system", "sans-serif"],
-        display: ["'Outfit'", "'Nunito'", "system-ui", "sans-serif"],
-        mono: ["'JetBrains Mono'", "'Fira Code'", "monospace"],
+        sans: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "'SF Pro Text'",
+          "'SF Pro'",
+          "'Nunito'",
+          "system-ui",
+          "-apple-system",
+          "sans-serif",
+        ],
+        display: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "'SF Pro Display'",
+          "'SF Pro'",
+          "'Outfit'",
+          "'Nunito'",
+          "system-ui",
+          "sans-serif",
+        ],
+        mono: [
+          "'JetBrains Mono'",
+          "'SF Mono'",
+          "Menlo",
+          "'Fira Code'",
+          "monospace",
+        ],
+      },
+      transitionTimingFunction: {
+        "apple-spring": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "apple-ease": "cubic-bezier(0.16, 1, 0.3, 1)",
       },
       colors: {
         bg: "#FFFFFF",

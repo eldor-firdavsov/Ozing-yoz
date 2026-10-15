@@ -153,7 +153,7 @@ export const TeacherLoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="duo-btn-green w-full py-4 text-base font-black shadow-xs inline-flex items-center justify-center gap-2"
+            className="duo-btn-green w-full py-4 text-base font-black shadow-sm inline-flex items-center justify-center gap-2"
           >
             <span>{loading ? "Tekshirilmoqda..." : "Ustoz kabinetiga kirish"}</span>
             <ArrowRight className="w-5 h-5" />

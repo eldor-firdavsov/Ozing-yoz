@@ -163,7 +163,7 @@ export const TeacherDashboard: React.FC = () => {
               sounds.playClick();
               setShowCreateRoomModal(true);
             }}
-            className="duo-btn-green text-xs sm:text-sm py-2.5 px-4 font-black shadow-xs flex items-center gap-2"
+            className="duo-btn-green text-xs sm:text-sm py-2.5 px-4 font-black shadow-sm flex items-center gap-2"
           >
             <Play className="w-4 h-4 fill-white" />
             <span>Jonli xona ochish</span>
@@ -386,7 +386,7 @@ export const TeacherDashboard: React.FC = () => {
                     onClick={() => setAiLevel(lvl)}
                     className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition-all ${
                       aiLevel === lvl
-                        ? "bg-slate-900 text-white border-slate-900 shadow-xs"
+                        ? "bg-slate-900 text-white border-slate-900 shadow-sm"
                         : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                     }`}
                   >

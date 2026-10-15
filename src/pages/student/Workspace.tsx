@@ -835,7 +835,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 <iframe
                   ref={iframeRef}
                   title="Preview"
-                  sandbox="allow-scripts"
+                  sandbox="allow-scripts allow-modals"
                   srcDoc={debouncedDoc}
                   className="w-full h-full border-0"
                 />

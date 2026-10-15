@@ -31,7 +31,7 @@ assert(calculateScore([1, 2, 3, 4]) === 25, "Level 4 hint = 25 XP (-75)");
 
 // 2. TEST COURSE CHALLENGES INTEGRITY
 console.log("\n2. Testing Course Challenges Integrity...");
-assert(COURSE_CHALLENGES.length >= 20, `Loaded ${COURSE_CHALLENGES.length} interactive course challenges`);
+assert(COURSE_CHALLENGES.length >= 26, `Loaded ${COURSE_CHALLENGES.length} interactive course challenges`);
 for (const ch of COURSE_CHALLENGES) {
   assert(Boolean(ch.id && ch.title), `Challenge "${ch.title}" has valid id and title`);
   assert(ch.tests && ch.tests.length > 0, `Challenge "${ch.title}" has ${ch.tests?.length} tests`);

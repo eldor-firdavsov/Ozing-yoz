@@ -690,4 +690,232 @@ export const COURSE_CHALLENGES: ChallengeItem[] = [
     },
     is_public: true,
   },
+  {
+    id: "f2f2f2f2-f2f2-f2f2-f2f2-f2f2f2f2f2f2",
+    title: "21. JavaScript: O'zgaruvchilar (Variables - let va const)",
+    description_md:
+      "`const narx = 50000;` va `let miqdor = 3;` o'zgaruvchilarini e'lon qiling. Ularning umumiy summasini (`const jami = narx * miqdor;`) hisoblab, `#unit-price`, `#quantity` va `#total-price` elementlariga mos ravishda chiqaring.",
+    level: 1,
+    topics: ["javascript", "basics", "variables"],
+    starter_html:
+      '<div class="receipt-card">\n  <h3>Buyurtma cheki 🧾</h3>\n  <div class="row">Mahsulot narxi: <span id="unit-price">0</span> so\'m</div>\n  <div class="row">Miqdori: <span id="quantity">0</span> ta</div>\n  <hr />\n  <div class="total-row">Jami summa: <span id="total-price">0</span> so\'m</div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.receipt-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 340px;\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  margin-bottom: 8px;\n  color: #475569;\n  font-size: 14px;\n}\n\nhr {\n  border: none;\n  border-top: 1px dashed #cbd5e1;\n  margin: 14px 0;\n}\n\n.total-row {\n  display: flex;\n  justify-content: space-between;\n  font-weight: 700;\n  color: #0f172a;\n  font-size: 16px;\n}\n\n#total-price {\n  color: #059669;\n}",
+    starter_js:
+      '// 1. const narx = 50000; va let miqdor = 3; e\'lon qiling\n// 2. const jami = narx * miqdor; hisoblang\n// 3. #unit-price, #quantity va #total-price elementlarining textContent ga qiymatlarni bering\n',
+    solution_html:
+      '<div class="receipt-card">\n  <h3>Buyurtma cheki 🧾</h3>\n  <div class="row">Mahsulot narxi: <span id="unit-price">50000</span> so\'m</div>\n  <div class="row">Miqdori: <span id="quantity">3</span> ta</div>\n  <hr />\n  <div class="total-row">Jami summa: <span id="total-price">150000</span> so\'m</div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.receipt-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 340px;\n}\n\n.row {\n  display: flex;\n  justify-content: space-between;\n  margin-bottom: 8px;\n  color: #475569;\n  font-size: 14px;\n}\n\nhr {\n  border: none;\n  border-top: 1px dashed #cbd5e1;\n  margin: 14px 0;\n}\n\n.total-row {\n  display: flex;\n  justify-content: space-between;\n  font-weight: 700;\n  color: #0f172a;\n  font-size: 16px;\n}\n\n#total-price {\n  color: #059669;\n}",
+    solution_js:
+      'const narx = 50000;\nlet miqdor = 3;\nconst jami = narx * miqdor;\n\ndocument.getElementById("unit-price").textContent = String(narx);\ndocument.getElementById("quantity").textContent = String(miqdor);\ndocument.getElementById("total-price").textContent = String(jami);',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 340px;"><h3 style="margin-top:0;">Buyurtma cheki 🧾</h3><div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#475569;font-size:14px;"><span>Mahsulot narxi:</span><span>50000 so\'m</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#475569;font-size:14px;"><span>Miqdori:</span><span>3 ta</span></div><div style="border-top:1px dashed #cbd5e1;margin:12px 0;"></div><div style="display:flex;justify-content:space-between;font-weight:bold;color:#0f172a;"><span>Jami summa:</span><span style="color:#059669;">150000 so\'m</span></div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#total-price", label: "#total-price elementi mavjud" },
+      { type: "text", selector: "#unit-price", contains: "50000", label: "Mahsulot narxi 50000 so'm qilib chiqarildi" },
+      { type: "text", selector: "#quantity", contains: "3", label: "Mahsulot miqdori 3 ta qilib chiqarildi" },
+      { type: "text", selector: "#total-price", contains: "150000", label: "Jami summa to'g'ri hisoblandi (150000)" },
+    ],
+    fallback_hints: {
+      "1": "O'zgarmas qiymat uchun 'const', o'zgaruvchan qiymat uchun 'let' kalit so'zidan foydalaning: const narx = 50000; let miqdor = 3;",
+      "2": "Ko'paytirish amali '*' belgisi orqali bajariladi: const jami = narx * miqdor;",
+      "3": "document.getElementById('total-price').textContent = String(jami);",
+      "4": 'const narx = 50000;\nlet miqdor = 3;\nconst jami = narx * miqdor;\n\ndocument.getElementById("unit-price").textContent = String(narx);\ndocument.getElementById("quantity").textContent = String(miqdor);\ndocument.getElementById("total-price").textContent = String(jami);',
+    },
+    is_public: true,
+  },
+  {
+    id: "a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3",
+    title: "22. JavaScript: Input qiymatini o'qish (Input Value)",
+    description_md:
+      "`#greet-btn` tugmasi bosilganda `#name-input` maydonidagi qiymatni (`input.value`) o'qib oling. `#greeting-text` elementiga `Salom, [ism]! Xush kelibsiz!` matnini yozing va `#name-input` maydonini tozalang (`input.value = ''`).",
+    level: 1,
+    topics: ["javascript", "dom", "inputs"],
+    starter_html:
+      '<div class="greet-card">\n  <h3>Foydalanuvchi bilan salomlashish 👋</h3>\n  <div class="input-row">\n    <input id="name-input" type="text" placeholder="Ismingizni kiriting..." />\n    <button id="greet-btn">Salomlashish</button>\n  </div>\n  <p id="greeting-text">Ismingizni kiritib tugmani bosing</p>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.greet-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 14px;\n}\n\n#name-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#greet-btn {\n  padding: 10px 16px;\n  background: #3b82f6;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n#greeting-text {\n  margin-top: 14px;\n  color: #0284c7;\n  font-weight: 600;\n}",
+    starter_js:
+      'const nameInput = document.getElementById("name-input");\nconst greetBtn = document.getElementById("greet-btn");\nconst greetingText = document.getElementById("greeting-text");\n\n// greetBtn bosilganda:\n// 1. const ism = nameInput.value;\n// 2. greetingText.textContent ga "Salom, " + ism + "! Xush kelibsiz!" deb yozing\n// 3. nameInput.value = "" qilib tozalang\n',
+    solution_html:
+      '<div class="greet-card">\n  <h3>Foydalanuvchi bilan salomlashish 👋</h3>\n  <div class="input-row">\n    <input id="name-input" type="text" placeholder="Ismingizni kiriting..." />\n    <button id="greet-btn">Salomlashish</button>\n  </div>\n  <p id="greeting-text">Salom, Azizbek! Xush kelibsiz!</p>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.greet-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 14px;\n}\n\n#name-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#greet-btn {\n  padding: 10px 16px;\n  background: #3b82f6;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n#greeting-text {\n  margin-top: 14px;\n  color: #0284c7;\n  font-weight: 600;\n}",
+    solution_js:
+      'const nameInput = document.getElementById("name-input");\nconst greetBtn = document.getElementById("greet-btn");\nconst greetingText = document.getElementById("greeting-text");\n\ngreetBtn.addEventListener("click", () => {\n  const ism = nameInput.value.trim();\n  if (ism) {\n    greetingText.textContent = `Salom, ${ism}! Xush kelibsiz!`;\n    nameInput.value = "";\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 360px;"><h3 style="margin-top:0;">Foydalanuvchi bilan salomlashish 👋</h3><p style="color: #0284c7; font-weight: bold;">Salom, Azizbek! Xush kelibsiz!</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#name-input", label: "#name-input maydoni mavjud" },
+      { type: "exists", selector: "#greet-btn", label: "#greet-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('name-input'); const btn = document.getElementById('greet-btn'); const txt = document.getElementById('greeting-text'); if (!inp || !btn || !txt) return false; inp.value = 'Eldor'; btn.click(); const passed = txt.textContent.includes('Eldor') && txt.textContent.includes('Salom') && inp.value === ''; return passed; })()",
+        label: "Tugma bosilganda ism o'qilib salomlashish ko'rsatiladi va input tozalanadi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Input maydonidagi matnni input.value orqali o'qish mumkin.",
+      "2": "Matn birlashtirish: 'Salom, ' + ism + '! Xush kelibsiz!' yoki `Salom, ${ism}! Xush kelibsiz!`",
+      "3": "nameInput.value = ''; orqali maydonni tozalab qo'ying.",
+      "4": 'const nameInput = document.getElementById("name-input");\nconst greetBtn = document.getElementById("greet-btn");\nconst greetingText = document.getElementById("greeting-text");\n\ngreetBtn.addEventListener("click", () => {\n  const ism = nameInput.value.trim();\n  if (ism) {\n    greetingText.textContent = `Salom, ${ism}! Xush kelibsiz!`;\n    nameInput.value = "";\n  }\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+    title: "23. JavaScript: Shart operatorlari (if / else)",
+    description_md:
+      "`#check-age-btn` tugmasi bosilganda `#age-input` maydonidagi yoshni tekshiring:\n- Agar yosh `>= 18` bo'lsa: `#age-status` ga `Kirishga ruxsat berildi ✅` deb yozing va unga `allowed` klassini qo'shib, `denied` klassini olib tashlang;\n- Aks holda (`else`): `#age-status` ga `Kechirasiz, yoshingiz 18 dan kichik ❌` deb yozing va unga `denied` klassini qo'shib, `allowed` klassini olib tashlang.",
+    level: 1,
+    topics: ["javascript", "basics", "conditions"],
+    starter_html:
+      '<div class="access-card">\n  <h3>Yoshingizni tekshiring 🔞</h3>\n  <div class="input-row">\n    <input id="age-input" type="number" placeholder="Yoshingiz (masalan: 20)" />\n    <button id="check-age-btn">Tekshirish</button>\n  </div>\n  <p id="age-status">Yoshingizni kiriting</p>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.access-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 14px;\n}\n\n#age-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#check-age-btn {\n  padding: 10px 16px;\n  background: #0f172a;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n#age-status {\n  margin-top: 14px;\n  font-size: 14px;\n  color: #64748b;\n}\n\n#age-status.allowed {\n  color: #10b981;\n  font-weight: 700;\n}\n\n#age-status.denied {\n  color: #ef4444;\n  font-weight: 700;\n}",
+    starter_js:
+      'const ageInput = document.getElementById("age-input");\nconst checkBtn = document.getElementById("check-age-btn");\nconst statusEl = document.getElementById("age-status");\n\n// checkBtn bosilganda:\n// 1. const yosh = Number(ageInput.value);\n// 2. if (yosh >= 18) { ... } else { ... }\n',
+    solution_html:
+      '<div class="access-card">\n  <h3>Yoshingizni tekshiring 🔞</h3>\n  <div class="input-row">\n    <input id="age-input" type="number" placeholder="Yoshingiz (masalan: 20)" value="20" />\n    <button id="check-age-btn">Tekshirish</button>\n  </div>\n  <p id="age-status" class="allowed">Kirishga ruxsat berildi ✅</p>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.access-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 14px;\n}\n\n#age-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#check-age-btn {\n  padding: 10px 16px;\n  background: #0f172a;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n#age-status {\n  margin-top: 14px;\n  font-size: 14px;\n  color: #64748b;\n}\n\n#age-status.allowed {\n  color: #10b981;\n  font-weight: 700;\n}\n\n#age-status.denied {\n  color: #ef4444;\n  font-weight: 700;\n}",
+    solution_js:
+      'const ageInput = document.getElementById("age-input");\nconst checkBtn = document.getElementById("check-age-btn");\nconst statusEl = document.getElementById("age-status");\n\ncheckBtn.addEventListener("click", () => {\n  const yosh = Number(ageInput.value);\n  if (yosh >= 18) {\n    statusEl.textContent = "Kirishga ruxsat berildi ✅";\n    statusEl.classList.add("allowed");\n    statusEl.classList.remove("denied");\n  } else {\n    statusEl.textContent = "Kechirasiz, yoshingiz 18 dan kichik ❌";\n    statusEl.classList.add("denied");\n    statusEl.classList.remove("allowed");\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 360px;"><h3 style="margin-top:0;">Yoshingizni tekshiring 🔞</h3><p style="color: #10b981; font-weight: bold;">Kirishga ruxsat berildi ✅</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#check-age-btn", label: "#check-age-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('age-input'); const btn = document.getElementById('check-age-btn'); const statusEl = document.getElementById('age-status'); if (!inp || !btn || !statusEl) return false; inp.value = '21'; btn.click(); const ok1 = statusEl.classList.contains('allowed') && statusEl.textContent.includes('ruxsat'); inp.value = '15'; btn.click(); const ok2 = statusEl.classList.contains('denied') && statusEl.textContent.includes('kichik'); return ok1 && ok2; })()",
+        label: "Yosh 18 va undan katta bo'lsa ruxsat beriladi, kichik bo'lsa rad etiladi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Shartni tekshirish uchun: if (yosh >= 18) { ... } else { ... }",
+      "2": "Klasslarni almashtirish uchun: statusEl.classList.add('allowed'); statusEl.classList.remove('denied');",
+      "3": "Number(ageInput.value) orqali kiritilgan matnni raqamga aylantirib oling.",
+      "4": 'const ageInput = document.getElementById("age-input");\nconst checkBtn = document.getElementById("check-age-btn");\nconst statusEl = document.getElementById("age-status");\n\ncheckBtn.addEventListener("click", () => {\n  const yosh = Number(ageInput.value);\n  if (yosh >= 18) {\n    statusEl.textContent = "Kirishga ruxsat berildi ✅";\n    statusEl.classList.add("allowed");\n    statusEl.classList.remove("denied");\n  } else {\n    statusEl.textContent = "Kechirasiz, yoshingiz 18 dan kichik ❌";\n    statusEl.classList.add("denied");\n    statusEl.classList.remove("allowed");\n  }\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "c3c3c3c3-c3c3-c3c3-c3c3-c3c3c3c3c3c3",
+    title: "24. JavaScript: Prompt oynasi (prompt)",
+    description_md:
+      "`#prompt-btn` tugmasi bosilganda brauzerning `prompt('Sevimli dasturlash tilingizni kiriting:')` oynasini oching. Agar foydalanuvchi til kiritgan bo'lsa, `#user-lang` elementiga `Tanlangan til: ` + javob deb yozing.",
+    level: 1,
+    topics: ["javascript", "basics", "dialogs"],
+    starter_html:
+      '<div class="prompt-card">\n  <h3>Til tanlash 💡</h3>\n  <p id="user-lang">Hali hech narsa tanlanmadi</p>\n  <button id="prompt-btn">Tilni kiritish ⌨️</button>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.prompt-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 340px;\n  text-align: center;\n}\n\n#user-lang {\n  color: #64748b;\n  font-weight: 600;\n  margin: 16px 0;\n}\n\n#prompt-btn {\n  padding: 10px 20px;\n  background: #6366f1;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}",
+    starter_js:
+      'const promptBtn = document.getElementById("prompt-btn");\nconst userLang = document.getElementById("user-lang");\n\n// promptBtn bosilganda:\n// 1. const javob = prompt("Sevimli dasturlash tilingizni kiriting:");\n// 2. Agar javob kiritilgan bo\'lsa, userLang.textContent ga "Tanlangan til: " + javob deb yozing\n',
+    solution_html:
+      '<div class="prompt-card">\n  <h3>Til tanlash 💡</h3>\n  <p id="user-lang">Tanlangan til: JavaScript</p>\n  <button id="prompt-btn">Tilni kiritish ⌨️</button>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.prompt-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 340px;\n  text-align: center;\n}\n\n#user-lang {\n  color: #64748b;\n  font-weight: 600;\n  margin: 16px 0;\n}\n\n#prompt-btn {\n  padding: 10px 20px;\n  background: #6366f1;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}",
+    solution_js:
+      'const promptBtn = document.getElementById("prompt-btn");\nconst userLang = document.getElementById("user-lang");\n\npromptBtn.addEventListener("click", () => {\n  const javob = prompt("Sevimli dasturlash tilingizni kiriting:");\n  if (javob && javob.trim()) {\n    userLang.textContent = "Tanlangan til: " + javob.trim();\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 340px; text-align: center;"><h3 style="margin-top:0;">Til tanlash 💡</h3><p style="color: #6366f1; font-weight: bold;">Tanlangan til: JavaScript</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#prompt-btn", label: "#prompt-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const btn = document.getElementById('prompt-btn'); const lang = document.getElementById('user-lang'); if (!btn || !lang) return false; const orig = window.prompt; window.prompt = () => 'JavaScript'; btn.click(); const passed = lang.textContent.includes('JavaScript') && lang.textContent.includes('Tanlangan til'); window.prompt = orig; return passed; })()",
+        label: "prompt orqali kiritilgan til ekranda to'g'ri ko'rsatiladi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Foydalanuvchidan ma'lumot kiritishni so'rash uchun: const javob = prompt('Savol matni');",
+      "2": "Kiritilgan javob mavjudligini tekshirish uchun: if (javob) { userLang.textContent = 'Tanlangan til: ' + javob; }",
+      "3": "promptBtn.addEventListener('click', () => { const javob = prompt('Sevimli dasturlash tilingizni kiriting:'); if (javob) userLang.textContent = 'Tanlangan til: ' + javob; });",
+      "4": 'const promptBtn = document.getElementById("prompt-btn");\nconst userLang = document.getElementById("user-lang");\n\npromptBtn.addEventListener("click", () => {\n  const javob = prompt("Sevimli dasturlash tilingizni kiriting:");\n  if (javob && javob.trim()) {\n    userLang.textContent = "Tanlangan til: " + javob.trim();\n  }\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "d3d3d3d3-d3d3-d3d3-d3d3-d3d3d3d3d3d3",
+    title: "25. JavaScript: Tasdiqlash oynasi (confirm)",
+    description_md:
+      "`#confirm-btn` tugmasi bosilganda `confirm('Haqiqatan ham faylni o\\'chirmoqchimisiz?')` dialogini chiqaring:\n- Agar foydalanuvchi `true` (OK) bossa: `#action-status` ga `Fayl muvaffaqiyatli o'chirildi 🗑️` deb yozing va uning `style.color` ini `#ef4444` qiling;\n- Agar `false` (Bekor qilish) bossa: `#action-status` ga `O'chirish bekor qilindi 🛡️` deb yozing va uning `style.color` ini `#10b981` qiling.",
+    level: 1,
+    topics: ["javascript", "basics", "dialogs", "conditions"],
+    starter_html:
+      '<div class="confirm-card">\n  <h3>Fayllarni boshqarish 📁</h3>\n  <div class="file-item">\n    <span>Loyiha_hujjati.pdf (2.4 MB)</span>\n    <button id="confirm-btn">O\'chirish</button>\n  </div>\n  <p id="action-status">Hozircha hech qanday amal bajarilmadi</p>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.confirm-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n}\n\n.file-item {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px;\n  background: #f1f5f9;\n  border-radius: 10px;\n  margin-top: 12px;\n  font-size: 14px;\n  font-weight: 600;\n  color: #334155;\n}\n\n#confirm-btn {\n  padding: 6px 12px;\n  background: #ef4444;\n  color: white;\n  border: none;\n  border-radius: 6px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n#action-status {\n  margin-top: 14px;\n  font-size: 13px;\n  font-weight: 600;\n  color: #64748b;\n}",
+    starter_js:
+      'const confirmBtn = document.getElementById("confirm-btn");\nconst statusEl = document.getElementById("action-status");\n\n// confirmBtn bosilganda:\n// 1. const tasdiq = confirm("Haqiqatan ham faylni o\'chirmoqchimisiz?");\n// 2. if (tasdiq) { statusEl.textContent = "..."; statusEl.style.color = "#ef4444"; }\n//    else { statusEl.textContent = "..."; statusEl.style.color = "#10b981"; }\n',
+    solution_html:
+      '<div class="confirm-card">\n  <h3>Fayllarni boshqarish 📁</h3>\n  <div class="file-item">\n    <span>Loyiha_hujjati.pdf (2.4 MB)</span>\n    <button id="confirm-btn">O\'chirish</button>\n  </div>\n  <p id="action-status" style="color: #ef4444;">Fayl muvaffaqiyatli o\'chirildi 🗑️</p>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.confirm-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n}\n\n.file-item {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px;\n  background: #f1f5f9;\n  border-radius: 10px;\n  margin-top: 12px;\n  font-size: 14px;\n  font-weight: 600;\n  color: #334155;\n}\n\n#confirm-btn {\n  padding: 6px 12px;\n  background: #ef4444;\n  color: white;\n  border: none;\n  border-radius: 6px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n#action-status {\n  margin-top: 14px;\n  font-size: 13px;\n  font-weight: 600;\n  color: #64748b;\n}",
+    solution_js:
+      'const confirmBtn = document.getElementById("confirm-btn");\nconst statusEl = document.getElementById("action-status");\n\nconfirmBtn.addEventListener("click", () => {\n  const tasdiq = confirm("Haqiqatan ham faylni o\'chirmoqchimisiz?");\n  if (tasdiq) {\n    statusEl.textContent = "Fayl muvaffaqiyatli o\'chirildi 🗑️";\n    statusEl.style.color = "#ef4444";\n  } else {\n    statusEl.textContent = "O\'chirish bekor qilindi 🛡️";\n    statusEl.style.color = "#10b981";\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 380px;"><h3 style="margin-top:0;">Fayllarni boshqarish 📁</h3><p style="color: #ef4444; font-weight: bold;">Fayl muvaffaqiyatli o\'chirildi 🗑️</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#confirm-btn", label: "#confirm-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const btn = document.getElementById('confirm-btn'); const st = document.getElementById('action-status'); if (!btn || !st) return false; const orig = window.confirm; window.confirm = () => true; btn.click(); const okTrue = st.textContent.includes('o\\'chirildi') && st.style.color !== ''; window.confirm = () => false; btn.click(); const okFalse = st.textContent.includes('bekor qilindi'); window.confirm = orig; return okTrue && okFalse; })()",
+        label: "Tasdiqlaganda o'chirish, bekor qilinganda bekor qilish holati to'g'ri ishlaydi",
+      },
+    ],
+    fallback_hints: {
+      "1": "confirm() foydalanuvchi roziligiga qarab true yoki false qaytaradi.",
+      "2": "const tasdiq = confirm('Savol?'); if (tasdiq) { ... } else { ... }",
+      "3": "statusEl.style.color = '#ef4444'; orqali rangni o'zgartiring.",
+      "4": 'const confirmBtn = document.getElementById("confirm-btn");\nconst statusEl = document.getElementById("action-status");\n\nconfirmBtn.addEventListener("click", () => {\n  const tasdiq = confirm("Haqiqatan ham faylni o\'chirmoqchimisiz?");\n  if (tasdiq) {\n    statusEl.textContent = "Fayl muvaffaqiyatli o\'chirildi 🗑️";\n    statusEl.style.color = "#ef4444";\n  } else {\n    statusEl.textContent = "O\'chirish bekor qilindi 🛡️";\n    statusEl.style.color = "#10b981";\n  }\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+    title: "26. JavaScript: Ballni bahoga o'tkazish (if / else zanjiri)",
+    description_md:
+      "`#calc-grade-btn` bosilganda `#score-input` maydonidagi ballni (0 dan 100 gacha) tekshiring:\n- Agar ball `>= 86` bo'lsa: `#grade-text` ga `A'lo (5 baho) 🌟` deb yozing;\n- Aks holda agar ball `>= 71` bo'lsa: `Yaxshi (4 baho) 👍` deb yozing;\n- Aks holda agar ball `>= 56` bo'lsa: `Qoniqarli (3 baho) 🆗` deb yozing;\n- Aks holda: `Qoniqarsiz (2 baho) ⚠️` deb yozing.",
+    level: 2,
+    topics: ["javascript", "basics", "conditions", "inputs"],
+    starter_html:
+      '<div class="grade-card">\n  <h3>Talaba ballini baholash 🎓</h3>\n  <div class="input-row">\n    <input id="score-input" type="number" placeholder="Ballni kiriting (0 - 100)" min="0" max="100" />\n    <button id="calc-grade-btn">Baholash</button>\n  </div>\n  <div class="result-box">Natija: <span id="grade-text">—</span></div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.grade-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 14px;\n}\n\n#score-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#calc-grade-btn {\n  padding: 10px 16px;\n  background: #0284c7;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n.result-box {\n  margin-top: 16px;\n  font-size: 15px;\n  font-weight: 600;\n  color: #334155;\n}\n\n#grade-text {\n  color: #0284c7;\n  font-weight: 700;\n}",
+    starter_js:
+      'const scoreInput = document.getElementById("score-input");\nconst calcBtn = document.getElementById("calc-grade-btn");\nconst gradeText = document.getElementById("grade-text");\n\n// calcBtn bosilganda:\n// 1. const ball = Number(scoreInput.value);\n// 2. if (ball >= 86) { ... }\n//    else if (ball >= 71) { ... }\n//    else if (ball >= 56) { ... }\n//    else { ... }\n',
+    solution_html:
+      '<div class="grade-card">\n  <h3>Talaba ballini baholash 🎓</h3>\n  <div class="input-row">\n    <input id="score-input" type="number" placeholder="Ballni kiriting (0 - 100)" min="0" max="100" value="90" />\n    <button id="calc-grade-btn">Baholash</button>\n  </div>\n  <div class="result-box">Natija: <span id="grade-text">A\'lo (5 baho) 🌟</span></div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.grade-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 14px;\n}\n\n#score-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#calc-grade-btn {\n  padding: 10px 16px;\n  background: #0284c7;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n.result-box {\n  margin-top: 16px;\n  font-size: 15px;\n  font-weight: 600;\n  color: #334155;\n}\n\n#grade-text {\n  color: #0284c7;\n  font-weight: 700;\n}",
+    solution_js:
+      'const scoreInput = document.getElementById("score-input");\nconst calcBtn = document.getElementById("calc-grade-btn");\nconst gradeText = document.getElementById("grade-text");\n\ncalcBtn.addEventListener("click", () => {\n  const ball = Number(scoreInput.value);\n  if (ball >= 86) {\n    gradeText.textContent = "A\'lo (5 baho) 🌟";\n  } else if (ball >= 71) {\n    gradeText.textContent = "Yaxshi (4 baho) 👍";\n  } else if (ball >= 56) {\n    gradeText.textContent = "Qoniqarli (3 baho) 🆗";\n  } else {\n    gradeText.textContent = "Qoniqarsiz (2 baho) ⚠️";\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 360px;"><h3 style="margin-top:0;">Talaba ballini baholash 🎓</h3><div style="font-weight:bold;color:#334155;">Natija: <span style="color:#0284c7;">A\'lo (5 baho) 🌟</span></div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#score-input", label: "#score-input maydoni mavjud" },
+      { type: "exists", selector: "#calc-grade-btn", label: "#calc-grade-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('score-input'); const btn = document.getElementById('calc-grade-btn'); const res = document.getElementById('grade-text'); if (!inp || !btn || !res) return false; inp.value = '92'; btn.click(); const g5 = res.textContent.includes('5'); inp.value = '75'; btn.click(); const g4 = res.textContent.includes('4'); inp.value = '60'; btn.click(); const g3 = res.textContent.includes('3'); inp.value = '40'; btn.click(); const g2 = res.textContent.includes('2'); return g5 && g4 && g3 && g2; })()",
+        label: "Barcha ball oraliqlari (5, 4, 3, 2 baholar) bo'yicha to'g'ri baholanadi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Bir nechta shartlarni ketma-ket tekshirish uchun: if (ball >= 86) { ... } else if (ball >= 71) { ... } else { ... }",
+      "2": "const ball = Number(scoreInput.value); orqali kiritilgan matnni songa aylantiring.",
+      "3": "gradeText.textContent ga tegishli baho matnini bering.",
+      "4": 'const scoreInput = document.getElementById("score-input");\nconst calcBtn = document.getElementById("calc-grade-btn");\nconst gradeText = document.getElementById("grade-text");\n\ncalcBtn.addEventListener("click", () => {\n  const ball = Number(scoreInput.value);\n  if (ball >= 86) {\n    gradeText.textContent = "A\'lo (5 baho) 🌟";\n  } else if (ball >= 71) {\n    gradeText.textContent = "Yaxshi (4 baho) 👍";\n  } else if (ball >= 56) {\n    gradeText.textContent = "Qoniqarli (3 baho) 🆗";\n  } else {\n    gradeText.textContent = "Qoniqarsiz (2 baho) ⚠️";\n  }\n});',
+    },
+    is_public: true,
+  },
 ];

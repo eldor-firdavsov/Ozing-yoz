@@ -584,6 +584,14 @@ export default function App() {
           }
         />
         <Route
+          path="/app/challenge"
+          element={
+            <StudentRouteGuard>
+              <WorkspaceRoute />
+            </StudentRouteGuard>
+          }
+        />
+        <Route
           path="/app/challenge/:id"
           element={
             <StudentRouteGuard>

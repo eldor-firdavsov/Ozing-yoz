@@ -88,7 +88,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
   const challenge = useMemo(() => appStore.getChallengeById(challengeId), [challengeId]);
 
   // All challenges & Next challenge calculation
-  const allChallenges = useMemo(() => appStore.getChallenges(), []);
+  const allChallenges = appStore.getChallenges();
   const currentIndex = allChallenges.findIndex((c) => c.id === challenge.id);
   const nextChallenge = currentIndex >= 0 && currentIndex < allChallenges.length - 1 ? allChallenges[currentIndex + 1] : null;
 
@@ -155,41 +155,36 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     });
   }, []);
 
-  // Dynamic sync when challengeId in URL route changes (without unmount)
-  const isFirstMount = useRef(true);
+  // Dynamic sync when challengeId in URL route changes
+  const prevChallengeIdRef = useRef(challenge.id);
   useEffect(() => {
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      return;
+    if (prevChallengeIdRef.current !== challenge.id) {
+      prevChallengeIdRef.current = challenge.id;
+      const draft = appStore.getDraft(challenge.id);
+      setCodeHtml(draft?.html || challenge.starter_html);
+      setCodeCss(draft?.css || challenge.starter_css);
+      setCodeJs(draft?.js || challenge.starter_js || "");
+      setHints([]);
+      setTestResults([]);
+      setShowPassModal(false);
+      setMaxHintLevel(0);
+      setFailedChecksSinceL3(0);
+      setActiveCodeTab(challenge.topics?.includes("javascript") ? "js" : "css");
+      setLeftTab("task");
+      setDebouncedDoc(
+        buildSandboxedSrcDoc(
+          draft?.html || challenge.starter_html,
+          draft?.css || challenge.starter_css,
+          challenge.tests,
+          draft?.js || challenge.starter_js || ""
+        )
+      );
     }
-    const draft = appStore.getDraft(challenge.id);
-    setCodeHtml(draft?.html || challenge.starter_html);
-    setCodeCss(draft?.css || challenge.starter_css);
-    setCodeJs(draft?.js || challenge.starter_js || "");
-    setHints([]);
-    setTestResults([]);
-    setShowPassModal(false);
-    setMaxHintLevel(0);
-    setFailedChecksSinceL3(0);
-    setActiveCodeTab(challenge.topics?.includes("javascript") ? "js" : "css");
-    setLeftTab("task");
-    setDebouncedDoc(
-      buildSandboxedSrcDoc(
-        draft?.html || challenge.starter_html,
-        draft?.css || challenge.starter_css,
-        challenge.tests,
-        draft?.js || challenge.starter_js || ""
-      )
-    );
-  }, [challenge]);
+  }, [challenge.id, challenge]);
 
   const handleNextChallenge = () => {
     sounds.playClick();
     setShowPassModal(false);
-    if (isLiveRoom) {
-      navigate("/app");
-      return;
-    }
     if (nextChallenge) {
       navigate(`/app/challenge/${nextChallenge.id}`);
     } else {
@@ -742,6 +737,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           {/* CodeMirror 6 Editor with Dynamic Theme */}
           <div className="flex-1 overflow-auto bg-white/80 dark:bg-[#18181b] relative">
             <CodeMirror
+              key={`${challenge.id}-${activeCodeTab}`}
               value={activeCodeTab === "html" ? codeHtml : activeCodeTab === "css" ? codeCss : codeJs}
               height="100%"
               minHeight="420px"
@@ -1065,9 +1061,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               className="glass-btn-brand text-sm py-2.5 px-5 font-bold rounded-xl active:scale-95 transition-transform inline-flex items-center gap-1.5"
             >
               <span>
-                {isLiveRoom
-                  ? "Darslarga qaytish"
-                  : nextChallenge
+                {nextChallenge
                   ? `Keyingi mashqqa o'tish (${nextChallenge.title.split('.')[0]}-mashq) →`
                   : "Barcha mashqlar yakunlandi (Bosh sahifa) →"}
               </span>

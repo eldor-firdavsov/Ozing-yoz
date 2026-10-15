@@ -419,4 +419,275 @@ export const COURSE_CHALLENGES: ChallengeItem[] = [
     },
     is_public: true,
   },
+  {
+    id: "e1e1e1e1-e1e1-e1e1-e1e1-e1e1e1e1e1e1",
+    title: "14. JavaScript: Parol ko'rsatish va yashirish",
+    description_md:
+      "`#toggle-btn` tugmasi bosilganda `#password-input` maydonining `type` atributini almashtiring: agar `password` bo'lsa `text` ga o'zgartirilsin va tugma matni `Yashirish` bo'lsin, aks holda yana `password` ga qaytarilib tugma matni `Ko'rsatish` bo'lsin.",
+    level: 1,
+    topics: ["javascript", "dom", "forms"],
+    starter_html:
+      '<div class="auth-card">\n  <h3>Tizimga kirish</h3>\n  <div class="field-row">\n    <input id="password-input" type="password" value="MaxfiyParol123" />\n    <button id="toggle-btn">Ko\'rsatish</button>\n  </div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.auth-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.field-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 12px;\n}\n\n#password-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#toggle-btn {\n  padding: 10px 16px;\n  background: #3b82f6;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 600;\n  cursor: pointer;\n}",
+    starter_js:
+      'const input = document.getElementById("password-input");\nconst toggleBtn = document.getElementById("toggle-btn");\n\n// toggleBtn bosilganda input.type ni va tugma matnini almashtiring\n',
+    solution_html:
+      '<div class="auth-card">\n  <h3>Tizimga kirish</h3>\n  <div class="field-row">\n    <input id="password-input" type="text" value="MaxfiyParol123" />\n    <button id="toggle-btn">Yashirish</button>\n  </div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.auth-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n.field-row {\n  display: flex;\n  gap: 8px;\n  margin-top: 12px;\n}\n\n#password-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#toggle-btn {\n  padding: 10px 16px;\n  background: #3b82f6;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 600;\n  cursor: pointer;\n}",
+    solution_js:
+      'const input = document.getElementById("password-input");\nconst toggleBtn = document.getElementById("toggle-btn");\n\ntoggleBtn.addEventListener("click", () => {\n  if (input.type === "password") {\n    input.type = "text";\n    toggleBtn.textContent = "Yashirish";\n  } else {\n    input.type = "password";\n    toggleBtn.textContent = "Ko\'rsatish";\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 360px;"><h3 style="margin-top:0;">Tizimga kirish</h3><div style="display:flex;gap:8px;"><input type="text" value="MaxfiyParol123" style="flex:1;padding:10px;border:1px solid #cbd5e1;border-radius:10px;" /><button style="padding:10px 16px;background:#3b82f6;color:white;border:none;border-radius:10px;font-weight:600;">Yashirish</button></div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#toggle-btn", label: "#toggle-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('password-input'); const btn = document.getElementById('toggle-btn'); if (!inp || !btn) return false; btn.click(); const isText = inp.type === 'text' && btn.textContent.toLowerCase().includes('yashir'); btn.click(); const isPass = inp.type === 'password' && btn.textContent.toLowerCase().includes('ko'); return isText && isPass; })()",
+        label: "Tugma bosilganda input turi 'text' va 'password' ga almashadi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Input turini o'zgartirish uchun: input.type = (input.type === 'password' ? 'text' : 'password'); ishlatiladi.",
+      "2": "Tugma matnini o'zgartirish uchun esa: toggleBtn.textContent = 'Yashirish'; yoki 'Ko\\'rsatish';",
+      "3": "toggleBtn.addEventListener('click', () => { if (input.type === 'password') { input.type = 'text'; toggleBtn.textContent = 'Yashirish'; } else { input.type = 'password'; toggleBtn.textContent = 'Ko\\'rsatish'; } });",
+      "4": 'const input = document.getElementById("password-input");\nconst toggleBtn = document.getElementById("toggle-btn");\n\ntoggleBtn.addEventListener("click", () => {\n  if (input.type === "password") {\n    input.type = "text";\n    toggleBtn.textContent = "Yashirish";\n  } else {\n    input.type = "password";\n    toggleBtn.textContent = "Ko\'rsatish";\n  }\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "f1f1f1f1-f1f1-f1f1-f1f1-f1f1f1f1f1f1",
+    title: "15. JavaScript: Belgilar hisoblagichi (Char Counter)",
+    description_md:
+      "`#msg-input` matn maydoniga har safar yangi belgi yozilganda yoki o'chirilganda (`input` hodisasi), `#char-count` elementi ichidagi raqamni kiritilgan belgilar soniga (`input.value.length`) tenglab yangilang.",
+    level: 1,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="counter-card">\n  <h3>Izoh qoldirish</h3>\n  <textarea id="msg-input" placeholder="Xabaringizni yozing..."></textarea>\n  <div class="counter-info">Belgilar soni: <span id="char-count">0</span> / 100</div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.counter-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n}\n\n#msg-input {\n  width: 100%;\n  box-sizing: border-box;\n  height: 100px;\n  padding: 12px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  resize: none;\n  outline: none;\n  font-family: inherit;\n}\n\n.counter-info {\n  margin-top: 10px;\n  font-size: 13px;\n  color: #64748b;\n  text-align: right;\n}\n\n#char-count {\n  font-weight: bold;\n  color: #0284c7;\n}",
+    starter_js:
+      'const input = document.getElementById("msg-input");\nconst counter = document.getElementById("char-count");\n\n// input ga "input" hodisasini qo\'shing va counter.textContent ni yangilang\n',
+    solution_html:
+      '<div class="counter-card">\n  <h3>Izoh qoldirish</h3>\n  <textarea id="msg-input" placeholder="Xabaringizni yozing...">Salom dunyo!</textarea>\n  <div class="counter-info">Belgilar soni: <span id="char-count">12</span> / 100</div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.counter-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n}\n\n#msg-input {\n  width: 100%;\n  box-sizing: border-box;\n  height: 100px;\n  padding: 12px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  resize: none;\n  outline: none;\n  font-family: inherit;\n}\n\n.counter-info {\n  margin-top: 10px;\n  font-size: 13px;\n  color: #64748b;\n  text-align: right;\n}\n\n#char-count {\n  font-weight: bold;\n  color: #0284c7;\n}",
+    solution_js:
+      'const input = document.getElementById("msg-input");\nconst counter = document.getElementById("char-count");\n\ninput.addEventListener("input", () => {\n  counter.textContent = String(input.value.length);\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 380px;"><h3 style="margin-top:0;">Izoh qoldirish</h3><div style="border:1px solid #cbd5e1;padding:12px;border-radius:10px;height:70px;color:#334155;">Salom dunyo!</div><div style="margin-top:10px;font-size:13px;color:#64748b;text-align:right;">Belgilar soni: <span style="font-weight:bold;color:#0284c7;">12</span> / 100</div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#msg-input", label: "#msg-input maydoni mavjud" },
+      { type: "exists", selector: "#char-count", label: "#char-count elementi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('msg-input'); const counter = document.getElementById('char-count'); if (!inp || !counter) return false; inp.value = 'Frontend Dasturchi'; inp.dispatchEvent(new Event('input')); return counter.textContent.trim() === '18'; })()",
+        label: "Matn kiritilganda belgilar soni avtomatik sanaladi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Foydalanuvchi har safar tugma bosganda qiymatni kuzatish uchun 'input' hodisasi (event) ishlatiladi.",
+      "2": "Kiritilgan belgilar sonini input.value.length orqali aniqlash mumkin.",
+      "3": "input.addEventListener('input', () => { counter.textContent = input.value.length; });",
+      "4": 'const input = document.getElementById("msg-input");\nconst counter = document.getElementById("char-count");\n\ninput.addEventListener("input", () => {\n  counter.textContent = String(input.value.length);\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2",
+    title: "16. JavaScript: Modal oynani ochish va yopish",
+    description_md:
+      "`#open-modal` tugmasi bosilganda `#modal-overlay` elementidan `hidden` klassini olib tashlang (`classList.remove('hidden')`). `#close-modal` tugmasi bosilganda esa yana `hidden` klassini qo'shing (`classList.add('hidden')`).",
+    level: 2,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="page-container">\n  <button id="open-modal">Modalni ochish 🚀</button>\n  <div id="modal-overlay" class="modal-backdrop hidden">\n    <div class="modal-card">\n      <h3>Tabriklaymiz! 🎉</h3>\n      <p>Siz yangi bilim va ko\'nikmalarni muvaffaqiyatli o\'zlashtiryapsiz.</p>\n      <button id="close-modal">Yopish</button>\n    </div>\n  </div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n#open-modal {\n  padding: 12px 24px;\n  background: #8b5cf6;\n  color: white;\n  border: none;\n  border-radius: 12px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n.modal-backdrop {\n  position: fixed;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.6);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  backdrop-filter: blur(4px);\n}\n\n.modal-backdrop.hidden {\n  display: none !important;\n}\n\n.modal-card {\n  background: white;\n  padding: 28px;\n  border-radius: 16px;\n  width: 90%;\n  max-width: 360px;\n  text-align: center;\n  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);\n}\n\n#close-modal {\n  margin-top: 16px;\n  padding: 10px 20px;\n  background: #ef4444;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 600;\n  cursor: pointer;\n}",
+    starter_js:
+      'const openBtn = document.getElementById("open-modal");\nconst closeBtn = document.getElementById("close-modal");\nconst modal = document.getElementById("modal-overlay");\n\n// 1. openBtn bosilganda modal dan "hidden" klassini olib tashlang\n// 2. closeBtn bosilganda modal ga "hidden" klassini qo\'shing\n',
+    solution_html:
+      '<div class="page-container">\n  <button id="open-modal">Modalni ochish 🚀</button>\n  <div id="modal-overlay" class="modal-backdrop">\n    <div class="modal-card">\n      <h3>Tabriklaymiz! 🎉</h3>\n      <p>Siz yangi bilim va ko\'nikmalarni muvaffaqiyatli o\'zlashtiryapsiz.</p>\n      <button id="close-modal">Yopish</button>\n    </div>\n  </div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n#open-modal {\n  padding: 12px 24px;\n  background: #8b5cf6;\n  color: white;\n  border: none;\n  border-radius: 12px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\n.modal-backdrop {\n  position: fixed;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.6);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  backdrop-filter: blur(4px);\n}\n\n.modal-backdrop.hidden {\n  display: none !important;\n}\n\n.modal-card {\n  background: white;\n  padding: 28px;\n  border-radius: 16px;\n  width: 90%;\n  max-width: 360px;\n  text-align: center;\n  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);\n}\n\n#close-modal {\n  margin-top: 16px;\n  padding: 10px 20px;\n  background: #ef4444;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 600;\n  cursor: pointer;\n}",
+    solution_js:
+      'const openBtn = document.getElementById("open-modal");\nconst closeBtn = document.getElementById("close-modal");\nconst modal = document.getElementById("modal-overlay");\n\nopenBtn.addEventListener("click", () => {\n  modal.classList.remove("hidden");\n});\n\ncloseBtn.addEventListener("click", () => {\n  modal.classList.add("hidden");\n});',
+    target_html:
+      '<div style="font-family: sans-serif; padding: 24px; text-align: center;"><div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; max-width: 340px; margin: 0 auto; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"><h3 style="margin-top:0;">Tabriklaymiz! 🎉</h3><p style="color: #64748b;">Modal oyna ko\'rinishi</p><button style="padding: 8px 18px; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: 600;">Yopish</button></div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#open-modal", label: "#open-modal tugmasi mavjud" },
+      { type: "exists", selector: "#close-modal", label: "#close-modal tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const open = document.getElementById('open-modal'); const close = document.getElementById('close-modal'); const modal = document.getElementById('modal-overlay'); if (!open || !close || !modal) return false; open.click(); const opened = !modal.classList.contains('hidden'); close.click(); const closed = modal.classList.contains('hidden'); return opened && closed; })()",
+        label: "Modal oynani ochish va yopish tugmalari to'g'ri ishlaydi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Element klassini olib tashlash uchun element.classList.remove('hidden'), qo'shish uchun esa element.classList.add('hidden') ishlatiladi.",
+      "2": "openBtn ga 'click' hodisasida modal.classList.remove('hidden') ni bajaring.",
+      "3": "closeBtn ga 'click' hodisasida modal.classList.add('hidden') ni bajaring.",
+      "4": 'const openBtn = document.getElementById("open-modal");\nconst closeBtn = document.getElementById("close-modal");\nconst modal = document.getElementById("modal-overlay");\n\nopenBtn.addEventListener("click", () => {\n  modal.classList.remove("hidden");\n});\n\ncloseBtn.addEventListener("click", () => {\n  modal.classList.add("hidden");\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2",
+    title: "17. JavaScript: Jonli qidiruv filtri (Live Search)",
+    description_md:
+      "`#search-input` ga matn yozilganda (`input` hodisasi orqali), `#skills-list li` elementlarini aylanib chiqing. Agar element matni kiritilgan so'zni o'z ichiga olsa `li.style.display = ''` qilib ko'rsating, aks holda `li.style.display = 'none'` qilib yashiring.",
+    level: 2,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="filter-card">\n  <h3>Texnologiyalar qidiruvi</h3>\n  <input id="search-input" type="text" placeholder="Qidirish (masalan: React)..." />\n  <ul id="skills-list">\n    <li>JavaScript</li>\n    <li>React</li>\n    <li>TypeScript</li>\n    <li>Node.js</li>\n  </ul>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.filter-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n#search-input {\n  width: 100%;\n  box-sizing: border-box;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n  margin-bottom: 14px;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\nli {\n  padding: 10px 14px;\n  border-radius: 8px;\n  margin-bottom: 6px;\n  background: #f1f5f9;\n  color: #334155;\n  font-weight: 600;\n}",
+    starter_js:
+      'const searchInput = document.getElementById("search-input");\nconst items = document.querySelectorAll("#skills-list li");\n\n// searchInput ga "input" hodisasini qo\'shing\n// Har bir element matnini searchInput.value bilan solishtirib, mos kelmasa yashiring\n',
+    solution_html:
+      '<div class="filter-card">\n  <h3>Texnologiyalar qidiruvi</h3>\n  <input id="search-input" type="text" placeholder="Qidirish (masalan: React)..." value="React" />\n  <ul id="skills-list">\n    <li style="display: none;">JavaScript</li>\n    <li>React</li>\n    <li style="display: none;">TypeScript</li>\n    <li style="display: none;">Node.js</li>\n  </ul>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.filter-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 360px;\n}\n\n#search-input {\n  width: 100%;\n  box-sizing: border-box;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n  margin-bottom: 14px;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\nli {\n  padding: 10px 14px;\n  border-radius: 8px;\n  margin-bottom: 6px;\n  background: #f1f5f9;\n  color: #334155;\n  font-weight: 600;\n}",
+    solution_js:
+      'const searchInput = document.getElementById("search-input");\nconst items = document.querySelectorAll("#skills-list li");\n\nsearchInput.addEventListener("input", () => {\n  const query = searchInput.value.toLowerCase().trim();\n  items.forEach((item) => {\n    const text = item.textContent.toLowerCase();\n    if (text.includes(query)) {\n      item.style.display = "";\n    } else {\n      item.style.display = "none";\n    }\n  });\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 360px;"><h3 style="margin-top:0;">Texnologiyalar qidiruvi</h3><input type="text" value="React" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:12px;" /><div style="padding:10px;border-radius:8px;background:#e0e7ff;color:#4338ca;font-weight:bold;">React</div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#search-input", label: "#search-input qidiruv maydoni mavjud" },
+      { type: "exists", selector: "#skills-list li", label: "#skills-list ichida ro'yxat elementlari mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('search-input'); const items = document.querySelectorAll('#skills-list li'); if (!inp || items.length === 0) return false; inp.value = 'Type'; inp.dispatchEvent(new Event('input')); const tsItem = Array.from(items).find(li => li.textContent.includes('TypeScript')); const jsItem = Array.from(items).find(li => li.textContent.includes('JavaScript')); const correct = tsItem.style.display !== 'none' && jsItem.style.display === 'none'; inp.value = ''; inp.dispatchEvent(new Event('input')); const allVisible = Array.from(items).every(li => li.style.display !== 'none'); return correct && allVisible; })()",
+        label: "Kiritilgan so'z bo'yicha mos elementlar ko'rinadi va mos bo'lmaganlari yashiriladi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Matn kiritishda harflar registrini (katta-kichikligini) inobatga olmaslik uchun .toLowerCase() metodidan foydalaning.",
+      "2": "Elementni yashirish uchun: item.style.display = 'none'; qayta ko'rsatish uchun esa: item.style.display = '';",
+      "3": "items.forEach(li => { li.style.display = li.textContent.toLowerCase().includes(query) ? '' : 'none'; });",
+      "4": 'const searchInput = document.getElementById("search-input");\nconst items = document.querySelectorAll("#skills-list li");\n\nsearchInput.addEventListener("input", () => {\n  const query = searchInput.value.toLowerCase().trim();\n  items.forEach((item) => {\n    const text = item.textContent.toLowerCase();\n    if (text.includes(query)) {\n      item.style.display = "";\n    } else {\n      item.style.display = "none";\n    }\n  });\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "c2c2c2c2-c2c2-c2c2-c2c2-c2c2c2c2c2c2",
+    title: "18. JavaScript: Savol-Javob paneli (Accordion)",
+    description_md:
+      "Har bir `.accordion-btn` tugmasi bosilganda, uning pastidagi javob bloki bo'lgan `.accordion-content` elementiga `open` klassini toggle qiling (`btn.nextElementSibling.classList.toggle('open')`).",
+    level: 2,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="faq-container">\n  <div class="faq-item">\n    <button class="accordion-btn">HTML nima?</button>\n    <div class="accordion-content">\n      <p>HTML — bu veb-sahifalarning tuzilishini belgilovchi belgilash tili.</p>\n    </div>\n  </div>\n  <div class="faq-item">\n    <button class="accordion-btn">CSS nima?</button>\n    <div class="accordion-content">\n      <p>CSS — bu veb-sahifa elementlarining ko\'rinishi va dizaynini belgilovchi uslublar jadvali.</p>\n    </div>\n  </div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.faq-container {\n  width: 100%;\n  max-width: 400px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.faq-item {\n  background: white;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n  overflow: hidden;\n}\n\n.accordion-btn {\n  width: 100%;\n  text-align: left;\n  padding: 14px 18px;\n  background: none;\n  border: none;\n  font-size: 15px;\n  font-weight: 700;\n  color: #1e293b;\n  cursor: pointer;\n  display: flex;\n  justify-content: space-between;\n}\n\n.accordion-content {\n  display: none;\n  padding: 0 18px 14px;\n  color: #64748b;\n  font-size: 14px;\n  line-height: 1.5;\n}\n\n.accordion-content.open {\n  display: block;\n}",
+    starter_js:
+      'const buttons = document.querySelectorAll(".accordion-btn");\n\n// Har bir tugmaga click hodisasi bog\'lang\n// Tugma bosilganda uning yonidagi (nextElementSibling) elementga "open" klassini toggle qiling\n',
+    solution_html:
+      '<div class="faq-container">\n  <div class="faq-item">\n    <button class="accordion-btn">HTML nima?</button>\n    <div class="accordion-content open">\n      <p>HTML — bu veb-sahifalarning tuzilishini belgilovchi belgilash tili.</p>\n    </div>\n  </div>\n  <div class="faq-item">\n    <button class="accordion-btn">CSS nima?</button>\n    <div class="accordion-content">\n      <p>CSS — bu veb-sahifa elementlarining ko\'rinishi va dizaynini belgilovchi uslublar jadvali.</p>\n    </div>\n  </div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.faq-container {\n  width: 100%;\n  max-width: 400px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.faq-item {\n  background: white;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n  overflow: hidden;\n}\n\n.accordion-btn {\n  width: 100%;\n  text-align: left;\n  padding: 14px 18px;\n  background: none;\n  border: none;\n  font-size: 15px;\n  font-weight: 700;\n  color: #1e293b;\n  cursor: pointer;\n  display: flex;\n  justify-content: space-between;\n}\n\n.accordion-content {\n  display: none;\n  padding: 0 18px 14px;\n  color: #64748b;\n  font-size: 14px;\n  line-height: 1.5;\n}\n\n.accordion-content.open {\n  display: block;\n}",
+    solution_js:
+      'const buttons = document.querySelectorAll(".accordion-btn");\n\nbuttons.forEach((btn) => {\n  btn.addEventListener("click", () => {\n    btn.nextElementSibling.classList.toggle("open");\n  });\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; max-width: 380px;"><div style="font-weight: bold; color: #1e293b;">HTML nima?</div><p style="margin: 8px 0 0; color: #64748b; font-size: 14px;">HTML — bu veb-sahifalarning tuzilishini belgilovchi belgilash tili.</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: ".accordion-btn", label: ".accordion-btn tugmalari mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const btns = document.querySelectorAll('.accordion-btn'); if (btns.length === 0) return false; const firstBtn = btns[0]; const content = firstBtn.nextElementSibling; if (!content) return false; firstBtn.click(); const isOpen = content.classList.contains('open'); firstBtn.click(); const isClosed = !content.classList.contains('open'); return isOpen && isClosed; })()",
+        label: "Tugma bosilganda content bloki 'open' klassi bilan ochiladi va yopiladi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Tugmaning bevosita keyingi elementi btn.nextElementSibling orqali olinadi.",
+      "2": "Klassni bor bo'lsa o'chirish, yo'q bo'lsa qo'shish uchun: element.classList.toggle('open'); ishlatiladi.",
+      "3": "buttons.forEach(btn => btn.addEventListener('click', () => btn.nextElementSibling.classList.toggle('open')));",
+      "4": 'const buttons = document.querySelectorAll(".accordion-btn");\n\nbuttons.forEach((btn) => {\n  btn.addEventListener("click", () => {\n    btn.nextElementSibling.classList.toggle("open");\n  });\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "d2d2d2d2-d2d2-d2d2-d2d2-d2d2d2d2d2d2",
+    title: "19. JavaScript: Tasodifiy rang generatori",
+    description_md:
+      "`#generate-btn` tugmasi bosilganda tasodifiy HEX rang kodi hosil qiling (masalan `#3B82F6`), `#color-box` elementining fon rangini (`backgroundColor`) shu rangga o'zgartiring va `#color-code` elementi ichiga rang kodini yozing.",
+    level: 2,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="color-card">\n  <div id="color-box" class="preview-box"></div>\n  <div class="color-text">Tanlangan rang: <span id="color-code">#6366F1</span></div>\n  <button id="generate-btn">Yangi rang tanlash 🎨</button>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.color-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 340px;\n  text-align: center;\n}\n\n.preview-box {\n  width: 100%;\n  height: 120px;\n  background-color: #6366f1;\n  border-radius: 12px;\n  margin-bottom: 16px;\n  transition: background-color 0.3s ease;\n}\n\n.color-text {\n  font-weight: 600;\n  color: #334155;\n  margin-bottom: 16px;\n}\n\n#color-code {\n  font-family: monospace;\n  color: #6366f1;\n}\n\n#generate-btn {\n  padding: 10px 20px;\n  background: #0f172a;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}",
+    starter_js:
+      'const btn = document.getElementById("generate-btn");\nconst box = document.getElementById("color-box");\nconst code = document.getElementById("color-code");\n\n// btn bosilganda:\n// 1. Tasodifiy HEX rang yarating (masalan, "#" + Math.floor(Math.random()*16777215).toString(16))\n// 2. box.style.backgroundColor ni shu rangga tenglang\n// 3. code.textContent ga rang kodini yozing\n',
+    solution_html:
+      '<div class="color-card">\n  <div id="color-box" class="preview-box" style="background-color: #10b981;"></div>\n  <div class="color-text">Tanlangan rang: <span id="color-code">#10B981</span></div>\n  <button id="generate-btn">Yangi rang tanlash 🎨</button>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.color-card {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 340px;\n  text-align: center;\n}\n\n.preview-box {\n  width: 100%;\n  height: 120px;\n  background-color: #6366f1;\n  border-radius: 12px;\n  margin-bottom: 16px;\n  transition: background-color 0.3s ease;\n}\n\n.color-text {\n  font-weight: 600;\n  color: #334155;\n  margin-bottom: 16px;\n}\n\n#color-code {\n  font-family: monospace;\n  color: #6366f1;\n}\n\n#generate-btn {\n  padding: 10px 20px;\n  background: #0f172a;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}",
+    solution_js:
+      'const btn = document.getElementById("generate-btn");\nconst box = document.getElementById("color-box");\nconst code = document.getElementById("color-code");\n\nbtn.addEventListener("click", () => {\n  const chars = "0123456789ABCDEF";\n  let hex = "#";\n  for (let i = 0; i < 6; i++) {\n    hex += chars[Math.floor(Math.random() * 16)];\n  }\n  box.style.backgroundColor = hex;\n  code.textContent = hex;\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 340px; text-align: center;"><div style="width: 100%; height: 100px; background-color: #10b981; border-radius: 12px; margin-bottom: 12px;"></div><div style="font-weight: 600; color: #334155;">Tanlangan rang: <span style="font-family: monospace; color: #10b981;">#10B981</span></div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#generate-btn", label: "#generate-btn tugmasi mavjud" },
+      { type: "exists", selector: "#color-box", label: "#color-box preview mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const btn = document.getElementById('generate-btn'); const box = document.getElementById('color-box'); const code = document.getElementById('color-code'); if (!btn || !box || !code) return false; const oldCode = code.textContent.trim(); btn.click(); const newCode = code.textContent.trim(); return newCode !== oldCode && newCode.startsWith('#') && box.style.backgroundColor !== ''; })()",
+        label: "Tugma bosilganda yangi HEX rang yaratiladi va fon yangilanadi",
+      },
+    ],
+    fallback_hints: {
+      "1": "HEX rang kodlari '#' bilan boshlanib 6 ta 0-9 va A-F belgilaridan iborat bo'ladi.",
+      "2": "Tasodifiy butun son olish uchun: Math.floor(Math.random() * 16); ishlatiladi.",
+      "3": "box.style.backgroundColor = hex; va code.textContent = hex; qilib qiymatlarni bering.",
+      "4": 'const btn = document.getElementById("generate-btn");\nconst box = document.getElementById("color-box");\nconst code = document.getElementById("color-code");\n\nbtn.addEventListener("click", () => {\n  const chars = "0123456789ABCDEF";\n  let hex = "#";\n  for (let i = 0; i < 6; i++) {\n    hex += chars[Math.floor(Math.random() * 16)];\n  }\n  box.style.backgroundColor = hex;\n  code.textContent = hex;\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "e2e2e2e2-e2e2-e2e2-e2e2-e2e2e2e2e2e2",
+    title: "20. JavaScript: Tabs (Vkladkalar) almashinuvi",
+    description_md:
+      "Har bir `.tab-btn` tugmasi bosilganda:\n1. Barcha `.tab-btn` lardagi `active` klassini olib tashlang va bosilganiga `active` bering.\n2. Barcha `.tab-content` lardagi `active` klassini olib tashlang.\n3. Bosilgan tugmaning `dataset.tab` atributidagi ID bo'yicha mos `.tab-content` elementini topib unga `active` klassini qo'shing.",
+    level: 3,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="tabs-card">\n  <div class="tabs-header">\n    <button class="tab-btn active" data-tab="tab-html">HTML</button>\n    <button class="tab-btn" data-tab="tab-css">CSS</button>\n    <button class="tab-btn" data-tab="tab-js">JS</button>\n  </div>\n  <div class="tabs-body">\n    <div id="tab-html" class="tab-content active">HTML — bu veb-sahifaning asosi va skeletidir.</div>\n    <div id="tab-css" class="tab-content">CSS — bu uslublar orqali ko\'rinishni go\'zallashtiradi.</div>\n    <div id="tab-js" class="tab-content">JavaScript — veb-sahifani jonli va interaktiv qiladi.</div>\n  </div>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.tabs-card {\n  background: white;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n  overflow: hidden;\n}\n\n.tabs-header {\n  display: flex;\n  background: #f1f5f9;\n  border-bottom: 1px solid #e2e8f0;\n}\n\n.tab-btn {\n  flex: 1;\n  padding: 12px;\n  background: none;\n  border: none;\n  font-weight: 700;\n  color: #64748b;\n  cursor: pointer;\n  transition: all 0.2s ease;\n}\n\n.tab-btn.active {\n  background: white;\n  color: #0284c7;\n  border-bottom: 2px solid #0284c7;\n}\n\n.tabs-body {\n  padding: 20px;\n}\n\n.tab-content {\n  display: none;\n  color: #334155;\n  line-height: 1.5;\n}\n\n.tab-content.active {\n  display: block;\n}",
+    starter_js:
+      'const tabBtns = document.querySelectorAll(".tab-btn");\nconst tabContents = document.querySelectorAll(".tab-content");\n\n// Har bir tabBtn bosilganda:\n// 1. Barcha tugmalardan va tabContents lardan "active" klassini o\'chiring\n// 2. Bosilgan tugmaga "active" bering\n// 3. document.getElementById(btn.dataset.tab) ga "active" qo\'shing\n',
+    solution_html:
+      '<div class="tabs-card">\n  <div class="tabs-header">\n    <button class="tab-btn" data-tab="tab-html">HTML</button>\n    <button class="tab-btn" data-tab="tab-css">CSS</button>\n    <button class="tab-btn active" data-tab="tab-js">JS</button>\n  </div>\n  <div class="tabs-body">\n    <div id="tab-html" class="tab-content">HTML — bu veb-sahifaning asosi va skeletidir.</div>\n    <div id="tab-css" class="tab-content">CSS — bu uslublar orqali ko\'rinishni go\'zallashtiradi.</div>\n    <div id="tab-js" class="tab-content active">JavaScript — veb-sahifani jonli va interaktiv qiladi.</div>\n  </div>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.tabs-card {\n  background: white;\n  border-radius: 16px;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n  overflow: hidden;\n}\n\n.tabs-header {\n  display: flex;\n  background: #f1f5f9;\n  border-bottom: 1px solid #e2e8f0;\n}\n\n.tab-btn {\n  flex: 1;\n  padding: 12px;\n  background: none;\n  border: none;\n  font-weight: 700;\n  color: #64748b;\n  cursor: pointer;\n  transition: all 0.2s ease;\n}\n\n.tab-btn.active {\n  background: white;\n  color: #0284c7;\n  border-bottom: 2px solid #0284c7;\n}\n\n.tabs-body {\n  padding: 20px;\n}\n\n.tab-content {\n  display: none;\n  color: #334155;\n  line-height: 1.5;\n}\n\n.tab-content.active {\n  display: block;\n}",
+    solution_js:
+      'const tabBtns = document.querySelectorAll(".tab-btn");\nconst tabContents = document.querySelectorAll(".tab-content");\n\ntabBtns.forEach((btn) => {\n  btn.addEventListener("click", () => {\n    tabBtns.forEach((b) => b.classList.remove("active"));\n    tabContents.forEach((c) => c.classList.remove("active"));\n    btn.classList.add("active");\n    const target = document.getElementById(btn.dataset.tab);\n    if (target) {\n      target.classList.add("active");\n    }\n  });\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; border: 1px solid #e2e8f0; border-radius: 16px; max-width: 380px; overflow: hidden;"><div style="display: flex; background: #f1f5f9;"><div style="flex:1;padding:10px;text-align:center;font-weight:bold;color:#64748b;">HTML</div><div style="flex:1;padding:10px;text-align:center;font-weight:bold;color:#64748b;">CSS</div><div style="flex:1;padding:10px;text-align:center;font-weight:bold;background:white;color:#0284c7;border-bottom:2px solid #0284c7;">JS</div></div><div style="padding:18px;color:#334155;">JavaScript — veb-sahifani jonli va interaktiv qiladi.</div></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: ".tab-btn", label: "Tab tugmalari mavjud" },
+      { type: "exists", selector: ".tab-content", label: "Tab kontentlari mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const btns = document.querySelectorAll('.tab-btn'); const jsBtn = Array.from(btns).find(b => b.dataset.tab === 'tab-js'); if (!jsBtn) return false; jsBtn.click(); const jsTab = document.getElementById('tab-js'); const htmlTab = document.getElementById('tab-html'); return jsBtn.classList.contains('active') && jsTab.classList.contains('active') && !htmlTab.classList.contains('active'); })()",
+        label: "Tab bosilganda mos kontent faollashadi va qolganlari yashiriladi",
+      },
+    ],
+    fallback_hints: {
+      "1": "data-tab atributidagi qiymatni btn.dataset.tab orqali olish mumkin.",
+      "2": "Barcha tugmalardan 'active' ni o'chirish uchun: tabBtns.forEach(b => b.classList.remove('active'));",
+      "3": "Topilgan kontent elementiga: document.getElementById(btn.dataset.tab).classList.add('active');",
+      "4": 'const tabBtns = document.querySelectorAll(".tab-btn");\nconst tabContents = document.querySelectorAll(".tab-content");\n\ntabBtns.forEach((btn) => {\n  btn.addEventListener("click", () => {\n    tabBtns.forEach((b) => b.classList.remove("active"));\n    tabContents.forEach((c) => c.classList.remove("active"));\n    btn.classList.add("active");\n    const target = document.getElementById(btn.dataset.tab);\n    if (target) {\n      target.classList.add("active");\n    }\n  });\n});',
+    },
+    is_public: true,
+  },
 ];

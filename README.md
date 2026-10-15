@@ -1,32 +1,26 @@
-# React + TypeScript + Vite
+# Ozing-yoz 🚀
+**O'zing Yoz** — IT ta'lim markazlari uchun interaktiv kod yozish va jonli musobaqalar platformasi.
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Imkoniyatlar
+- 💻 **Interaktiv Kod Muharriri**: VS Code Dark+ / Light+ mavzulari bilan jihozlangan CodeMirror muharriri
+- 🤖 **Ustoz AI Maslahat Tizimi**: 4-darajali pedagogik maslahat zinapoyasi (savol, yo'nalish, tushuntirish, qisman yechim)
+- 🏆 **Jonli Musobaqa Xonalari (Live Room)**: Real-vaqt sinxronlashgan reyting, heatmap va proyektor ekrani
+- 🌙 **To'liq Dark Mode**: Tungi va kunduzgi rejim (ThemeToggle)
+- 🔒 **Qat'iy Autentifikatsiya**: Talabalar va ustozlar uchun alohida xavfsiz tizim
+- 📱 **Responsive & Mondly Dizayn**: Zamonaviy, toza ta'lim interfeysi
 
-Currently, two official plugins are available:
+## Ishga tushirish
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+# Kutubxonalarni o'rnatish
+npm install
 
-## React Compiler
+# Lokal serverni ishga tushirish
+npm run dev
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Testlarni yurgazish
+npx tsx tests/test-platform.ts
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# Production build
+npm run build
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

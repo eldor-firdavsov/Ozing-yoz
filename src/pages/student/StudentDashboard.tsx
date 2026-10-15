@@ -55,6 +55,7 @@ export const StudentDashboard: React.FC = () => {
     { id: "grid", label: "CSS Grid" },
     { id: "responsive", label: "Responsive" },
     { id: "forms", label: "Formalar" },
+    { id: "javascript", label: "JavaScript & DOM" },
     { id: "colors", label: "Ranglar & Stil" },
   ];
 
@@ -68,9 +69,11 @@ export const StudentDashboard: React.FC = () => {
   });
 
   // Group into Curriculum Units
-  const unit1 = filteredChallenges.filter((c) => c.level === 1 || c.topics.includes("forms"));
-  const unit2 = filteredChallenges.filter((c) => c.level === 2 && !c.topics.includes("forms"));
-  const unit3 = filteredChallenges.filter((c) => c.level === 3 || (!unit1.includes(c) && !unit2.includes(c)));
+  const nonJs = filteredChallenges.filter((c) => !c.topics.includes("javascript"));
+  const unit1 = nonJs.filter((c) => c.level === 1 || c.topics.includes("forms"));
+  const unit2 = nonJs.filter((c) => c.level === 2 && !c.topics.includes("forms"));
+  const unit3 = nonJs.filter((c) => c.level === 3 || (!unit1.includes(c) && !unit2.includes(c)));
+  const unit4 = filteredChallenges.filter((c) => c.topics.includes("javascript"));
 
   const handleJoinClass = (e: React.FormEvent) => {
     e.preventDefault();
@@ -560,6 +563,89 @@ export const StudentDashboard: React.FC = () => {
             })}
           </div>
         </section>
+
+        {/* ======================================================== */}
+        {/* UNIT 4: JAVASCRIPT & DOM INTERAKTIVLIK                    */}
+        {/* ======================================================== */}
+        {unit4.length > 0 && (
+          <section className="space-y-3.5 pt-2">
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white flex items-center justify-between shadow-sm">
+              <div className="space-y-0.5">
+                <span className="text-[11px] uppercase font-bold tracking-widest text-amber-100">
+                  4-Mavzular to'plami
+                </span>
+                <h2 className="text-xl font-bold text-white">JavaScript va DOM Interaktivligi</h2>
+                <p className="text-xs text-amber-100 font-normal">
+                  Elementlarni boshqarish, click hodisalari, tun rejimi va ro'yxat yaratish
+                </p>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <Code2 className="w-5 h-5 text-white" />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {unit4.map((c) => {
+                const isDone = appStore.isChallengeCompleted(c.id);
+                return (
+                  <div
+                    key={c.id}
+                    className={`mondly-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-amber-300 ${
+                      isDone ? "bg-amber-50/30 border-amber-200" : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold border transition-all ${
+                          isDone
+                            ? "bg-amber-500 border-amber-600 text-white shadow-sm"
+                            : "bg-slate-50 border-slate-200 text-slate-700"
+                        }`}
+                      >
+                        {isDone ? (
+                          <Check className="w-6 h-6 stroke-[3]" />
+                        ) : (
+                          <span className="font-mono text-sm font-bold text-amber-600">JS</span>
+                        )}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                            {c.level}-daraja • JavaScript
+                          </span>
+                          <div className="flex items-center gap-0.5 text-amber-400">
+                            {[1, 2, 3].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-3.5 h-3.5 ${isDone ? "fill-amber-400 text-amber-400" : "text-slate-300"}`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">
+                            +100 XP
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-base text-slate-900 dark:text-white mt-1">{c.title}</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                          {c.description_md.replace(/[`*]/g, "")}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Link
+                      onClick={() => sounds.playClick()}
+                      to={`/app/challenge/${c.id}`}
+                      className={`${isDone ? "mondly-btn-secondary" : "duo-btn-green"} px-5 py-2 text-xs font-bold shrink-0 self-end sm:self-auto`}
+                    >
+                      <span>{isDone ? "Takrorlash" : "Boshlash"}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </main>
 
       {/* ======================================================== */}

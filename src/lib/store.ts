@@ -80,7 +80,7 @@ class AppStore {
       } as UserProfile,
       customChallenges: [] as ChallengeItem[],
       completedIds: [] as string[],
-      codeDrafts: {} as Record<string, { html: string; css: string }>,
+      codeDrafts: {} as Record<string, { html: string; css: string; js?: string }>,
       rooms: {} as Record<string, LiveRoomState>,
     };
 
@@ -171,13 +171,13 @@ class AppStore {
   }
 
   // --- Code Draft Persistence ---
-  saveDraft(challengeId: string, html: string, css: string) {
+  saveDraft(challengeId: string, html: string, css: string, js: string = "") {
     const data = this.getLocalData();
-    data.codeDrafts[challengeId] = { html, css };
+    data.codeDrafts[challengeId] = { html, css, js };
     this.saveLocalData(data);
   }
 
-  getDraft(challengeId: string): { html: string; css: string } | null {
+  getDraft(challengeId: string): { html: string; css: string; js?: string } | null {
     return this.getLocalData().codeDrafts?.[challengeId] || null;
   }
 

@@ -75,3 +75,38 @@ export function formatCss(css: string): string {
 
   return result.trim();
 }
+
+export function formatJs(js: string): string {
+  const tab = "  ";
+  let result = "";
+  let indent = 0;
+
+  const lines = js
+    .replace(/\r\n/g, "\n")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+
+  for (const rawLine of lines) {
+    let line = rawLine;
+    const openBraces = (line.match(/\{/g) || []).length;
+    const closeBraces = (line.match(/\}/g) || []).length;
+
+    if (line.startsWith("}") || line.startsWith("})") || line.startsWith("};")) {
+      indent = Math.max(0, indent - 1);
+    } else if (closeBraces > openBraces) {
+      indent = Math.max(0, indent - (closeBraces - openBraces));
+    }
+
+    result += tab.repeat(indent) + line + "\n";
+
+    if ((line.endsWith("{") || line.endsWith("{\n")) && !line.startsWith("}")) {
+      indent += 1;
+    } else if (openBraces > closeBraces && !line.startsWith("}")) {
+      indent += openBraces - closeBraces;
+    }
+  }
+
+  return result.trim();
+}
+

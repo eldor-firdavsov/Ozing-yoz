@@ -349,23 +349,24 @@ export const SyncedTimer: React.FC<{ startedAt?: string | null; durationSec: num
 
 // VS Code Styled File Tab Bar
 export const VsCodeTabs: React.FC<{
-  activeTab: "html" | "css";
-  onChangeTab: (tab: "html" | "css") => void;
+  activeTab: "html" | "css" | "js";
+  onChangeTab: (tab: "html" | "css" | "js") => void;
   isDirtyHtml?: boolean;
   isDirtyCss?: boolean;
+  isDirtyJs?: boolean;
   onFormat?: () => void;
   onReset?: () => void;
-}> = ({ activeTab, onChangeTab, isDirtyHtml, isDirtyCss, onFormat, onReset }) => {
+}> = ({ activeTab, onChangeTab, isDirtyHtml, isDirtyCss, isDirtyJs, onFormat, onReset }) => {
   return (
-    <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-zinc-800 bg-slate-100/60 dark:bg-zinc-900/90 px-3 pt-2 select-none">
-      <div className="flex items-center gap-1.5">
+    <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-zinc-800 bg-slate-100/60 dark:bg-zinc-900/90 px-3 pt-2 select-none overflow-x-auto">
+      <div className="flex items-center gap-1.5 shrink-0">
         {/* index.html Tab */}
         <button
           onClick={() => {
             sounds.playClick();
             onChangeTab("html");
           }}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
+          className={`flex items-center gap-2 px-3.5 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
             activeTab === "html"
               ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#e44d26] border-x border-slate-200 dark:border-zinc-700 shadow-sm"
               : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
@@ -382,7 +383,7 @@ export const VsCodeTabs: React.FC<{
             sounds.playClick();
             onChangeTab("css");
           }}
-          className={`flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
+          className={`flex items-center gap-2 px-3.5 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
             activeTab === "css"
               ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#264de4] border-x border-slate-200 dark:border-zinc-700 shadow-sm"
               : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
@@ -392,9 +393,26 @@ export const VsCodeTabs: React.FC<{
           <span>style.css</span>
           {isDirtyCss && <span className="h-2 w-2 rounded-full bg-amber-500 ml-1" title="O'zgartirilgan" />}
         </button>
+
+        {/* script.js Tab */}
+        <button
+          onClick={() => {
+            sounds.playClick();
+            onChangeTab("js");
+          }}
+          className={`flex items-center gap-2 px-3.5 py-2 text-sm font-mono rounded-t-xl transition-all active:scale-[0.98] ${
+            activeTab === "js"
+              ? "bg-white dark:bg-[#18181b] text-slate-900 dark:text-white font-bold border-t-2 border-t-[#f7df1e] border-x border-slate-200 dark:border-zinc-700 shadow-sm"
+              : "text-slate-600 dark:text-zinc-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60 hover:text-slate-900 dark:hover:text-white"
+          }`}
+        >
+          <span className="text-[#eab308] font-black text-xs px-1 py-0.5 rounded bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700">JS</span>
+          <span>script.js</span>
+          {isDirtyJs && <span className="h-2 w-2 rounded-full bg-amber-500 ml-1" title="O'zgartirilgan" />}
+        </button>
       </div>
 
-      <div className="flex items-center gap-2 pb-1.5">
+      <div className="flex items-center gap-2 pb-1.5 shrink-0">
         {onFormat && (
           <button
             onClick={() => {
@@ -428,7 +446,7 @@ export const VsCodeTabs: React.FC<{
 // VS Code Styled Status Bar
 export const VsCodeStatusBar: React.FC<{
   cursorPos?: { line: number; col: number };
-  activeTab: "html" | "css";
+  activeTab: "html" | "css" | "js";
   testCount?: number;
   passedCount?: number;
 }> = ({ cursorPos = { line: 1, col: 1 }, activeTab, testCount = 0, passedCount = 0 }) => {
@@ -454,7 +472,9 @@ export const VsCodeStatusBar: React.FC<{
         <span className="text-slate-300 dark:text-zinc-700">|</span>
         <span>UTF-8</span>
         <span className="text-slate-300 dark:text-zinc-700">|</span>
-        <span className="font-bold uppercase text-slate-900 dark:text-white">{activeTab}</span>
+        <span className="font-bold uppercase text-slate-900 dark:text-white">
+          {activeTab === "html" ? "HTML" : activeTab === "css" ? "CSS" : "JavaScript"}
+        </span>
       </div>
     </div>
   );

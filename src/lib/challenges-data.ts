@@ -8,8 +8,10 @@ export interface ChallengeItem {
   topics: string[];
   starter_html: string;
   starter_css: string;
+  starter_js?: string;
   solution_html: string;
   solution_css: string;
+  solution_js?: string;
   target_html: string;
   target_css: string;
   tests: ChallengeAssertion[];
@@ -236,6 +238,146 @@ export const COURSE_CHALLENGES: ChallengeItem[] = [
       "2": "@media (max-width: 600px) bloki ichida .grid-layout ning grid-template-columns xossasini o'zgartiring.",
       "3": "@media (max-width: 600px) { .grid-layout { grid-template-columns: 1fr; } } deb yoziladi.",
       "4": "@media (max-width: 600px) {\n  .grid-layout {\n    grid-template-columns: 1fr;\n  }\n}",
+    },
+    is_public: true,
+  },
+  {
+    id: "99999999-9999-9999-9999-999999999999",
+    title: "9. JavaScript: DOM elementini o'zgartirish",
+    description_md:
+      "JavaScript orqali sahifadagi `#title` sarlavha matnini **\"Salom, JavaScript!\"** ga o'zgartiring va uning matn rangini `style.color = \"#10b981\"` (yashil) qilib belgilang.",
+    level: 1,
+    topics: ["javascript", "dom"],
+    starter_html: '<h1 id="title">Eski sarlavha</h1>\n<p>JavaScript orqali sarlavha matnini va rangini yangilang.</p>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  text-align: center;\n  background: #f8fafc;\n}\n\n#title {\n  font-size: 28px;\n  font-weight: 800;\n  color: #1e293b;\n  transition: all 0.3s ease;\n}",
+    starter_js:
+      "// 1. Elementni id orqali toping\nconst title = document.getElementById(\"title\");\n\n// 2. Sarlavha matnini va rangini o'zgartiring\n",
+    solution_html: '<h1 id="title">Salom, JavaScript!</h1>\n<p>JavaScript orqali sarlavha matnini va rangini yangilang.</p>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  text-align: center;\n  background: #f8fafc;\n}\n\n#title {\n  font-size: 28px;\n  font-weight: 800;\n  color: #10b981;\n  transition: all 0.3s ease;\n}",
+    solution_js:
+      'const title = document.getElementById("title");\ntitle.textContent = "Salom, JavaScript!";\ntitle.style.color = "#10b981";',
+    target_html:
+      '<div style="font-family: sans-serif; padding: 30px; text-align: center; background: #f8fafc;"><h1 style="font-size: 28px; font-weight: 800; color: #10b981; margin-bottom: 8px;">Salom, JavaScript!</h1><p style="color: #64748b; margin: 0;">JavaScript orqali sarlavha matnini va rangini yangilang.</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#title", label: "#title sarlavha elementi mavjud" },
+      { type: "text", selector: "#title", contains: "Salom, JavaScript!", label: "Sarlavha matni 'Salom, JavaScript!' ga o'zgargan" },
+      { type: "style", selector: "#title", property: "color", op: "==", value: "rgb(16, 185, 129)", label: "Sarlavha matn rangi #10b981 (yashil) qilingan" },
+    ],
+    fallback_hints: {
+      "1": "DOM element matnini o'zgartirish uchun textContent, uslubini o'zgartirish uchun esa style.color ishlatiladi.",
+      "2": 'script.js faylida: title.textContent = "Salom, JavaScript!"; deb yozing.',
+      "3": 'Rangni o\'zgartirish uchun: title.style.color = "#10b981"; deb qo\'shing.',
+      "4": 'const title = document.getElementById("title");\ntitle.textContent = "Salom, JavaScript!";\ntitle.style.color = "#10b981";',
+    },
+    is_public: true,
+  },
+  {
+    id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    title: "10. JavaScript: Hisoblagich (Counter)",
+    description_md:
+      "`#btn-increment` tugmasi bosilganda (`click`), `#counter` ichidagi raqam **1 taga oshsin** (`0 -> 1 -> 2 ...`). Hodisalarni eshitish uchun `addEventListener` dan foydalaning.",
+    level: 2,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="counter-container">\n  <div id="counter">0</div>\n  <button id="btn-increment">+1 Qo\'shish</button>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  margin: 0;\n  background: #f1f5f9;\n}\n\n.counter-container {\n  text-align: center;\n  padding: 32px;\n  background: white;\n  border-radius: 16px;\n  box-shadow: 0 4px 20px rgba(0,0,0,0.06);\n}\n\n#counter {\n  font-size: 54px;\n  font-weight: 900;\n  color: #2563eb;\n  margin-bottom: 16px;\n}\n\n#btn-increment {\n  padding: 12px 28px;\n  background: #2563eb;\n  color: white;\n  border: none;\n  border-radius: 12px;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 16px;\n}",
+    starter_js:
+      'let count = 0;\nconst counter = document.getElementById("counter");\nconst btn = document.getElementById("btn-increment");\n\n// btn tugmasiga "click" hodisasini bog\'lang va count ni 1 ga oshiring\n',
+    solution_html:
+      '<div class="counter-container">\n  <div id="counter">0</div>\n  <button id="btn-increment">+1 Qo\'shish</button>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  margin: 0;\n  background: #f1f5f9;\n}\n\n.counter-container {\n  text-align: center;\n  padding: 32px;\n  background: white;\n  border-radius: 16px;\n  box-shadow: 0 4px 20px rgba(0,0,0,0.06);\n}\n\n#counter {\n  font-size: 54px;\n  font-weight: 900;\n  color: #2563eb;\n  margin-bottom: 16px;\n}\n\n#btn-increment {\n  padding: 12px 28px;\n  background: #2563eb;\n  color: white;\n  border: none;\n  border-radius: 12px;\n  font-weight: 700;\n  cursor: pointer;\n  font-size: 16px;\n}",
+    solution_js:
+      'let count = 0;\nconst counter = document.getElementById("counter");\nconst btn = document.getElementById("btn-increment");\n\nbtn.addEventListener("click", () => {\n  count++;\n  counter.textContent = count;\n});',
+    target_html:
+      '<div style="text-align: center; padding: 32px; background: white; border-radius: 16px; font-family: sans-serif;"><div style="font-size: 54px; font-weight: 900; color: #2563eb; margin-bottom: 16px;">1</div><button style="padding: 12px 28px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px;">+1 Qo\'shish</button></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#btn-increment", label: "+1 Qo'shish tugmasi mavjud" },
+      { type: "click_text", selector: "#btn-increment", targetSelector: "#counter", value: "1", label: "Tugma bosilganda raqam 1 ga oshadi" },
+    ],
+    fallback_hints: {
+      "1": "Tugmani bosganda funksiya bajarilishi uchun addEventListener('click', ...) qo'llaniladi.",
+      "2": 'btn.addEventListener("click", function() { count++; counter.textContent = count; });',
+      "3": "counter.textContent = count orqali ekrandagi matn yangi son bilan almashtiriladi.",
+      "4": 'let count = 0;\nconst counter = document.getElementById("counter");\nconst btn = document.getElementById("btn-increment");\n\nbtn.addEventListener("click", () => {\n  count++;\n  counter.textContent = count;\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    title: "11. JavaScript: Tun rejimini almashtirish (Dark Mode)",
+    description_md:
+      "`#toggle-theme` tugmasi bosilganda `#card` elementiga `dark` klassini qo'shing yoki olib tashlang (`classList.toggle(\"dark\")`). CSS-da `.dark` uchun qorong'u fon ko'rsatilgan.",
+    level: 2,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div id="card" class="card-theme">\n  <h3>Tizim sozlamalari</h3>\n  <p id="theme-status">Hozirgi holat: Kunduzgi rejim</p>\n  <button id="toggle-theme">Rejimni o\'zgartirish 🌙</button>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.card-theme {\n  padding: 28px;\n  border-radius: 16px;\n  background: white;\n  color: #1e293b;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n  text-align: center;\n  transition: all 0.3s ease;\n}\n\n.card-theme.dark {\n  background: #0f172a;\n  color: #f8fafc;\n  border-color: #334155;\n}\n\n#toggle-theme {\n  padding: 10px 20px;\n  border-radius: 10px;\n  background: #6366f1;\n  color: white;\n  border: none;\n  font-weight: 600;\n  cursor: pointer;\n  margin-top: 14px;\n}",
+    starter_js:
+      'const toggleBtn = document.getElementById("toggle-theme");\nconst card = document.getElementById("card");\n\n// toggleBtn bosilganda card elementiga "dark" klassini toggle qiling\n',
+    solution_html:
+      '<div id="card" class="card-theme dark">\n  <h3>Tizim sozlamalari</h3>\n  <p id="theme-status">Hozirgi holat: Tun rejimi</p>\n  <button id="toggle-theme">Rejimni o\'zgartirish 🌙</button>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.card-theme {\n  padding: 28px;\n  border-radius: 16px;\n  background: white;\n  color: #1e293b;\n  border: 1px solid #e2e8f0;\n  width: 100%;\n  max-width: 380px;\n  text-align: center;\n  transition: all 0.3s ease;\n}\n\n.card-theme.dark {\n  background: #0f172a;\n  color: #f8fafc;\n  border-color: #334155;\n}\n\n#toggle-theme {\n  padding: 10px 20px;\n  border-radius: 10px;\n  background: #6366f1;\n  color: white;\n  border: none;\n  font-weight: 600;\n  cursor: pointer;\n  margin-top: 14px;\n}",
+    solution_js:
+      'const toggleBtn = document.getElementById("toggle-theme");\nconst card = document.getElementById("card");\n\ntoggleBtn.addEventListener("click", () => {\n  card.classList.toggle("dark");\n});',
+    target_html:
+      '<div style="font-family: sans-serif; padding: 28px; border-radius: 16px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; text-align: center; max-width: 380px;"><h3 style="margin-top:0;">Tizim sozlamalari</h3><p style="color: #94a3b8;">Hozirgi holat: Tun rejimi</p><button style="padding: 10px 20px; border-radius: 10px; background: #6366f1; color: white; border: none; font-weight: 600;">Rejimni o\'zgartirish 🌙</button></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#toggle-theme", label: "Rejim tugmasi mavjud" },
+      { type: "click_class", selector: "#toggle-theme", targetSelector: "#card", className: "dark", label: "Tugma bosilganda #card ga 'dark' klassi ulanadi" },
+    ],
+    fallback_hints: {
+      "1": "DOM elementiga klass qo'shish va olib tashlash uchun element.classList.toggle(\"klass_nomi\") ishlatiladi.",
+      "2": 'toggleBtn ga "click" hodisasini qo\'shing va card.classList.toggle("dark") ni chaqiring.',
+      "3": 'toggleBtn.addEventListener("click", () => { card.classList.toggle("dark"); });',
+      "4": 'const toggleBtn = document.getElementById("toggle-theme");\nconst card = document.getElementById("card");\n\ntoggleBtn.addEventListener("click", () => {\n  card.classList.toggle("dark");\n});',
+    },
+    is_public: true,
+  },
+  {
+    id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    title: "12. JavaScript: Ro'yxatga element qo'shish (To-Do)",
+    description_md:
+      "`#add-btn` tugmasi bosilganda, `#item-input` maydonidagi matnni olib, `#todo-list` ichiga yangi `<li>` tegi yaratib (`document.createElement(\"li\")`) qo'shing va input maydonini tozalang.",
+    level: 3,
+    topics: ["javascript", "dom", "forms"],
+    starter_html:
+      '<div class="todo-box">\n  <h3>Rejalar ro\'yxati</h3>\n  <div class="input-row">\n    <input id="item-input" type="text" placeholder="Yangi vazifa..." />\n    <button id="add-btn">Qo\'shish</button>\n  </div>\n  <ul id="todo-list">\n    <li>HTML asoslarini o\'rganish</li>\n  </ul>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.todo-box {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  box-shadow: 0 4px 16px rgba(0,0,0,0.06);\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 16px;\n}\n\n#item-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#add-btn {\n  padding: 10px 16px;\n  background: #10b981;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\nul {\n  margin: 0;\n  padding-left: 20px;\n  color: #334155;\n}\n\nli {\n  padding: 6px 0;\n}",
+    starter_js:
+      'const input = document.getElementById("item-input");\nconst addBtn = document.getElementById("add-btn");\nconst list = document.getElementById("todo-list");\n\n// addBtn bosilganda:\n// 1. input.value dagi matnni tekshiring\n// 2. document.createElement("li") yarating\n// 3. li.textContent ga matnni yozib list.appendChild(li) qiling\n// 4. input.value = "" qilib tozalang\n',
+    solution_html:
+      '<div class="todo-box">\n  <h3>Rejalar ro\'yxati</h3>\n  <div class="input-row">\n    <input id="item-input" type="text" placeholder="Yangi vazifa..." />\n    <button id="add-btn">Qo\'shish</button>\n  </div>\n  <ul id="todo-list">\n    <li>HTML asoslarini o\'rganish</li>\n    <li>CSS Grid bilan ishlash</li>\n  </ul>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.todo-box {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  box-shadow: 0 4px 16px rgba(0,0,0,0.06);\n  width: 100%;\n  max-width: 360px;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 16px;\n}\n\n#item-input {\n  flex: 1;\n  padding: 10px 14px;\n  border: 1px solid #cbd5e1;\n  border-radius: 10px;\n  outline: none;\n}\n\n#add-btn {\n  padding: 10px 16px;\n  background: #10b981;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-weight: 700;\n  cursor: pointer;\n}\n\nul {\n  margin: 0;\n  padding-left: 20px;\n  color: #334155;\n}\n\nli {\n  padding: 6px 0;\n}",
+    solution_js:
+      'const input = document.getElementById("item-input");\nconst addBtn = document.getElementById("add-btn");\nconst list = document.getElementById("todo-list");\n\naddBtn.addEventListener("click", () => {\n  const val = input.value.trim();\n  if (val) {\n    const li = document.createElement("li");\n    li.textContent = val;\n    list.appendChild(li);\n    input.value = "";\n  }\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 360px;"><h3 style="margin-top:0;">Rejalar ro\'yxati</h3><ul style="margin: 0; padding-left: 20px;"><li style="padding: 4px 0;">HTML asoslarini o\'rganish</li><li style="padding: 4px 0; color: #10b981; font-weight: bold;">JavaScript bilan yangi element</li></ul></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: "#item-input", label: "#item-input maydoni mavjud" },
+      { type: "exists", selector: "#add-btn", label: "#add-btn tugmasi mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const inp = document.getElementById('item-input'); const btn = document.getElementById('add-btn'); const list = document.getElementById('todo-list'); const before = list.querySelectorAll('li').length; inp.value = 'CSS Grid'; btn.click(); const after = list.querySelectorAll('li').length; return after > before && list.textContent.includes('CSS Grid') && inp.value === ''; })()",
+        label: "Tugma bosilganda yangi li qo'shiladi va input tozalanadi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Yangi element yaratish uchun document.createElement(\"li\"), qo'shish uchun esa list.appendChild(li) ishlatiladi.",
+      "2": 'addBtn.addEventListener("click", () => { const li = document.createElement("li"); li.textContent = input.value; list.appendChild(li); input.value = ""; });',
+      "3": 'input.value = ""; orqali kiritish maydonini qayta bo\'shatib qo\'yamiz.',
+      "4": 'const input = document.getElementById("item-input");\nconst addBtn = document.getElementById("add-btn");\nconst list = document.getElementById("todo-list");\n\naddBtn.addEventListener("click", () => {\n  const val = input.value.trim();\n  if (val) {\n    const li = document.createElement("li");\n    li.textContent = val;\n    list.appendChild(li);\n    input.value = "";\n  }\n});',
     },
     is_public: true,
   },

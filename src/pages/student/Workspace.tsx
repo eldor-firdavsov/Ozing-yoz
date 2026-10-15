@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import CodeMirror from "@uiw/react-codemirror";
 import { html as langHtml } from "@codemirror/lang-html";
 import { css as langCss } from "@codemirror/lang-css";
+import { javascript as langJs } from "@codemirror/lang-javascript";
 import { EditorView, Decoration } from "@codemirror/view";
 import { StateField, StateEffect } from "@codemirror/state";
 import confetti from "canvas-confetti";
@@ -34,7 +35,7 @@ import { supabase } from "../../lib/supabase";
 import { appStore, LiveRoomState } from "../../lib/store";
 import { buildSandboxedSrcDoc, AssertionResult } from "../../lib/tests-runner";
 import { calculateScore } from "../../lib/scoring";
-import { formatHtml, formatCss } from "../../lib/formatter";
+import { formatHtml, formatCss, formatJs } from "../../lib/formatter";
 import { getVsCodeExtension } from "../../lib/editor-theme";
 import { themeManager } from "../../lib/theme";
 import { sounds } from "../../lib/audio";
@@ -105,8 +106,11 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
   const savedDraft = appStore.getDraft(challenge.id);
   const [codeHtml, setCodeHtml] = useState(savedDraft?.html || challenge.starter_html);
   const [codeCss, setCodeCss] = useState(savedDraft?.css || challenge.starter_css);
+  const [codeJs, setCodeJs] = useState(savedDraft?.js || challenge.starter_js || "");
 
-  const [activeCodeTab, setActiveCodeTab] = useState<"html" | "css">("css");
+  const [activeCodeTab, setActiveCodeTab] = useState<"html" | "css" | "js">(() => {
+    return challenge.topics?.includes("javascript") ? "js" : "css";
+  });
   const [leftTab, setLeftTab] = useState<"task" | "target">("task");
   const [mobileTab, setMobileTab] = useState<"vazifa" | "kod" | "natija" | "ustoz">("kod");
   const [viewportWidth, setViewportWidth] = useState<"100%" | "768px" | "375px">("100%");
@@ -133,6 +137,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
   const isDirtyHtml = codeHtml !== challenge.starter_html;
   const isDirtyCss = codeCss !== challenge.starter_css;
+  const isDirtyJs = codeJs !== (challenge.starter_js || "");
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -154,14 +159,22 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     const draft = appStore.getDraft(nextItem.id);
     setCodeHtml(draft?.html || nextItem.starter_html);
     setCodeCss(draft?.css || nextItem.starter_css);
+    setCodeJs(draft?.js || nextItem.starter_js || "");
     setHints([]);
     setTestResults([]);
     setShowPassModal(false);
     setMaxHintLevel(0);
     setFailedChecksSinceL3(0);
-    setActiveCodeTab("css");
+    setActiveCodeTab(nextItem.topics?.includes("javascript") ? "js" : "css");
     setLeftTab("task");
-    setDebouncedDoc(buildSandboxedSrcDoc(draft?.html || nextItem.starter_html, draft?.css || nextItem.starter_css, nextItem.tests));
+    setDebouncedDoc(
+      buildSandboxedSrcDoc(
+        draft?.html || nextItem.starter_html,
+        draft?.css || nextItem.starter_css,
+        nextItem.tests,
+        draft?.js || nextItem.starter_js || ""
+      )
+    );
   }, [challengeId]);
 
   const handleNextChallenge = () => {
@@ -212,11 +225,11 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
   // 600ms Debounced Live Preview + Draft Save
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests));
-      appStore.saveDraft(challenge.id, codeHtml, codeCss);
+      setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests, codeJs));
+      appStore.saveDraft(challenge.id, codeHtml, codeCss, codeJs);
     }, 600);
     return () => clearTimeout(timer);
-  }, [codeHtml, codeCss, challenge]);
+  }, [codeHtml, codeCss, codeJs, challenge]);
 
   // Handle Sandboxed Test Results from iframe
   useEffect(() => {
@@ -266,12 +279,15 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     if (activeCodeTab === "html") {
       const formatted = formatHtml(codeHtml);
       setCodeHtml(formatted);
-    } else {
+    } else if (activeCodeTab === "css") {
       const formatted = formatCss(codeCss);
       setCodeCss(formatted);
+    } else {
+      const formatted = formatJs(codeJs);
+      setCodeJs(formatted);
     }
     showToast("Kod formatlandi (Shift+Alt+F)");
-  }, [activeCodeTab, codeHtml, codeCss]);
+  }, [activeCodeTab, codeHtml, codeCss, codeJs]);
 
   // Keyboard Shortcuts
   useEffect(() => {
@@ -282,7 +298,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
         showToast("Testlar tekshirilmoqda... (Ctrl+Enter)");
       } else if ((e.ctrlKey || e.metaKey) && e.key === "s") {
         e.preventDefault();
-        setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests));
+        setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests, codeJs));
         showToast("Natija yangilandi (Ctrl+S)");
       } else if (e.shiftKey && e.altKey && (e.key === "F" || e.key === "f")) {
         e.preventDefault();
@@ -291,7 +307,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [triggerCheckTests, handleFormatDocument, codeHtml, codeCss, challenge.tests]);
+  }, [triggerCheckTests, handleFormatDocument, codeHtml, codeCss, codeJs, challenge.tests]);
 
   const highlightEditorLine = (lineNum: number | null) => {
     if (!editorViewRef.current) return;
@@ -353,7 +369,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           concept: challenge.topics[0] || "flexbox",
         },
         4: {
-          hint: challenge.fallback_hints["4"] || challenge.solution_css,
+          hint: challenge.fallback_hints["4"] || challenge.solution_js || challenge.solution_css,
           line: 4,
           concept: challenge.topics[0] || "solution",
         },
@@ -530,7 +546,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
           <button
             onClick={() => {
               sounds.playClick();
-              setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests));
+              setDebouncedDoc(buildSandboxedSrcDoc(codeHtml, codeCss, challenge.tests, codeJs));
               showToast("Natija yangilandi (Ctrl+S)");
             }}
             title="Yozgan kodingizni ekranda sinab ko'rish (Ctrl+S)"
@@ -647,7 +663,17 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                   <span>Nima qilish kerak?</span>
                 </p>
                 <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  <li>O'rtada ochilgan <strong>style.css</strong> faylida kod yozing.</li>
+                  <li>
+                    O'rtada ochilgan{" "}
+                    <strong>
+                      {challenge.topics.includes("javascript")
+                        ? "script.js"
+                        : activeCodeTab === "html"
+                        ? "index.html"
+                        : "style.css"}
+                    </strong>{" "}
+                    faylida kod yozing.
+                  </li>
                   <li><strong>"Ishga tushirish"</strong> (yoki Ctrl+S) orqali natijani ko'ring.</li>
                   <li><strong>"Tekshirish"</strong> (yoki Ctrl+Enter) orqali ball to'plang.</li>
                   <li>Qiynalsangiz, o'ng pastdagi <strong>"Maslahat so'rash"</strong> tugmasidan foydalaning.</li>
@@ -687,6 +713,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             onChangeTab={setActiveCodeTab}
             isDirtyHtml={isDirtyHtml}
             isDirtyCss={isDirtyCss}
+            isDirtyJs={isDirtyJs}
             onFormat={handleFormatDocument}
             onReset={() => setShowResetModal(true)}
           />
@@ -697,17 +724,19 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
             <span>›</span>
             <span>src</span>
             <span>›</span>
-            <span className="text-slate-800 dark:text-zinc-200 font-medium">{activeCodeTab === "html" ? "index.html" : "style.css"}</span>
+            <span className="text-slate-800 dark:text-zinc-200 font-medium">
+              {activeCodeTab === "html" ? "index.html" : activeCodeTab === "css" ? "style.css" : "script.js"}
+            </span>
           </div>
 
           {/* CodeMirror 6 Editor with Dynamic Theme */}
           <div className="flex-1 overflow-auto bg-white/80 dark:bg-[#18181b] relative">
             <CodeMirror
-              value={activeCodeTab === "html" ? codeHtml : codeCss}
+              value={activeCodeTab === "html" ? codeHtml : activeCodeTab === "css" ? codeCss : codeJs}
               height="100%"
               minHeight="420px"
               extensions={[
-                activeCodeTab === "html" ? langHtml() : langCss(),
+                activeCodeTab === "html" ? langHtml() : activeCodeTab === "css" ? langCss() : langJs(),
                 getVsCodeExtension(isDark),
                 highlightLineField,
               ]}
@@ -721,7 +750,8 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               }}
               onChange={(val) => {
                 if (activeCodeTab === "html") setCodeHtml(val);
-                else setCodeCss(val);
+                else if (activeCodeTab === "css") setCodeCss(val);
+                else setCodeJs(val);
               }}
             />
           </div>
@@ -953,6 +983,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
                 sounds.playClick();
                 setCodeHtml(challenge.starter_html);
                 setCodeCss(challenge.starter_css);
+                setCodeJs(challenge.starter_js || "");
                 setShowResetModal(false);
                 showToast("Boshlang'ich holatga qaytarildi");
               }}

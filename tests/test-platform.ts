@@ -1,7 +1,8 @@
 import { appStore } from "../src/lib/store";
 import { calculateScore } from "../src/lib/scoring";
 import { COURSE_CHALLENGES } from "../src/lib/challenges-data";
-import { formatHtml, formatCss } from "../src/lib/formatter";
+import { formatHtml, formatCss, formatJs } from "../src/lib/formatter";
+import { buildSandboxedSrcDoc } from "../src/lib/tests-runner";
 
 console.log("=========================================");
 console.log("🧪 RUNNING O'ZING YOZ FULL TEST SUITE");
@@ -30,17 +31,20 @@ assert(calculateScore([1, 2, 3, 4]) === 25, "Level 4 hint = 25 XP (-75)");
 
 // 2. TEST COURSE CHALLENGES INTEGRITY
 console.log("\n2. Testing Course Challenges Integrity...");
-assert(COURSE_CHALLENGES.length >= 8, `Loaded ${COURSE_CHALLENGES.length} interactive course challenges`);
+assert(COURSE_CHALLENGES.length >= 12, `Loaded ${COURSE_CHALLENGES.length} interactive course challenges`);
 for (const ch of COURSE_CHALLENGES) {
   assert(Boolean(ch.id && ch.title), `Challenge "${ch.title}" has valid id and title`);
   assert(ch.tests && ch.tests.length > 0, `Challenge "${ch.title}" has ${ch.tests?.length} tests`);
   assert(Boolean(ch.target_html), `Challenge "${ch.title}" has target HTML preview`);
   assert(Boolean(ch.solution_html), `Challenge "${ch.title}" has solution HTML`);
   assert(Boolean(ch.fallback_hints["1"] && ch.fallback_hints["2"]), `Challenge "${ch.title}" has fallback hints L1 and L2`);
+  if (ch.topics.includes("javascript")) {
+    assert(Boolean(ch.solution_js), `JS Challenge "${ch.title}" has solution_js`);
+  }
 }
 
 // 3. TEST FORMATTER
-console.log("\n3. Testing Prettier HTML & CSS Formatter...");
+console.log("\n3. Testing Prettier HTML, CSS & JavaScript Formatter...");
 const rawHtml = "<div><p>Hello World</p></div>";
 const formattedHtml = formatHtml(rawHtml);
 assert(formattedHtml.includes("<div>") && formattedHtml.includes("<p>") && formattedHtml.includes("Hello World"), "HTML formatted with clean indentation");
@@ -48,6 +52,15 @@ assert(formattedHtml.includes("<div>") && formattedHtml.includes("<p>") && forma
 const rawCss = ".container{display:flex;justify-content:center;}";
 const formattedCss = formatCss(rawCss);
 assert(formattedCss.includes("display: flex;") && formattedCss.includes("justify-content: center;"), "CSS formatted with proper rules and spacing");
+
+const rawJs = "function test() {\nconst x = 1;\nreturn x;\n}";
+const formattedJs = formatJs(rawJs);
+assert(formattedJs.includes("function test() {") && formattedJs.includes("  const x = 1;"), "JavaScript formatted with clean indentation");
+
+// 3.1 TEST SANDBOX JS COMPILATION
+console.log("\n3.1 Testing Sandboxed Iframe HTML/CSS/JS Generator...");
+const sampleDoc = buildSandboxedSrcDoc("<h1>Hi</h1>", "h1 { color: red; }", [], "console.log('hello');");
+assert(sampleDoc.includes("h1 { color: red; }") && sampleDoc.includes("console.log('hello');") && sampleDoc.includes("<h1>Hi</h1>"), "Sandboxed iframe document generates valid HTML with script and style");
 
 // 4. TEST STUDENT & TEACHER STORE AUTH
 console.log("\n4. Testing Student & Teacher Auth Logic in Store...");

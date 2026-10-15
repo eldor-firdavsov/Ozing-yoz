@@ -5,16 +5,10 @@ import {
   QrCode,
   ShieldCheck,
   ArrowRight,
-  Code2,
-  CheckCircle2,
-  Terminal,
-  Zap,
   Lock,
   Mail,
   User,
-  GraduationCap,
-  BookOpen,
-  Trophy
+  GraduationCap
 } from "lucide-react";
 import { UZ } from "./lib/i18n/uz";
 import { supabase } from "./lib/supabase";
@@ -177,7 +171,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
             password,
             options: { data: { full_name: fullName.trim(), role: "student" } },
           });
-        } catch (_) {}
+        } catch {}
 
         appStore.setProfile({
           id: `student-${Date.now()}`,
@@ -201,7 +195,7 @@ const AuthPage: React.FC<{ mode: "login" | "register" }> = ({ mode }) => {
             password,
           });
           if (!sbError && data?.user) user = data.user;
-        } catch (_) {}
+        } catch {}
 
         appStore.setProfile({
           id: user?.id || `student-${Date.now()}`,
@@ -428,7 +422,7 @@ const GuestJoinPage: React.FC = () => {
           password,
           options: { data: { full_name: fullName.trim(), role: "student" } },
         });
-      } catch (_) {}
+      } catch {}
 
       appStore.setProfile({
         id: `student-${Date.now()}`,
@@ -542,6 +536,12 @@ const GuestJoinPage: React.FC = () => {
   );
 };
 
+const WorkspaceRoute: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) => {
+  const { id, code } = useParams();
+  const routeKey = isRoom ? `room-${code || "live"}` : `challenge-${id || "default"}`;
+  return <Workspace key={routeKey} isRoom={isRoom} />;
+};
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -573,7 +573,7 @@ export default function App() {
           path="/app/challenge/:id"
           element={
             <StudentRouteGuard>
-              <Workspace />
+              <WorkspaceRoute />
             </StudentRouteGuard>
           }
         />
@@ -581,7 +581,7 @@ export default function App() {
           path="/room/:code"
           element={
             <StudentRouteGuard>
-              <Workspace isRoom={true} />
+              <WorkspaceRoute isRoom={true} />
             </StudentRouteGuard>
           }
         />

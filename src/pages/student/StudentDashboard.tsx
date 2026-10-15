@@ -3,36 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Sparkles,
   Search,
-  CheckCircle2,
   Flame,
   Award,
   BookOpen,
   ArrowRight,
-  Filter,
-  Users,
-  Compass,
   Code2,
   LogOut,
-  QrCode,
   Trophy,
-  HelpCircle,
-  Heart,
   Zap,
   Target,
-  ChevronRight,
-  Lock,
   Star,
   Check,
   Calendar,
-  Layers,
-  Clock,
   Play
 } from "lucide-react";
 import { appStore } from "../../lib/store";
-import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
 import { BrandLogo, SoundToggle, ThemeToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
-import { UZ } from "../../lib/i18n/uz";
 
 export const StudentDashboard: React.FC = () => {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShieldCheck, Lock, Mail, ArrowRight, ArrowLeft, KeyRound, Sparkles } from "lucide-react";
-import { BrandLogo, SoundToggle, ThemeToggle } from "../../components/ui/GlassComponents";
+import { ShieldCheck, Lock, Mail, ArrowRight, ArrowLeft, KeyRound } from "lucide-react";
+import { SoundToggle, ThemeToggle } from "../../components/ui/GlassComponents";
 import { supabase } from "../../lib/supabase";
 import { appStore } from "../../lib/store";
 import { sounds } from "../../lib/audio";
@@ -32,7 +32,7 @@ export const TeacherLoginPage: React.FC = () => {
         if (!sbError && data?.user) {
           authUser = data.user;
         }
-      } catch (_) {}
+      } catch {}
 
       // 2. Validate teacher credentials (teacher@ilmla.uz / teacher or valid Supabase session)
       if (authUser || (cleanEmail === "teacher@ilmla.uz" && password === "teacher")) {

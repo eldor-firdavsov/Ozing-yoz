@@ -14,19 +14,15 @@ import {
   Monitor,
   Tablet,
   Smartphone,
-  ArrowLeft,
-  RotateCcw,
-  AlignLeft,
   Eye,
   Check,
-  AlertCircle,
   HelpCircle,
   Layers,
   ChevronRight,
   Maximize2,
   Minimize2,
   Bell,
-  Trophy,
+  AlignLeft,
   Info
 } from "lucide-react";
 
@@ -88,8 +84,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
 
   // Challenge selection
   const challengeId = id || (isLiveRoom ? appStore.getRoom(roomCode).challenge_id : "11111111-1111-1111-1111-111111111111");
-  const initialChallenge = useMemo(() => appStore.getChallengeById(challengeId), [challengeId]);
-  const [challenge, setChallenge] = useState(initialChallenge);
+  const challenge = useMemo(() => appStore.getChallengeById(challengeId), [challengeId]);
 
   // All challenges & Next challenge calculation
   const allChallenges = useMemo(() => appStore.getChallenges(), []);
@@ -118,7 +113,14 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Tests & Hints
-  const [debouncedDoc, setDebouncedDoc] = useState("");
+  const [debouncedDoc, setDebouncedDoc] = useState(() =>
+    buildSandboxedSrcDoc(
+      savedDraft?.html || challenge.starter_html,
+      savedDraft?.css || challenge.starter_css,
+      challenge.tests,
+      savedDraft?.js || challenge.starter_js || ""
+    )
+  );
   const [testResults, setTestResults] = useState<AssertionResult[]>([]);
   const [hints, setHints] = useState<
     Array<{ level: number; hint: string; line?: number | null; concept?: string; from_fallback?: boolean }>
@@ -152,30 +154,33 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     });
   }, []);
 
-  // Dynamic sync when challengeId in URL route changes
+  // Dynamic sync when challengeId in URL route changes (without unmount)
+  const isFirstMount = useRef(true);
   useEffect(() => {
-    const nextItem = appStore.getChallengeById(challengeId);
-    setChallenge(nextItem);
-    const draft = appStore.getDraft(nextItem.id);
-    setCodeHtml(draft?.html || nextItem.starter_html);
-    setCodeCss(draft?.css || nextItem.starter_css);
-    setCodeJs(draft?.js || nextItem.starter_js || "");
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    const draft = appStore.getDraft(challenge.id);
+    setCodeHtml(draft?.html || challenge.starter_html);
+    setCodeCss(draft?.css || challenge.starter_css);
+    setCodeJs(draft?.js || challenge.starter_js || "");
     setHints([]);
     setTestResults([]);
     setShowPassModal(false);
     setMaxHintLevel(0);
     setFailedChecksSinceL3(0);
-    setActiveCodeTab(nextItem.topics?.includes("javascript") ? "js" : "css");
+    setActiveCodeTab(challenge.topics?.includes("javascript") ? "js" : "css");
     setLeftTab("task");
     setDebouncedDoc(
       buildSandboxedSrcDoc(
-        draft?.html || nextItem.starter_html,
-        draft?.css || nextItem.starter_css,
-        nextItem.tests,
-        draft?.js || nextItem.starter_js || ""
+        draft?.html || challenge.starter_html,
+        draft?.css || challenge.starter_css,
+        challenge.tests,
+        draft?.js || challenge.starter_js || ""
       )
     );
-  }, [challengeId]);
+  }, [challenge]);
 
   const handleNextChallenge = () => {
     sounds.playClick();
@@ -241,8 +246,11 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
         if (allPassed) {
           sounds.playSuccess();
           confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+          const wasAlreadyDone = appStore.isChallengeCompleted(challenge.id);
           appStore.markChallengeCompleted(challenge.id);
-          appStore.addXp(currentScore);
+          if (!wasAlreadyDone) {
+            appStore.addXp(currentScore);
+          }
 
           // If in live room, submit result to room leaderboard
           if (isLiveRoom) {
@@ -253,7 +261,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
               profile.full_name,
               currentScore,
               maxHintLevel,
-              codeCss
+              activeCodeTab === "js" ? codeJs : codeCss
             );
           }
 
@@ -268,7 +276,7 @@ export const Workspace: React.FC<{ isRoom?: boolean }> = ({ isRoom = false }) =>
     };
     window.addEventListener("message", handler);
     return () => window.removeEventListener("message", handler);
-  }, [challenge.id, maxHintLevel, isLiveRoom, roomCode, currentScore, codeCss]);
+  }, [challenge.id, maxHintLevel, isLiveRoom, roomCode, currentScore, codeCss, codeJs, activeCodeTab]);
 
   const triggerCheckTests = useCallback(() => {
     sounds.playClick();

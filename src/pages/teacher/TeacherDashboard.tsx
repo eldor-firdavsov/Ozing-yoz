@@ -5,26 +5,14 @@ import {
   Plus,
   Play,
   Users,
-  BookOpen,
   QrCode,
-  ExternalLink,
-  Code2,
-  FolderPlus,
-  ArrowRight,
-  Clock,
-  Layers,
-  Copy,
-  Check,
   LogOut,
-  HelpCircle,
-  Trophy,
   Lightbulb
 } from "lucide-react";
 import { appStore } from "../../lib/store";
-import { COURSE_CHALLENGES, ChallengeItem } from "../../lib/challenges-data";
+import { ChallengeItem, COURSE_CHALLENGES } from "../../lib/challenges-data";
 import { BrandLogo, SoundToggle, ThemeToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
-import { UZ } from "../../lib/i18n/uz";
 import { supabase } from "../../lib/supabase";
 
 export const TeacherDashboard: React.FC = () => {

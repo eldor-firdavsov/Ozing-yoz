@@ -62,7 +62,7 @@ class AppStore {
       try {
         const raw = localStorage.getItem(this.localKey);
         if (raw) return JSON.parse(raw);
-      } catch (_) {}
+      } catch {}
     } else if (this.memoryCache) {
       return this.memoryCache;
     }
@@ -95,7 +95,7 @@ class AppStore {
       try {
         localStorage.setItem(this.localKey, JSON.stringify(data));
         this.channel?.postMessage({ type: "STORE_UPDATE" });
-      } catch (_) {}
+      } catch {}
     } else {
       this.memoryCache = data;
     }
@@ -132,7 +132,7 @@ class AppStore {
     this.saveLocalData(data);
     try {
       supabase.auth.signOut();
-    } catch (_) {}
+    } catch {}
   }
 
   addXp(points: number) {

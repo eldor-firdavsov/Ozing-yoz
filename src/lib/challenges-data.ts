@@ -381,4 +381,42 @@ export const COURSE_CHALLENGES: ChallengeItem[] = [
     },
     is_public: true,
   },
+  {
+    id: "d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1",
+    title: "13. JavaScript: Ro'yxatdan element o'chirish (Delete Todo)",
+    description_md:
+      "`#todo-list` ichidagi har bir `.remove-btn` tugmasi bosilganda mos keluvchi `<li>` elementi o'chirilsin (`btn.parentElement.remove()`). Har bir tugmaga `addEventListener('click', ...)` ni bog'lang.",
+    level: 3,
+    topics: ["javascript", "dom", "events"],
+    starter_html:
+      '<div class="todo-box">\n  <h3>Rejalar ro\'yxati</h3>\n  <ul id="todo-list">\n    <li>HTML asoslarini o\'rganish <button class="remove-btn">O\'chirish</button></li>\n    <li>CSS Grid bilan ishlash <button class="remove-btn">O\'chirish</button></li>\n  </ul>\n</div>',
+    starter_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.todo-box {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  box-shadow: 0 4px 16px rgba(0,0,0,0.06);\n  width: 100%;\n  max-width: 380px;\n}\n\nul {\n  margin: 0;\n  padding-left: 20px;\n  color: #334155;\n}\n\nli {\n  padding: 8px 0;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.remove-btn {\n  padding: 4px 10px;\n  background: #ef4444;\n  color: white;\n  border: none;\n  border-radius: 6px;\n  font-size: 12px;\n  font-weight: bold;\n  cursor: pointer;\n}",
+    starter_js:
+      '// 1. Barcha .remove-btn tugmalarini toping (document.querySelectorAll)\nconst removeBtns = document.querySelectorAll(".remove-btn");\n\n// 2. Har bir tugmaga click hodisasini bog\'lab, uning ota elementi (li) ni o\'chiring\n',
+    solution_html:
+      '<div class="todo-box">\n  <h3>Rejalar ro\'yxati</h3>\n  <ul id="todo-list">\n    <li>HTML asoslarini o\'rganish <button class="remove-btn">O\'chirish</button></li>\n  </ul>\n</div>',
+    solution_css:
+      "body {\n  font-family: sans-serif;\n  padding: 30px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.todo-box {\n  background: white;\n  padding: 24px;\n  border-radius: 16px;\n  box-shadow: 0 4px 16px rgba(0,0,0,0.06);\n  width: 100%;\n  max-width: 380px;\n}\n\nul {\n  margin: 0;\n  padding-left: 20px;\n  color: #334155;\n}\n\nli {\n  padding: 8px 0;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.remove-btn {\n  padding: 4px 10px;\n  background: #ef4444;\n  color: white;\n  border: none;\n  border-radius: 6px;\n  font-size: 12px;\n  font-weight: bold;\n  cursor: pointer;\n}",
+    solution_js:
+      'const removeBtns = document.querySelectorAll(".remove-btn");\n\nremoveBtns.forEach(function(btn) {\n  btn.addEventListener("click", function() {\n    btn.parentElement.remove();\n  });\n});',
+    target_html:
+      '<div style="font-family: sans-serif; background: white; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; max-width: 380px;"><h3 style="margin-top:0;">Rejalar ro\'yxati</h3><ul style="margin: 0; padding-left: 20px;"><li style="padding: 6px 0;">HTML asoslarini o\'rganish</li></ul><p style="color: #64748b; font-size: 12px; margin-top: 10px;">Bir element o\'chirilgandagi holat</p></div>',
+    target_css: "",
+    tests: [
+      { type: "exists", selector: ".remove-btn", label: ".remove-btn tugmalari mavjud" },
+      {
+        type: "js_eval",
+        expr: "(() => { const btn = document.querySelector('.remove-btn'); if (!btn) return false; const liCountBefore = document.querySelectorAll('#todo-list li').length; btn.click(); const liCountAfter = document.querySelectorAll('#todo-list li').length; return liCountAfter === liCountBefore - 1; })()",
+        label: "Tugma bosilganda mos <li> elementi o'chadi",
+      },
+    ],
+    fallback_hints: {
+      "1": "Har bir tugmani topish uchun document.querySelectorAll('.remove-btn') dan foydalaning va forEach orqali aylanib chiqing.",
+      "2": "Tugmani bosganda uning ota elementi (li) ni o'chirish uchun: btn.parentElement.remove(); ishlatiladi.",
+      "3": "removeBtns.forEach((btn) => { btn.addEventListener('click', () => { btn.parentElement.remove(); }); });",
+      "4": 'const removeBtns = document.querySelectorAll(".remove-btn");\n\nremoveBtns.forEach(function(btn) {\n  btn.addEventListener("click", function() {\n    btn.parentElement.remove();\n  });\n});',
+    },
+    is_public: true,
+  },
 ];

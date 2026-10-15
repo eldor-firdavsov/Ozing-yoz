@@ -8,19 +8,15 @@ import {
   Send,
   Users,
   AlertTriangle,
-  Award,
   Crown,
   Eye,
   ArrowLeft,
   Copy,
   Check,
-  Lightbulb,
-  HelpCircle,
-  Info,
-  Sparkles
+  Lightbulb
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
-import { appStore, LiveRoomState } from "../../lib/store";
+import { appStore } from "../../lib/store";
 import { QRCard, SyncedTimer, BrandLogo, SoundToggle, ThemeToggle, GlassModal } from "../../components/ui/GlassComponents";
 import { sounds } from "../../lib/audio";
 
@@ -93,7 +89,7 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
         event: "state",
         payload: { status: nextStatus, started_at: nowIso, server_ts: Date.now() },
       });
-    } catch (_) {}
+    } catch {}
   };
 
   const sendNudge = async () => {
@@ -108,7 +104,7 @@ export const LiveControl: React.FC<{ isProjector?: boolean }> = ({ isProjector =
         event: "nudge",
         payload: { message: msg },
       });
-    } catch (_) {}
+    } catch {}
     setNudgeText("");
   };
 

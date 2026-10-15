@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  Sparkles,
-  CheckCircle2,
   XCircle,
   Clock,
   Volume2,
   VolumeX,
   Copy,
   Check,
-  FileCode2,
   AlignLeft,
   Terminal,
-  ExternalLink,
   ChevronRight,
-  Code,
   Sun,
   Moon
 } from "lucide-react";
@@ -130,11 +125,10 @@ export const TypewriterHint: React.FC<{
   fromFallback?: boolean;
   onNavigateLine?: (line: number) => void;
 }> = ({ text, level, line, concept, fromFallback, onNavigateLine }) => {
-  const [displayed, setDisplayed] = useState("");
+  const [displayed, setDisplayed] = useState(() => text.slice(0, 1));
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    setDisplayed("");
     let i = 0;
     const interval = setInterval(() => {
       i += 1;
@@ -311,11 +305,16 @@ export const SyncedTimer: React.FC<{ startedAt?: string | null; durationSec: num
   durationSec,
   status,
 }) => {
-  const [remaining, setRemaining] = useState(durationSec);
+  const calculateRemaining = useCallback(() => {
+    if (!startedAt || status !== "live") return durationSec;
+    const elapsed = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000);
+    return Math.max(0, durationSec - elapsed);
+  }, [startedAt, durationSec, status]);
+
+  const [remaining, setRemaining] = useState(calculateRemaining);
 
   useEffect(() => {
     if (!startedAt || status !== "live") {
-      setRemaining(durationSec);
       return;
     }
     const tick = () => {

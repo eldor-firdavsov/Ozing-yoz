@@ -191,7 +191,7 @@ serve(async (req) => {
         concept: CONCEPTS.includes(aiRes.concept) ? aiRes.concept : (challenge?.topics?.[0] || "other"),
         from_fallback: false,
       };
-    } catch (_err) {
+    } catch {
       result = {
         hint: fallbackText,
         line: null,
